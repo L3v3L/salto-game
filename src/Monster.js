@@ -100,19 +100,7 @@ export class Monster extends Component {
       }
     });
 
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("height", "" + sprite.height);
-    canvas.setAttribute("width", "" + sprite.width);
-    const context = canvas.getContext("2d");
-    const pixels = context.createImageData(sprite.width, sprite.height);
-    const imageData = sprite.spriteImageData;
-
-    for (let i = 0; i < imageData.length; i++) {
-      pixels.data[i] = imageData[i];
-    }
-    context.putImageData(pixels, 0, 0);
-
-    const dataURI = canvas.toDataURL();
+    const dataURI = SpriteCanvasHelper.createCanvas(sprite).toDataURL();
     this.setState({ dataURI });
   }
 
