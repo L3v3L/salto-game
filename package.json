@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@manaflair/redux-batch": "^1.0.0",
+    "@types/redux-logger": "^3.0.7",
     "lodash": "^4.17.15",
     "mixel": "^1.0.4",
     "react": "^16.11.0",
@@ -11,6 +13,8 @@
     "react-redux": "^7.1.1",
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-starter-kit": "^1.0.1",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.1"
   },

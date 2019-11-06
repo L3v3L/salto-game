@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 export class Card extends Component {
   label;
@@ -8,6 +9,7 @@ export class Card extends Component {
     super(props);
     this.label = props.label + ": " + props.value;
     this.key = props.key;
+    this.value = props.value;
   }
 
   action() {
