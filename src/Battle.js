@@ -11,7 +11,7 @@ class Battle extends Component {
     let deckArray = [];
     let handArray = [];
 
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 20; index++) {
       deckArray.push(
         new Card({ label: "Attack ", value: 2, key: "attack" + index })
       );
@@ -39,12 +39,23 @@ class Battle extends Component {
     let newHandArray = this.state.handArray;
     let newdeckArray = this.state.deckArray;
 
+    const maxCardsToDraw = 4;
+    let amountCardsToDraw = Math.min(
+      newDiscardArray.length + newdeckArray.length,
+      maxCardsToDraw
+    );
+
     newDiscardArray = newDiscardArray.concat(newHandArray);
     newHandArray = [];
 
-    let newdeckArrayLength = newdeckArray.length;
-    for (let index = 0; index < Math.min(4, newdeckArrayLength); index++) {
+    while (amountCardsToDraw) {
+      if (!newdeckArray.length) {
+        newdeckArray = newDiscardArray;
+        newDiscardArray = [];
+        newdeckArray = _.shuffle(newdeckArray);
+      }
       newHandArray.push(newdeckArray.pop());
+      amountCardsToDraw--;
     }
 
     this.setState(state => ({
