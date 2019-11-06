@@ -6,7 +6,7 @@ export class Card extends Component {
   key;
   constructor(props) {
     super(props);
-    this.label = props.label;
+    this.label = props.label + ": " + props.value;
     this.key = props.key;
   }
 

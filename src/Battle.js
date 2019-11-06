@@ -11,11 +11,17 @@ class Battle extends Component {
     let deckArray = [];
     let handArray = [];
 
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 10; index++) {
       deckArray.push(
         new Card({ label: "Attack ", value: 2, key: "attack" + index })
       );
     }
+    for (let index = 0; index < 10; index++) {
+      deckArray.push(
+        new Card({ label: "Block ", value: 3, key: "block" + index })
+      );
+    }
+
     deckArray = _.shuffle(deckArray);
 
     for (let index = 0; index < 4; index++) {
