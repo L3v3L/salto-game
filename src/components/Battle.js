@@ -9,6 +9,15 @@ import { getMonsters } from "../redux/selectors"
 
 import { addMonster } from "../redux/actions";
 
+import styled from "styled-components";
+
+const MonsterWrapper = styled.div`
+width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+`;
+
 class Battle extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +27,7 @@ class Battle extends Component {
     let handArray = [];
 
     props.dispatch(addMonster(50));
+    props.dispatch(addMonster(30));
     
     for (let index = 0; index < 10; index++) {
       deckArray.push(
@@ -84,8 +94,14 @@ class Battle extends Component {
   render() {
     return (
       <div>
-        <Monster />
-        NPC HP: {this.state.npcHP}
+        <MonsterWrapper>
+          {this.props.monsters.map((monster) => {
+            return <div>
+              <Monster />
+              HP: {monster.hp}
+            </div>
+          })}
+        </MonsterWrapper>
         <br />
         <br />
         <div>
