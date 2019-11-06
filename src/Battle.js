@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import Card from "./Card";
+import Monster from "./Monster";
 
 class Battle extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Battle extends Component {
 
     for (let index = 0; index < 10; index++) {
       deckArray.push(
-        new Card({ label: "Attack " + index, key: "attack" + index })
+        new Card({ label: "Attack ", value: 2, key: "attack" + index })
       );
     }
     deckArray = _.shuffle(deckArray);
@@ -57,6 +58,10 @@ class Battle extends Component {
   render() {
     return (
       <div>
+        <Monster />
+        NPC HP: {this.state.npcHP}
+        <br />
+        <br />
         <div>
           Deck Size: {this.state.deckArray.length}
           <br />
@@ -66,11 +71,8 @@ class Battle extends Component {
           <br />
           User HP: {this.state.userHP}
           <br />
-          NPC HP: {this.state.npcHP}
         </div>
-
         {this.state.handArray.map(item => item.render())}
-
         <button onClick={() => this.endTurn()}>End Turn</button>
       </div>
     );
