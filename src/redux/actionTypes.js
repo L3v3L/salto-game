@@ -1,0 +1,2 @@
+export const ADD_MONSTER = "ADD_MONSTER";
+export const ATTACK_MONSTER = "ATTACK_MONSTER";

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Battle from "./Battle";
+import Battle from "./components/Battle";
 
 class User {
   hp;
@@ -9,10 +9,8 @@ class User {
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Battle />
-      </header>
+    <div className="salto__wrapper">
+      <Battle />
     </div>
   );
 }

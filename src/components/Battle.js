@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import _ from "lodash";
+
 import Card from "./Card";
 import Monster from "./Monster";
+
+import { getMonsters } from "../redux/selectors"
+
+import { addMonster } from "../redux/actions";
 
 class Battle extends Component {
   constructor(props) {
@@ -11,11 +17,14 @@ class Battle extends Component {
     let deckArray = [];
     let handArray = [];
 
+    props.dispatch(addMonster(50));
+    
     for (let index = 0; index < 10; index++) {
       deckArray.push(
         new Card({ label: "Attack ", value: 2, key: "attack" + index })
       );
     }
+
     for (let index = 0; index < 10; index++) {
       deckArray.push(
         new Card({ label: "Block ", value: 3, key: "block" + index })
@@ -89,11 +98,18 @@ class Battle extends Component {
           User HP: {this.state.userHP}
           <br />
         </div>
+
         {this.state.handArray.map(item => item.render())}
+
         <button onClick={() => this.endTurn()}>End Turn</button>
       </div>
     );
   }
 }
 
-export default Battle;
+const mapStateToProps = state => {
+  const monsters = getMonsters(state);
+  return { monsters };
+};
+
+export default connect(mapStateToProps)(Battle);
