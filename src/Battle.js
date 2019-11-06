@@ -1,26 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
-
-class Card {
-  label;
-  uniqueId;
-  constructor(label, id) {
-    this.label = label;
-    this.uniqueId = id;
-  }
-
-  action() {
-    console.log("attacked");
-  }
-
-  component() {
-    return (
-      <button key={this.uniqueId} onClick={() => this.action()}>
-        {this.label}
-      </button>
-    );
-  }
-}
+import Card from "./Card";
 
 class Battle extends Component {
   constructor(props) {
@@ -31,7 +11,9 @@ class Battle extends Component {
     let handArray = [];
 
     for (let index = 0; index < 10; index++) {
-      deckArray.push(new Card("Attack " + index, "attack" + index));
+      deckArray.push(
+        new Card({ label: "Attack " + index, key: "attack" + index })
+      );
     }
     deckArray = _.shuffle(deckArray);
 
@@ -49,13 +31,6 @@ class Battle extends Component {
       maxMoves: 3,
       nextCardId: nextCardId
     };
-  }
-
-  attack(value, cost) {
-    this.setState(state => ({
-      npcHP: state.npcHP - value,
-      moves: state.moves - cost
-    }));
   }
 
   endTurn() {
@@ -94,7 +69,7 @@ class Battle extends Component {
           NPC HP: {this.state.npcHP}
         </div>
 
-        {this.state.handArray.map(item => item.component())}
+        {this.state.handArray.map(item => item.render())}
 
         <button onClick={() => this.endTurn()}>End Turn</button>
       </div>
