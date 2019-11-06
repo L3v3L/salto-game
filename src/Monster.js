@@ -1,5 +1,13 @@
 import React, { Component } from "react";
 import { Sprite, SpriteCanvasHelper } from "mixel";
+import styled, { keyframes } from "styled-components";
+import { bounce } from "react-animations";
+
+const bounceAnimation = keyframes`${bounce}`;
+
+const BouncyDiv = styled.div`
+  animation: 1s ${bounceAnimation};
+`;
 
 export class Monster extends Component {
   constructor(props) {
@@ -106,9 +114,9 @@ export class Monster extends Component {
 
   render() {
     return (
-      <div>
+      <BouncyDiv>
         <img width="100px" src={this.state.dataURI} />
-      </div>
+      </BouncyDiv>
     );
   }
 }
