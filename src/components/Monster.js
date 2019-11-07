@@ -37,7 +37,9 @@ export class Monster extends Component {
   render() {
     return (
       <BouncyDiv>
-        <img width="100px" src={this.state.dataURI} />
+        <img width="100px" src={this.state.dataURI} alt="Monster" />
+        <br/>
+        <code>HP: {this.props.hp}</code>
       </BouncyDiv>
     );
   }
