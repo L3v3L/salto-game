@@ -13,6 +13,7 @@ const CardButton = styled.div`
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
   .interiorContainer {
+    user-select: none;
     border: 2px solid #2f3534;
     background-color: #9e9f6d;
     height: 100%;
