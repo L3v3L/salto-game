@@ -124,7 +124,7 @@ class Battle extends Component {
               let card = new Card({
                 label: cardInHand.name,
                 value: cardInHand.power,
-                key: cardInHand.name,
+                key: cardInHand.id,
                 cost: cardInHand.cost,
                 description: cardInHand.description
               });
