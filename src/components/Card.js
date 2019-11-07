@@ -56,11 +56,16 @@ export class Card extends Component {
   key;
   description;
   cost;
+  value;
   constructor(props) {
     super(props);
-    this.label = props.label + ": " + props.value;
+    this.label = props.label;
     this.key = props.key;
     this.value = props.value;
+    this.cost = props.cost;
+    this.description = props.description
+      ? props.description.replace("%value", props.value)
+      : "";
   }
 
   action() {

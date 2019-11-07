@@ -38,13 +38,25 @@ class Battle extends Component {
 
     for (let index = 0; index < 10; index++) {
       deckArray.push(
-        new Card({ label: "Attack ", value: 2, key: "attack" + index })
+        new Card({
+          label: "Attack",
+          value: 2,
+          key: "attack" + index,
+          cost: 3,
+          description: "attacks %value"
+        })
       );
     }
 
     for (let index = 0; index < 10; index++) {
       deckArray.push(
-        new Card({ label: "Block ", value: 3, key: "block" + index })
+        new Card({
+          label: "Block",
+          value: 3,
+          key: "block" + index,
+          cost: 1,
+          description: "blocks %value"
+        })
       );
     }
 
