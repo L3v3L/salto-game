@@ -24,23 +24,25 @@ export const attackMonster = (id, dmg) => ({
   }
 });
 
-export const createCard = (id, name, power) => ({
+export const createCard = (id, name, power, description, cost) => ({
   type: CREATE_CARD,
   payload: {
     id,
     name,
-    power
+    power,
+    description,
+    cost
   }
 });
 
-export const addCardToDeck = (id) => ({
+export const addCardToDeck = id => ({
   type: ADD_CARD_TO_DECK,
   payload: {
     id
   }
 });
 
-export const addCardToHand = (id) => ({
+export const addCardToHand = id => ({
   type: ADD_CARD_TO_HAND,
   payload: {
     id
