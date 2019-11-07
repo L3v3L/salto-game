@@ -5,9 +5,14 @@ import _ from "lodash";
 import Card from "./Card";
 import Monster from "./Monster";
 
-import { getMonsters, getPlayerState, getCards } from "../redux/selectors"
+import { getMonsters, getPlayerState, getCards } from "../redux/selectors";
 
-import { addMonster, createCard, addCardToDeck, addCardToHand } from "../redux/actions";
+import {
+  addMonster,
+  createCard,
+  addCardToDeck,
+  addCardToHand
+} from "../redux/actions";
 
 import styled from "styled-components";
 
@@ -35,14 +40,14 @@ class Battle extends Component {
 
     props.dispatch(addMonster(50));
     props.dispatch(addMonster(30));
-    
+
     // Create cards and add them all to the player's deck
     for (let index = 1; index <= 20; index++) {
       if (index <= 5) {
-        props.dispatch(createCard(index, `Attack ${index}`, 2));
+        props.dispatch(createCard(index, `Attack`, 2, "attacks %value", 3));
         props.dispatch(addCardToDeck(index));
       } else {
-        props.dispatch(createCard(index, `Block ${index-5}`, 2));
+        props.dispatch(createCard(index, `Block`, 3, "blocks %value", 1));
         props.dispatch(addCardToDeck(index));
       }
     }
@@ -53,9 +58,7 @@ class Battle extends Component {
     props.dispatch(addCardToHand(6));
     props.dispatch(addCardToHand(7));
 
-    this.state = {
-    };
-
+    this.state = {};
   }
 
   endTurn() {
@@ -94,35 +97,40 @@ class Battle extends Component {
     return (
       <div>
         <MonsterWrapper>
-          {
-            this.props.monsters.map((monster) => {
-              return <Monster key={monster.id} hp={monster.hp}/>
-            })
-          }
+          {this.props.monsters.map(monster => {
+            return <Monster key={monster.id} hp={monster.hp} />;
+          })}
         </MonsterWrapper>
         <br />
         <BattleStats>
-          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.player.hp}<br />
-          Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.cards.length}<br />
-          Cards in Hand:&nbsp;&nbsp;{this.props.player.hand.length}<br />
-          Discard Pile:&nbsp;&nbsp;&nbsp;{this.props.player.discard.length}<br />
-          Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.player.remainingActions}/{this.props.player.maxActions}<br />
+          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.player.hp}
+          <br />
+          Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {this.props.cards.length}
+          <br />
+          Cards in Hand:&nbsp;&nbsp;{this.props.player.hand.length}
+          <br />
+          Discard Pile:&nbsp;&nbsp;&nbsp;{this.props.player.discard.length}
+          <br />
+          Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {this.props.player.remainingActions}/{this.props.player.maxActions}
+          <br />
         </BattleStats>
         <br />
         <Hand>
-        {
-          this.props.player.hand
-            .map(id => this.props.cards.find((card) => card.id === id))
-            .map((cardInHand) => {
+          {this.props.player.hand
+            .map(id => this.props.cards.find(card => card.id === id))
+            .map(cardInHand => {
               let card = new Card({
                 label: cardInHand.name,
                 value: cardInHand.power,
-                key: cardInHand.name
-              })
+                key: cardInHand.name,
+                cost: cardInHand.cost,
+                description: cardInHand.description
+              });
 
               return card.render();
-            })
-        }
+            })}
         </Hand>
         {/* <button onClick={() => this.endTurn()}>End Turn</button> */}
       </div>
@@ -134,7 +142,7 @@ const mapStateToProps = state => {
   const player = getPlayerState(state);
   const monsters = getMonsters(state);
   const cards = getCards(state);
-  return { player, cards, monsters};
+  return { player, cards, monsters };
 };
 
 export default connect(mapStateToProps)(Battle);
