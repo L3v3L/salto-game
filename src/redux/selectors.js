@@ -1,4 +1,11 @@
+export const getPlayerState = store => store.player;
+
+export const getBattleState = store => store.battle;
+
 export const getMonsterState = store => store.monsters;
+
+export const getPlayerActions = store =>
+  getPlayerState(store) ? getPlayerState(store).remainingActions : 0;
 
 export const getMonsterList = store =>
   getMonsterState(store) ? getMonsterState(store).allIds : [];
@@ -8,8 +15,6 @@ export const getMonsterById = (store, id) =>
 
 export const getMonsters = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
-
-export const getPlayerState = store => store.player;
 
 export const getCardState = store => store.cards;
 

@@ -28,7 +28,7 @@ export default function(state = initialState, action) {
         byIds: {
           ...state.byIds,
           [id]: {
-            hp: state.byIds[id].hp - dmg
+            hp: dmg <= state.byIds[id].hp ? state.byIds[id].hp - dmg : 0
           }
         }
       };

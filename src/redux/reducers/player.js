@@ -4,7 +4,8 @@ import {
     ADD_CARD_TO_DISCARD,
     REMOVE_CARD_FROM_DECK,
     REMOVE_CARD_FROM_HAND,
-    REMOVE_CARD_FROM_DISCARD
+    REMOVE_CARD_FROM_DISCARD,
+    DECREMENT_ACTIONS,
 } from "../actionTypes";
 
 const initialState = {
@@ -12,8 +13,8 @@ const initialState = {
       deck: [],
       hand: [],
       discard: [],
-      remainingActions: 3,
-      maxActions: 3,
+      remainingActions: 12,
+      maxActions: 12,
 };
 
 export default function(state = initialState, action) {
@@ -74,6 +75,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         hand: state.discard.filter((card) => card !== id),
+      };
+    }
+    
+    case DECREMENT_ACTIONS: {
+      const { amount } = action.payload;
+      return {
+        ...state,
+        remainingActions: state.remainingActions >= amount ? state.remainingActions - amount : 0
       };
     }
 

@@ -1,5 +1,13 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+
+
+import { getPlayerActions } from "../redux/selectors";
+
+import {
+  decrementPlayerActions 
+} from "../redux/actions";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -66,10 +74,17 @@ export class Card extends Component {
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
+
+    this.actions = props.actions ? props.actions : [];
   }
 
   action() {
-    console.log("attacked");
+    if (this.cost <= this.props.remainingActions) {
+      if (this.props.actions) {
+        this.props.actions.map(action => this.props.dispatch(action));
+      }
+      this.props.dispatch(decrementPlayerActions(this.cost));
+    }
   }
 
   render() {
@@ -93,4 +108,9 @@ export class Card extends Component {
   }
 }
 
-export default Card;
+const mapStateToProps = state => {
+  const remainingActions = getPlayerActions(state);
+  return { remainingActions };
+};
+
+export default connect(mapStateToProps)(Card);

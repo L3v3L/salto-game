@@ -1,9 +1,14 @@
 import {
+  ADD_CARD_TO_DECK,
+  ADD_CARD_TO_DISCARD,
+  ADD_CARD_TO_HAND,
   ADD_MONSTER,
   ATTACK_MONSTER,
   CREATE_CARD,
-  ADD_CARD_TO_DECK,
-  ADD_CARD_TO_HAND
+  REMOVE_CARD_FROM_DECK,
+  REMOVE_CARD_FROM_DISCARD,
+  REMOVE_CARD_FROM_HAND,
+  DECREMENT_ACTIONS
 } from "./actionTypes";
 
 let nextMonsterId = 0;
@@ -16,11 +21,12 @@ export const addMonster = hp => ({
   }
 });
 
-export const attackMonster = (id, dmg) => ({
+export const attackMonster = (id, dmg, cost) => ({
   type: ATTACK_MONSTER,
   payload: {
     id,
-    dmg
+    dmg,
+    cost
   }
 });
 
@@ -48,3 +54,39 @@ export const addCardToHand = id => ({
     id
   }
 });
+
+export const addCardToDiscard = id => ({
+  type: ADD_CARD_TO_DISCARD,
+  payload: {
+    id
+  }
+});
+
+export const removeCardFromHand = id => ({
+  type: REMOVE_CARD_FROM_HAND,
+  payload: {
+    id
+  }
+});
+
+export const removeCardFromDeck = id => ({
+  type: REMOVE_CARD_FROM_DECK,
+  payload: {
+    id
+  }
+});
+
+export const removeCardFromDiscard = id => ({
+  type: REMOVE_CARD_FROM_DISCARD,
+  payload: {
+    id
+  }
+});
+
+export const decrementPlayerActions = amount => ({
+  type: DECREMENT_ACTIONS,
+  payload: {
+    amount
+  }
+});
+
