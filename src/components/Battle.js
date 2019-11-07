@@ -5,17 +5,24 @@ import _ from "lodash";
 import Card from "./Card";
 import Monster from "./Monster";
 
-import { getMonsters } from "../redux/selectors"
+import { getMonsters } from "../redux/selectors";
 
 import { addMonster } from "../redux/actions";
 
 import styled from "styled-components";
 
 const MonsterWrapper = styled.div`
-width: 100%;
+  width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
+`;
+
+const Hand = styled.div`
+  display: flex;
+  & > div {
+    margin: 2px;
+  }
 `;
 
 class Battle extends Component {
@@ -28,7 +35,7 @@ class Battle extends Component {
 
     props.dispatch(addMonster(50));
     props.dispatch(addMonster(30));
-    
+
     for (let index = 0; index < 10; index++) {
       deckArray.push(
         new Card({ label: "Attack ", value: 2, key: "attack" + index })
@@ -95,11 +102,13 @@ class Battle extends Component {
     return (
       <div>
         <MonsterWrapper>
-          {this.props.monsters.map((monster) => {
-            return <div>
-              <Monster />
-              HP: {monster.hp}
-            </div>
+          {this.props.monsters.map(monster => {
+            return (
+              <div>
+                <Monster />
+                HP: {monster.hp}
+              </div>
+            );
           })}
         </MonsterWrapper>
         <br />
@@ -115,7 +124,7 @@ class Battle extends Component {
           <br />
         </div>
 
-        {this.state.handArray.map(item => item.render())}
+        <Hand>{this.state.handArray.map(item => item.render())}</Hand>
 
         <button onClick={() => this.endTurn()}>End Turn</button>
       </div>
