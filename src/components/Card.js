@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import styled from "styled-components";
+
+import * as playerActions from "../ducks/player";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -59,17 +63,28 @@ export class Card extends Component {
   value;
   constructor(props) {
     super(props);
+
     this.label = props.label;
     this.key = props.key;
     this.value = props.value;
     this.cost = props.cost;
+    this.uniqueId = props.uniqueId;
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
+
+    this.actions = props.actions ? props.actions : [];
   }
 
   action() {
-    console.log("attacked");
+    if (this.cost <= this.props.remainingActions) {
+      if (this.props.actions) {
+        this.props.actions.map(action => this.props.dispatch(action));
+      }
+      this.props.decrementPlayerActions(this.cost);
+      this.props.removeCardFromHand(this.uniqueId);
+      this.props.addCardToDiscard(this.uniqueId);
+    }
   }
 
   render() {
@@ -93,4 +108,16 @@ export class Card extends Component {
   }
 }
 
-export default Card;
+const mapStateToProps = state => {
+  const remainingActions = playerActions.getPlayerActions(state);
+  return { remainingActions };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    ...bindActionCreators({ ...playerActions }, dispatch),
+    dispatch
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
