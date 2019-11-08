@@ -1,15 +1,9 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-
-import { getPlayerActions } from "../redux/selectors";
-
-import {
-  addCardToDiscard,
-  decrementPlayerActions,
-  removeCardFromHand,
-} from "../redux/actions";
+import * as playerActions from "../ducks/player";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -69,6 +63,7 @@ export class Card extends Component {
   value;
   constructor(props) {
     super(props);
+
     this.label = props.label;
     this.key = props.key;
     this.value = props.value;
@@ -86,9 +81,9 @@ export class Card extends Component {
       if (this.props.actions) {
         this.props.actions.map(action => this.props.dispatch(action));
       }
-      this.props.dispatch(decrementPlayerActions(this.cost));
-      this.props.dispatch(removeCardFromHand(this.uniqueId));
-      this.props.dispatch(addCardToDiscard(this.uniqueId));
+      this.props.decrementPlayerActions(this.cost);
+      this.props.removeCardFromHand(this.uniqueId);
+      this.props.addCardToDiscard(this.uniqueId);
     }
   }
 
@@ -114,8 +109,15 @@ export class Card extends Component {
 }
 
 const mapStateToProps = state => {
-  const remainingActions = getPlayerActions(state);
+  const remainingActions = playerActions.getPlayerActions(state);
   return { remainingActions };
 };
 
-export default connect(mapStateToProps)(Card);
+const mapDispatchToProps = dispatch => {
+  return {
+    ...bindActionCreators({ ...playerActions }, dispatch),
+    dispatch
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
