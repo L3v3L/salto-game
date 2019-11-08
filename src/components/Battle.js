@@ -147,8 +147,14 @@ class Battle extends Component {
                   return <Card label={cardInHand.name}
                       value={cardInHand.power}
                       key={cardInHand.id}
+                      uniqueId={cardInHand.id}
                       cost={cardInHand.cost}
-                      actions={[attackMonster(1, cardInHand.power), attackMonster(2, cardInHand.power)]}
+                      actions={
+                        [
+                          attackMonster(1, cardInHand.power),
+                          attackMonster(2, cardInHand.power)
+                        ]
+                      }
                       description={cardInHand.description} />
                 case 3:
                 case 4:
@@ -156,6 +162,7 @@ class Battle extends Component {
                   return <Card label={cardInHand.name}
                       value={cardInHand.power}
                       key={cardInHand.id}
+                      uniqueId={cardInHand.id}
                       cost={cardInHand.cost}
                       description={cardInHand.description} />
               }

@@ -6,7 +6,9 @@ import styled from "styled-components";
 import { getPlayerActions } from "../redux/selectors";
 
 import {
-  decrementPlayerActions 
+  addCardToDiscard,
+  decrementPlayerActions,
+  removeCardFromHand,
 } from "../redux/actions";
 
 const CardButton = styled.div`
@@ -71,6 +73,7 @@ export class Card extends Component {
     this.key = props.key;
     this.value = props.value;
     this.cost = props.cost;
+    this.uniqueId = props.uniqueId;
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
@@ -84,6 +87,8 @@ export class Card extends Component {
         this.props.actions.map(action => this.props.dispatch(action));
       }
       this.props.dispatch(decrementPlayerActions(this.cost));
+      this.props.dispatch(removeCardFromHand(this.uniqueId));
+      this.props.dispatch(addCardToDiscard(this.uniqueId));
     }
   }
 
