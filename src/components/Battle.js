@@ -176,7 +176,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...player, ...monsters, ...cards, ...player, ...battle }, dispatch);
+  return bindActionCreators({ ...player, ...monsters, ...cards, ...battle }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Battle);
