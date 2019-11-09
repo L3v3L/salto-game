@@ -6,7 +6,7 @@ import _ from "lodash";
 import Card from "./Card";
 import Monster from "./Monster";
 
-import * as ducks from "../ducks/game";
+import * as game from "../ducks/game";
 
 import styled from "styled-components";
 
@@ -142,8 +142,8 @@ class Battle extends Component {
                       uniqueId={cardInHand.id}
                       cost={cardInHand.cost}
                       actions={[
-                        ducks.attackMonster(1, cardInHand.power),
-                        ducks.attackMonster(2, cardInHand.power)
+                        game.attackMonster(1, cardInHand.power),
+                        game.attackMonster(2, cardInHand.power)
                       ]}
                       description={cardInHand.description}
                     />
@@ -171,15 +171,15 @@ class Battle extends Component {
 }
 
 const mapStateToProps = state => {
-  const allState = ducks.getPlayerState(state);
-  const cards = ducks.getCards(state);
-  const monsters = ducks.getMonsters(state);
-  const remainingActions = ducks.getPlayerActions(state);
+  const allState = game.getPlayerState(state);
+  const cards = game.getCards(state);
+  const monsters = game.getMonsters(state);
+  const remainingActions = game.getPlayerActions(state);
   return { allState, monsters, cards, remainingActions };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...ducks }, dispatch);
+  return bindActionCreators({ ...game }, dispatch);
 };
 
 export default connect(
