@@ -6,10 +6,7 @@ import _ from "lodash";
 import Card from "./Card";
 import Monster from "./Monster";
 
-import * as battle from '../ducks/battle';
-import * as cards from '../ducks/cards';
-import * as monsters from '../ducks/monsters';
-import * as player from '../ducks/player';
+import * as ducks from "../ducks/game";
 
 import styled from "styled-components";
 
@@ -109,57 +106,63 @@ class Battle extends Component {
     return (
       <div>
         <MonsterWrapper>
-          {this.props.monstersState.map(monster => {
+          {this.props.monsters.map(monster => {
             return <Monster key={monster.id} hp={monster.hp} />;
           })}
         </MonsterWrapper>
         <br />
         <BattleStats>
-          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.playerState.hp}
+          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.allState.hp}
           <br />
           Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.cardsState.length}
+          {this.props.cards.length}
           <br />
-          Cards in Hand:&nbsp;&nbsp;{this.props.playerState.hand.length}
+          Cards in Hand:&nbsp;&nbsp;{this.props.allState.hand.length}
           <br />
-          Discard Pile:&nbsp;&nbsp;&nbsp;{this.props.playerState.discard.length}
+          Discard Pile:&nbsp;&nbsp;&nbsp;{this.props.allState.discard.length}
           <br />
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.playerState.remainingActions}/{this.props.playerState.maxActions}
+          {this.props.allState.remainingActions}/
+          {this.props.allState.maxActions}
           <br />
         </BattleStats>
         <br />
         <Hand>
-          { this.props.playerState.hand
-            .map(id => this.props.cardsState.find(card => card.id === id))
+          {this.props.allState.hand
+            .map(id => this.props.cards.find(card => card.id === id))
             .map(cardInHand => {
-              switch(cardInHand.id) {
+              switch (cardInHand.id) {
                 case 1:
                 case 2:
-                  return <Card label={cardInHand.name}
+                  return (
+                    <Card
+                      label={cardInHand.name}
                       value={cardInHand.power}
                       key={cardInHand.id}
                       uniqueId={cardInHand.id}
                       cost={cardInHand.cost}
-                      actions={
-                        [
-                          monsters.attackMonster(1, cardInHand.power),
-                          monsters.attackMonster(2, cardInHand.power)
-                        ]
-                      }
-                      description={cardInHand.description} />
+                      actions={[
+                        ducks.attackMonster(1, cardInHand.power),
+                        ducks.attackMonster(2, cardInHand.power)
+                      ]}
+                      description={cardInHand.description}
+                    />
+                  );
                 case 3:
                 case 4:
                 default:
-                  return <Card label={cardInHand.name}
+                  return (
+                    <Card
+                      label={cardInHand.name}
                       value={cardInHand.power}
                       key={cardInHand.id}
                       uniqueId={cardInHand.id}
                       cost={cardInHand.cost}
-                      description={cardInHand.description} />
+                      description={cardInHand.description}
+                    />
+                  );
               }
-            })
-          }
+            })}
         </Hand>
         {/* <button onClick={() => this.endTurn()}>End Turn</button> */}
       </div>
@@ -168,15 +171,18 @@ class Battle extends Component {
 }
 
 const mapStateToProps = state => {
-  const playerState = player.getPlayerState(state);
-  const monstersState = monsters.getMonsters(state);
-  const cardsState = cards.getCards(state);
-  const remainingActions = player.getPlayerActions(state);
-  return { playerState, cardsState, monstersState, remainingActions };
+  const allState = ducks.getPlayerState(state);
+  const cards = ducks.getCards(state);
+  const monsters = ducks.getMonsters(state);
+  const remainingActions = ducks.getPlayerActions(state);
+  return { allState, monsters, cards, remainingActions };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...player, ...monsters, ...cards, ...battle }, dispatch);
+  return bindActionCreators({ ...ducks }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Battle);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Battle);
