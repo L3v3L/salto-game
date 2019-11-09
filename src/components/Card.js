@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import * as playerActions from "../ducks/player";
+import * as ducks from "../ducks/game";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -109,15 +109,18 @@ export class Card extends Component {
 }
 
 const mapStateToProps = state => {
-  const remainingActions = playerActions.getPlayerActions(state);
+  const remainingActions = ducks.getPlayerActions(state);
   return { remainingActions };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({ ...playerActions }, dispatch),
+    ...bindActionCreators({ ...ducks }, dispatch),
     dispatch
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card);
