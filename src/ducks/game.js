@@ -20,7 +20,7 @@ const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
 const SET_BATTLE_CURRENT_AP = `${ACTION_PREPEND}/SET_BATTLE_CURRENT_AP`;
 const SET_BATTLE_MAX_AP = `${ACTION_PREPEND}/SET_BATTLE_MAX_AP`;
 
-let nextMonsterId = 0;
+let nextMonsterUUID = 0;
 let nextCardUUID = 0;
 
 export const initialState = {
@@ -154,7 +154,8 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case ADD_MONSTER: {
-      const { id, hp } = action.payload;
+      const { hp } = action.payload;
+      const id = ++nextMonsterUUID;
       return {
         ...state,
         monsters: {
@@ -374,7 +375,6 @@ export const createCard = ({ id, name, description, cost, actions }) => ({
 export const addMonster = hp => ({
   type: ADD_MONSTER,
   payload: {
-    id: ++nextMonsterId,
     hp
   }
 });
