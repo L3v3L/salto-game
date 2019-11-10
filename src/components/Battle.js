@@ -127,7 +127,7 @@ class Battle extends Component {
               );
             })}
         </Hand>
-        {/* <button onClick={() => this.endTurn()}>End Turn</button> */}
+        <button onClick={() => this.endTurn()}>End Turn</button>
       </div>
     );
   }
