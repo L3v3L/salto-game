@@ -19,6 +19,7 @@ const SET_HAND_DECK = `${ACTION_PREPEND}/SET_HAND_DECK`;
 const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
 
 let nextMonsterId = 0;
+let nextCardUUID = 0;
 
 export const initialState = {
   player: {
@@ -53,7 +54,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         player: {
           ...state.player,
-          deck: [...state.player.deck, id]
+          deck: [...state.player.deck, { id: id, uuid: ++nextCardUUID }]
         }
       };
     }

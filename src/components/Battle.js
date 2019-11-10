@@ -109,16 +109,20 @@ class Battle extends Component {
         <br />
         <Hand>
           {this.props.allState.battle.hand
-            .map(id => this.props.cards.find(card => card.id === id))
+            .map(handCard => {
+              return {
+                ref: this.props.cards.find(card => card.id === handCard.id),
+                card: handCard
+              };
+            })
             .map(cardInHand => {
               return (
                 <Card
-                  label={cardInHand.name}
-                  key={cardInHand.id}
-                  uniqueId={cardInHand.id}
-                  cost={cardInHand.cost}
-                  actions={cardInHand.actions}
-                  description={cardInHand.description}
+                  label={cardInHand.ref.name}
+                  key={cardInHand.card.uuid}
+                  cost={cardInHand.ref.cost}
+                  actions={cardInHand.ref.actions}
+                  description={cardInHand.ref.description}
                 />
               );
             })}
