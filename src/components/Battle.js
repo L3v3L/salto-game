@@ -42,6 +42,8 @@ class Battle extends Component {
     }
 
     props.setBattleHP(props.allState.player.hp);
+    props.setBattleMaxAP(props.allState.player.maxAP);
+    props.setBattleCurrentAP(props.allState.player.maxAP);
 
     props.setBattleDeck(battleDeck);
     props.setHandDeck(handDeck);
@@ -78,6 +80,8 @@ class Battle extends Component {
     this.props.setBattleDeck(newdeckArray);
     this.props.setHandDeck(newHandArray);
     this.props.setDiscardDeck(newDiscardArray);
+
+    this.props.setBattleCurrentAP(this.props.allState.battle.maxAP);
   }
 
   render() {
@@ -102,8 +106,8 @@ class Battle extends Component {
           {this.props.allState.battle.discard.length}
           <br />
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.actions}/
-          {this.props.allState.player.actions}
+          {this.props.allState.battle.currentAP}/
+          {this.props.allState.battle.maxAP}
           <br />
         </BattleStats>
         <br />

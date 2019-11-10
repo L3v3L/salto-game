@@ -17,6 +17,8 @@ const SET_BATTLE_DECK = `${ACTION_PREPEND}/SET_BATTLE_DECK`;
 const SET_DISCARD_DECK = `${ACTION_PREPEND}/SET_DISCARD_DECK`;
 const SET_HAND_DECK = `${ACTION_PREPEND}/SET_HAND_DECK`;
 const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
+const SET_BATTLE_CURRENT_AP = `${ACTION_PREPEND}/SET_BATTLE_CURRENT_AP`;
+const SET_BATTLE_MAX_AP = `${ACTION_PREPEND}/SET_BATTLE_MAX_AP`;
 
 let nextMonsterId = 0;
 let nextCardUUID = 0;
@@ -25,7 +27,7 @@ export const initialState = {
   player: {
     hp: 100,
     deck: [],
-    actions: 3
+    maxAP: 3
   },
   cards: {
     allIds: [],
@@ -39,7 +41,8 @@ export const initialState = {
     selectingCard: true,
     selectingTarget: false,
     hp: 0,
-    actions: 0,
+    currentAP: 0,
+    maxAP: 0,
     deck: [],
     hand: [],
     discard: []
@@ -142,8 +145,10 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         battle: {
           ...state.battle,
-          actions:
-            state.battle.actions >= amount ? state.battle.actions - amount : 0
+          currentAP:
+            state.battle.currentAP >= amount
+              ? state.battle.currentAP - amount
+              : 0
         }
       };
     }
@@ -204,6 +209,28 @@ export default function reducer(state = initialState, action = {}) {
         battle: {
           ...state.battle,
           hp: hp
+        }
+      };
+    }
+
+    case SET_BATTLE_CURRENT_AP: {
+      const { ap } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          currentAP: ap
+        }
+      };
+    }
+
+    case SET_BATTLE_MAX_AP: {
+      const { ap } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          maxAP: ap
         }
       };
     }
@@ -379,6 +406,16 @@ export const setHandDeck = deck => ({
 export const setBattleHP = hp => ({
   type: SET_BATTLE_HP,
   payload: { hp }
+});
+
+export const setBattleCurrentAP = ap => ({
+  type: SET_BATTLE_CURRENT_AP,
+  payload: { ap }
+});
+
+export const setBattleMaxAP = ap => ({
+  type: SET_BATTLE_MAX_AP,
+  payload: { ap }
 });
 //GETS
 export const getAllState = store => store;
