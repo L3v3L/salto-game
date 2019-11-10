@@ -36,12 +36,14 @@ class Battle extends Component {
     let battleDeck = _.shuffle(props.allState.player.deck);
     let handDeck = [];
 
-    let amountCardsStarting = 4;
+    let amountCardsStarting = 5;
     for (let i = 0; i < amountCardsStarting; i++) {
       handDeck.push(battleDeck.pop());
     }
 
     props.setBattleHP(props.allState.player.hp);
+    props.setBattleMaxAP(props.allState.player.maxAP);
+    props.setBattleCurrentAP(props.allState.player.maxAP);
 
     props.setBattleDeck(battleDeck);
     props.setHandDeck(handDeck);
@@ -51,11 +53,12 @@ class Battle extends Component {
   }
 
   endTurn() {
-    let newDiscardArray = this.state.discardArray;
-    let newHandArray = this.state.handArray;
-    let newdeckArray = this.state.deckArray;
+    const maxCardsToDraw = 5;
 
-    const maxCardsToDraw = 4;
+    let newDiscardArray = this.props.allState.battle.discard;
+    let newHandArray = this.props.allState.battle.hand;
+    let newdeckArray = this.props.allState.battle.deck;
+
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
       maxCardsToDraw
@@ -74,13 +77,11 @@ class Battle extends Component {
       amountCardsToDraw--;
     }
 
-    this.setState(state => ({
-      moves: state.maxMoves,
-      handArray: newHandArray,
-      deckArray: newdeckArray,
-      discardArray: newDiscardArray,
-      actionQueue: []
-    }));
+    this.props.setBattleDeck(newdeckArray);
+    this.props.setHandDeck(newHandArray);
+    this.props.setDiscardDeck(newDiscardArray);
+
+    this.props.setBattleCurrentAP(this.props.allState.battle.maxAP);
   }
 
   render() {
@@ -105,28 +106,32 @@ class Battle extends Component {
           {this.props.allState.battle.discard.length}
           <br />
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.actions}/
-          {this.props.allState.player.actions}
+          {this.props.allState.battle.currentAP}/
+          {this.props.allState.battle.maxAP}
           <br />
         </BattleStats>
         <br />
         <Hand>
           {this.props.allState.battle.hand
-            .map(id => this.props.cards.find(card => card.id === id))
+            .map(handCard => {
+              return {
+                ref: this.props.cards.find(card => card.id === handCard.id),
+                card: handCard
+              };
+            })
             .map(cardInHand => {
               return (
                 <Card
-                  label={cardInHand.name}
-                  key={cardInHand.id}
-                  uniqueId={cardInHand.id}
-                  cost={cardInHand.cost}
-                  actions={cardInHand.actions}
-                  description={cardInHand.description}
+                  label={cardInHand.ref.name}
+                  key={cardInHand.card.uuid}
+                  cost={cardInHand.ref.cost}
+                  actions={cardInHand.ref.actions}
+                  description={cardInHand.ref.description}
                 />
               );
             })}
         </Hand>
-        {/* <button onClick={() => this.endTurn()}>End Turn</button> */}
+        <button onClick={() => this.endTurn()}>End Turn</button>
       </div>
     );
   }
