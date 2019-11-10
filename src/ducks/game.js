@@ -14,6 +14,7 @@ const TOGGLE_TARGET_SELECTION = `${ACTION_PREPEND}/TOGGLE_TARGET_SELECTION`;
 const ADD_MONSTER = `${ACTION_PREPEND}/ADD_MONSTER`;
 const ATTACK_MONSTER = `${ACTION_PREPEND}/ATTACK_MONSTER`;
 const SET_BATTLE_DECK = `${ACTION_PREPEND}/SET_BATTLE_DECK`;
+const SET_DISCARD_DECK = `${ACTION_PREPEND}/SET_DISCARD_DECK`;
 const SET_HAND_DECK = `${ACTION_PREPEND}/SET_HAND_DECK`;
 const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
 
@@ -184,6 +185,17 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
+    case SET_DISCARD_DECK: {
+      const { deck } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          discard: deck
+        }
+      };
+    }
+
     case SET_BATTLE_HP: {
       const { hp } = action.payload;
       return {
@@ -350,6 +362,11 @@ export const attackMonster = (id, dmg, cost) => ({
 
 export const setBattleDeck = deck => ({
   type: SET_BATTLE_DECK,
+  payload: { deck }
+});
+
+export const setDiscardDeck = deck => ({
+  type: SET_DISCARD_DECK,
   payload: { deck }
 });
 
