@@ -31,42 +31,23 @@ const BattleStats = styled.div`
 class Battle extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
 
-    props.addMonster(30);
-    props.addMonster(30);
+    let battleDeck = _.shuffle(props.allState.player.deck);
+    let handDeck = [];
 
-    // Example: Creating 20 cards and adding them all to the player's deck
-    for (let index = 1; index <= 20; index++) {
-      if (index <= 5) {
-        props.createCard(index, `Attack`, 2, "attacks %value", 3);
-        props.addCardToDeck(index);
-      } else {
-        props.createCard(index, `Block`, 3, "blocks %value", 1);
-        props.addCardToDeck(index);
-      }
+    let amountCardsStarting = 4;
+    for (let i = 0; i < amountCardsStarting; i++) {
+      handDeck.push(battleDeck.pop());
     }
 
-    // Example: Adding 4 card from deck to player's hand
-    props.removeCardFromDeck(1);
-    props.addCardToHand(1);
+    props.setBattleHP(props.allState.player.hp);
 
-    props.removeCardFromDeck(2);
-    props.addCardToHand(2);
+    props.setBattleDeck(battleDeck);
+    props.setHandDeck(handDeck);
 
-    props.removeCardFromDeck(6);
-    props.addCardToHand(6);
-
-    props.removeCardFromDeck(7);
-    props.addCardToHand(7);
-
-    // Example: Discarding a card
-    let cardId = 8;
-    props.removeCardFromDeck(cardId);
-    props.addCardToHand(cardId);
-    props.removeCardFromHand(cardId);
-    props.addCardToDiscard(cardId);
-
-    this.state = {};
+    props.addMonster(30);
+    props.addMonster(30);
   }
 
   endTurn() {
@@ -112,56 +93,37 @@ class Battle extends Component {
         </MonsterWrapper>
         <br />
         <BattleStats>
-          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.allState.hp}
+          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {this.props.allState.battle.hp}
           <br />
           Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.cards.length}
+          {this.props.allState.battle.deck.length}
           <br />
-          Cards in Hand:&nbsp;&nbsp;{this.props.allState.hand.length}
+          Cards in Hand:&nbsp;&nbsp;{this.props.allState.battle.hand.length}
           <br />
-          Discard Pile:&nbsp;&nbsp;&nbsp;{this.props.allState.discard.length}
+          Discard Pile:&nbsp;&nbsp;&nbsp;
+          {this.props.allState.battle.discard.length}
           <br />
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.remainingActions}/
-          {this.props.allState.maxActions}
+          {this.props.allState.battle.actions}/
+          {this.props.allState.player.actions}
           <br />
         </BattleStats>
         <br />
         <Hand>
-          {this.props.allState.hand
+          {this.props.allState.battle.hand
             .map(id => this.props.cards.find(card => card.id === id))
             .map(cardInHand => {
-              switch (cardInHand.id) {
-                case 1:
-                case 2:
-                  return (
-                    <Card
-                      label={cardInHand.name}
-                      value={cardInHand.power}
-                      key={cardInHand.id}
-                      uniqueId={cardInHand.id}
-                      cost={cardInHand.cost}
-                      actions={[
-                        game.attackMonster(1, cardInHand.power),
-                        game.attackMonster(2, cardInHand.power)
-                      ]}
-                      description={cardInHand.description}
-                    />
-                  );
-                case 3:
-                case 4:
-                default:
-                  return (
-                    <Card
-                      label={cardInHand.name}
-                      value={cardInHand.power}
-                      key={cardInHand.id}
-                      uniqueId={cardInHand.id}
-                      cost={cardInHand.cost}
-                      description={cardInHand.description}
-                    />
-                  );
-              }
+              return (
+                <Card
+                  label={cardInHand.name}
+                  key={cardInHand.id}
+                  uniqueId={cardInHand.id}
+                  cost={cardInHand.cost}
+                  actions={cardInHand.actions}
+                  description={cardInHand.description}
+                />
+              );
             })}
         </Hand>
         {/* <button onClick={() => this.endTurn()}>End Turn</button> */}
@@ -171,11 +133,10 @@ class Battle extends Component {
 }
 
 const mapStateToProps = state => {
-  const allState = game.getPlayerState(state);
+  const allState = game.getAllState(state);
   const cards = game.getCards(state);
   const monsters = game.getMonsters(state);
-  const remainingActions = game.getPlayerActions(state);
-  return { allState, monsters, cards, remainingActions };
+  return { allState, monsters, cards };
 };
 
 const mapDispatchToProps = dispatch => {
