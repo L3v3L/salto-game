@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
-import Battle from "./components/Battle";
+import Game from "./components/Game";
 
 function App() {
   return (
     <div className="salto__wrapper">
-      <Battle />
+      <Game />
     </div>
   );
 }
