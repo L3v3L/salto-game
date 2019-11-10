@@ -3,7 +3,9 @@ import { createLogger } from "redux-logger";
 
 import reducer from "./ducks/game";
 
-const loggerMiddleware = createLogger();
+const loggerMiddleware = createLogger({
+  collapsed: (getState, action, logEntry) => !logEntry.error
+});
 
 const createStoreWithMiddleware = applyMiddleware(loggerMiddleware)(
   createStore
