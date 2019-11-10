@@ -36,7 +36,7 @@ class Battle extends Component {
     let battleDeck = _.shuffle(props.allState.player.deck);
     let handDeck = [];
 
-    let amountCardsStarting = 4;
+    let amountCardsStarting = 5;
     for (let i = 0; i < amountCardsStarting; i++) {
       handDeck.push(battleDeck.pop());
     }
