@@ -1,8 +1,10 @@
 const ACTION_PREPEND = "salto-game/battle";
 const CREATE_CARD = `${ACTION_PREPEND}/CREATE_CARD`;
 const ADD_CARD_TO_DECK = `${ACTION_PREPEND}/ADD_CARD_TO_DECK`;
+const ADD_CARD_TO_BATTLE_DECK = `${ACTION_PREPEND}/ADD_CARD_TO_BATTLE_DECK`;
 const ADD_CARD_TO_DISCARD = `${ACTION_PREPEND}/ADD_CARD_TO_DISCARD`;
 const ADD_CARD_TO_HAND = `${ACTION_PREPEND}/ADD_CARD_TO_HAND`;
+const REMOVE_CARD_FROM_BATTLE_DECK = `${ACTION_PREPEND}/REMOVE_CARD_FROM_BATTLE_DECK`;
 const REMOVE_CARD_FROM_DECK = `${ACTION_PREPEND}/REMOVE_CARD_FROM_DECK`;
 const REMOVE_CARD_FROM_DISCARD = `${ACTION_PREPEND}/REMOVE_CARD_FROM_DISCARD`;
 const REMOVE_CARD_FROM_HAND = `${ACTION_PREPEND}/REMOVE_CARD_FROM_HAND`;
@@ -11,18 +13,18 @@ const TOGGLE_CARD_SELECTION = `${ACTION_PREPEND}/TOGGLE_CARD_SELECTION`;
 const TOGGLE_TARGET_SELECTION = `${ACTION_PREPEND}/TOGGLE_TARGET_SELECTION`;
 const ADD_MONSTER = `${ACTION_PREPEND}/ADD_MONSTER`;
 const ATTACK_MONSTER = `${ACTION_PREPEND}/ATTACK_MONSTER`;
+const SET_BATTLE_DECK = `${ACTION_PREPEND}/SET_BATTLE_DECK`;
+const SET_HAND_DECK = `${ACTION_PREPEND}/SET_HAND_DECK`;
+const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
 
 let nextMonsterId = 0;
 
 export const initialState = {
-  hp: 100,
-  deck: [],
-  hand: [],
-  discard: [],
-  remainingActions: 12,
-  maxActions: 12,
-  selectingCard: true,
-  selectingTarget: false,
+  player: {
+    hp: 100,
+    deck: [],
+    actions: 3
+  },
   cards: {
     allIds: [],
     byIds: {}
@@ -30,6 +32,15 @@ export const initialState = {
   monsters: {
     allIds: [],
     byIds: {}
+  },
+  battle: {
+    selectingCard: true,
+    selectingTarget: false,
+    hp: 0,
+    actions: 0,
+    deck: [],
+    hand: [],
+    discard: []
   }
 };
 
@@ -39,7 +50,21 @@ export default function reducer(state = initialState, action = {}) {
       const { id } = action.payload;
       return {
         ...state,
-        deck: [...state.deck, id]
+        player: {
+          ...state.player,
+          deck: [...state.player.deck, id]
+        }
+      };
+    }
+
+    case ADD_CARD_TO_BATTLE_DECK: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          deck: [...state.battle.deck, id]
+        }
       };
     }
 
@@ -47,7 +72,10 @@ export default function reducer(state = initialState, action = {}) {
       const { id } = action.payload;
       return {
         ...state,
-        discard: [...state.discard, id]
+        battle: {
+          ...state.battle,
+          discard: [...state.battle.discard, id]
+        }
       };
     }
 
@@ -55,7 +83,10 @@ export default function reducer(state = initialState, action = {}) {
       const { id } = action.payload;
       return {
         ...state,
-        hand: [...state.hand, id]
+        battle: {
+          ...state.battle,
+          hand: [...state.battle.hand, id]
+        }
       };
     }
 
@@ -63,7 +94,21 @@ export default function reducer(state = initialState, action = {}) {
       const { id } = action.payload;
       return {
         ...state,
-        deck: state.deck.filter(card => card !== id)
+        player: {
+          ...state.player,
+          deck: state.player.deck.filter(card => card !== id)
+        }
+      };
+    }
+
+    case REMOVE_CARD_FROM_BATTLE_DECK: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          deck: state.battle.deck.filter(card => card !== id)
+        }
       };
     }
 
@@ -71,7 +116,10 @@ export default function reducer(state = initialState, action = {}) {
       const { id } = action.payload;
       return {
         ...state,
-        hand: state.discard.filter(card => card !== id)
+        battle: {
+          ...state.battle,
+          hand: state.battle.discard.filter(card => card !== id)
+        }
       };
     }
 
@@ -79,7 +127,10 @@ export default function reducer(state = initialState, action = {}) {
       const { id } = action.payload;
       return {
         ...state,
-        hand: state.hand.filter(card => card !== id)
+        battle: {
+          ...state.battle,
+          hand: state.battle.hand.filter(card => card !== id)
+        }
       };
     }
 
@@ -87,8 +138,11 @@ export default function reducer(state = initialState, action = {}) {
       const { amount } = action.payload;
       return {
         ...state,
-        remainingActions:
-          state.remainingActions >= amount ? state.remainingActions - amount : 0
+        battle: {
+          ...state.battle,
+          actions:
+            state.battle.actions >= amount ? state.battle.actions - amount : 0
+        }
       };
     }
 
@@ -104,6 +158,39 @@ export default function reducer(state = initialState, action = {}) {
               hp
             }
           }
+        }
+      };
+    }
+
+    case SET_BATTLE_DECK: {
+      const { deck } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          deck: deck
+        }
+      };
+    }
+
+    case SET_HAND_DECK: {
+      const { deck } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          hand: deck
+        }
+      };
+    }
+
+    case SET_BATTLE_HP: {
+      const { hp } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          hp: hp
         }
       };
     }
@@ -128,7 +215,7 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case CREATE_CARD: {
-      const { id, name, power, description, cost } = action.payload;
+      const { id, name, description, cost, actions } = action.payload;
       return {
         ...state,
         cards: {
@@ -137,9 +224,9 @@ export default function reducer(state = initialState, action = {}) {
             ...state.cards.byIds,
             [id]: {
               name,
-              power,
               cost,
-              description
+              description,
+              actions
             }
           }
         }
@@ -169,8 +256,16 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
+//SETS
 export const addCardToDeck = id => ({
   type: ADD_CARD_TO_DECK,
+  payload: {
+    id
+  }
+});
+
+export const addCardToBattleDeck = id => ({
+  type: ADD_CARD_TO_BATTLE_DECK,
   payload: {
     id
   }
@@ -197,6 +292,13 @@ export const removeCardFromDeck = id => ({
   }
 });
 
+export const removeCardFromBattleDeck = id => ({
+  type: REMOVE_CARD_FROM_BATTLE_DECK,
+  payload: {
+    id
+  }
+});
+
 export const removeCardFromDiscard = id => ({
   type: REMOVE_CARD_FROM_DISCARD,
   payload: {
@@ -218,14 +320,14 @@ export const decrementPlayerActions = amount => ({
   }
 });
 
-export const createCard = (id, name, power, description, cost) => ({
+export const createCard = ({ id, name, description, cost, actions }) => ({
   type: CREATE_CARD,
   payload: {
     id,
     name,
-    power,
     description,
-    cost
+    cost,
+    actions
   }
 });
 
@@ -246,10 +348,25 @@ export const attackMonster = (id, dmg, cost) => ({
   }
 });
 
-export const getPlayerState = store => store;
+export const setBattleDeck = deck => ({
+  type: SET_BATTLE_DECK,
+  payload: { deck }
+});
+
+export const setHandDeck = deck => ({
+  type: SET_HAND_DECK,
+  payload: { deck }
+});
+
+export const setBattleHP = hp => ({
+  type: SET_BATTLE_HP,
+  payload: { hp }
+});
+//GETS
+export const getAllState = store => store;
 
 export const getPlayerActions = store =>
-  getPlayerState(store) ? getPlayerState(store).remainingActions : 0;
+  getAllState(store) ? getAllState(store).battle.actions : 0;
 
 export const getCardState = store => store.cards;
 
@@ -272,5 +389,3 @@ export const getMonsterById = (store, id) =>
 
 export const getMonsters = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
-
-export const getBattleState = store => (store.battle ? store.battle : {});
