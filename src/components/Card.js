@@ -66,7 +66,6 @@ export class Card extends Component {
 
     this.label = props.label;
     this.key = props.key;
-    this.value = props.value;
     this.cost = props.cost;
     this.uniqueId = props.uniqueId;
     this.description = props.description
