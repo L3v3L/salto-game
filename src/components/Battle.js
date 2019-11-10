@@ -51,11 +51,12 @@ class Battle extends Component {
   }
 
   endTurn() {
-    let newDiscardArray = this.state.discardArray;
-    let newHandArray = this.state.handArray;
-    let newdeckArray = this.state.deckArray;
+    const maxCardsToDraw = 5;
 
-    const maxCardsToDraw = 4;
+    let newDiscardArray = this.props.allState.battle.discard;
+    let newHandArray = this.props.allState.battle.hand;
+    let newdeckArray = this.props.allState.battle.deck;
+
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
       maxCardsToDraw
@@ -74,13 +75,9 @@ class Battle extends Component {
       amountCardsToDraw--;
     }
 
-    this.setState(state => ({
-      moves: state.maxMoves,
-      handArray: newHandArray,
-      deckArray: newdeckArray,
-      discardArray: newDiscardArray,
-      actionQueue: []
-    }));
+    this.props.setBattleDeck(newdeckArray);
+    this.props.setHandDeck(newHandArray);
+    this.props.setDiscardDeck(newDiscardArray);
   }
 
   render() {
