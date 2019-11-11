@@ -11,6 +11,7 @@ const REMOVE_CARD_FROM_HAND = `${ACTION_PREPEND}/REMOVE_CARD_FROM_HAND`;
 const DECREMENT_ACTIONS = `${ACTION_PREPEND}/DECREMENT_ACTIONS`;
 const ENABLE_TARGET_SELECTION = `${ACTION_PREPEND}/ENABLE_TARGET_SELECTION`;
 const DISABLE_TARGET_SELECTION = `${ACTION_PREPEND}/DISABLE_TARGET_SELECTION`;
+const CREATE_MONSTER = `${ACTION_PREPEND}/CREATE_MONSTER`;
 const ADD_MONSTER = `${ACTION_PREPEND}/ADD_MONSTER`;
 const ATTACK_MONSTER = `${ACTION_PREPEND}/ATTACK_MONSTER`;
 const ATTACK_TARGETED_MONSTER = `${ACTION_PREPEND}/ATTACK_TARGETED_MONSTER`;
@@ -22,7 +23,8 @@ const SET_BATTLE_CURRENT_AP = `${ACTION_PREPEND}/SET_BATTLE_CURRENT_AP`;
 const SET_BATTLE_MAX_AP = `${ACTION_PREPEND}/SET_BATTLE_MAX_AP`;
 const SET_QUEUED_ACTIONS = `${ACTION_PREPEND}/SET_QUEUED_ACTIONS`;
 const SET_SELECTED_TARGET = `${ACTION_PREPEND}/SET_SELECTED_TARGET`;
-
+const SET_MONSTER_MOVES = `${ACTION_PREPEND}/SET_MONSTER_MOVES`;
+const RESET_ALL_MONSTER_MOVES = `${ACTION_PREPEND}/RESET_ALL_MONSTER_MOVES`;
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
 
@@ -50,7 +52,9 @@ export const initialState = {
     deck: [],
     hand: [],
     discard: [],
-    queuedActions: []
+    queuedActions: [],
+    monsters: [],
+    monsterMoves: {}
   }
 };
 
@@ -89,7 +93,7 @@ export default function reducer(state = initialState, action = {}) {
           ...state.battle,
           discard: [
             ...state.battle.discard,
-            state.player.deck.find((card) => card.uuid === uuid)
+            state.player.deck.find(card => card.uuid === uuid)
           ]
         }
       };
@@ -103,7 +107,7 @@ export default function reducer(state = initialState, action = {}) {
           ...state.battle,
           hand: [
             ...state.battle.hand,
-            state.battle.deck.find((card) => card.uuid === uuid)
+            state.battle.deck.find(card => card.uuid === uuid)
           ]
         }
       };
@@ -167,9 +171,8 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case ADD_MONSTER: {
-      const { hp } = action.payload;
-      const id = ++nextMonsterUUID;
+    case CREATE_MONSTER: {
+      const { id, name, hp, moves } = action.payload;
       return {
         ...state,
         monsters: {
@@ -177,9 +180,25 @@ export default function reducer(state = initialState, action = {}) {
           byIds: {
             ...state.monsters.byIds,
             [id]: {
-              hp
+              name,
+              hp,
+              moves
             }
           }
+        }
+      };
+    }
+
+    case ADD_MONSTER: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          monsters: [
+            ...state.battle.monsters,
+            { id: id, uuid: ++nextMonsterUUID, hp: state.monsters.byIds[id].hp }
+          ]
         }
       };
     }
@@ -202,6 +221,31 @@ export default function reducer(state = initialState, action = {}) {
         battle: {
           ...state.battle,
           hand: deck
+        }
+      };
+    }
+
+    case SET_MONSTER_MOVES: {
+      const { uuid, move } = action.payload;
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          monsterMoves: {
+            ...state.battle.monsterMoves,
+            [uuid]: move
+          }
+        }
+      };
+    }
+
+    case RESET_ALL_MONSTER_MOVES: {
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          monsterMoves: {}
         }
       };
     }
@@ -240,12 +284,12 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case SET_SELECTED_TARGET: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          selectedTarget: id
+          selectedTarget: uuid
         }
       };
     }
@@ -273,20 +317,17 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case ATTACK_MONSTER: {
-      const { id, dmg } = action.payload;
+      const { uuid, dmg } = action.payload;
       return {
         ...state,
-        monsters: {
-          allIds: [...state.monsters.allIds],
-          byIds: {
-            ...state.monsters.byIds,
-            [id]: {
-              hp:
-                dmg <= state.monsters.byIds[id].hp
-                  ? state.monsters.byIds[id].hp - dmg
-                  : 0
+        battle: {
+          ...state.battle,
+          monsters: state.battle.monsters.map(monster => {
+            if (monster.uuid === uuid) {
+              monster.hp = dmg <= monster.hp ? monster.hp - dmg : 0;
             }
-          }
+            return monster;
+          })
         }
       };
     }
@@ -295,17 +336,14 @@ export default function reducer(state = initialState, action = {}) {
       const { dmg } = action.payload;
       return {
         ...state,
-        monsters: {
-          allIds: [...state.monsters.allIds],
-          byIds: {
-            ...state.monsters.byIds,
-            [state.battle.selectedTarget]: {
-              hp:
-                dmg <= state.monsters.byIds[state.battle.selectedTarget].hp
-                  ? state.monsters.byIds[state.battle.selectedTarget].hp - dmg
-                  : 0
+        battle: {
+          ...state.battle,
+          monsters: state.battle.monsters.map(monster => {
+            if (monster.uuid === state.battle.selectedTarget) {
+              monster.hp = dmg <= monster.hp ? monster.hp - dmg : 0;
             }
-          }
+            return monster;
+          })
         }
       };
     }
@@ -347,7 +385,7 @@ export default function reducer(state = initialState, action = {}) {
         battle: {
           ...state.battle,
           selectingCard: true,
-          selectingTarget: false,
+          selectingTarget: false
         }
       };
     }
@@ -432,14 +470,24 @@ export const createCard = ({ id, name, description, cost, actions }) => ({
   }
 });
 
-export const addMonster = hp => ({
-  type: ADD_MONSTER,
+export const createMonster = ({ id, name, hp, moves }) => ({
+  type: CREATE_MONSTER,
   payload: {
-    hp
+    id,
+    name,
+    hp,
+    moves
   }
 });
 
-export const attackMonster = (dmg) => ({
+export const addMonster = id => ({
+  type: ADD_MONSTER,
+  payload: {
+    id
+  }
+});
+
+export const attackMonster = dmg => ({
   type: ATTACK_TARGETED_MONSTER,
   payload: {
     dmg
@@ -489,9 +537,9 @@ export const setQueuedActions = actions => ({
   payload: { actions }
 });
 
-export const setSelectedTarget = id => ({
+export const setSelectedTarget = uuid => ({
   type: SET_SELECTED_TARGET,
-  payload: { id }
+  payload: { uuid }
 });
 
 export const enableTargetSelection = () => ({
@@ -501,6 +549,16 @@ export const enableTargetSelection = () => ({
 
 export const disableTargetSelection = () => ({
   type: DISABLE_TARGET_SELECTION,
+  payload: {}
+});
+
+export const setMonsterMoves = (uuid, move) => ({
+  type: SET_MONSTER_MOVES,
+  payload: { uuid, move }
+});
+
+export const resetMonsterMoves = () => ({
+  type: RESET_ALL_MONSTER_MOVES,
   payload: {}
 });
 
