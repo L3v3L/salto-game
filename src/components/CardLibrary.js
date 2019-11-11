@@ -6,9 +6,11 @@ export const CardLibrary = [
     description: "attacks %value",
     actions: [
       {
+        type: "target",
+      },
+      {
         type: "attack",
         value: 3,
-        target: true
       }
     ]
   },

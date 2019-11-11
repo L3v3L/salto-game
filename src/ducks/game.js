@@ -9,16 +9,19 @@ const REMOVE_CARD_FROM_DECK = `${ACTION_PREPEND}/REMOVE_CARD_FROM_DECK`;
 const REMOVE_CARD_FROM_DISCARD = `${ACTION_PREPEND}/REMOVE_CARD_FROM_DISCARD`;
 const REMOVE_CARD_FROM_HAND = `${ACTION_PREPEND}/REMOVE_CARD_FROM_HAND`;
 const DECREMENT_ACTIONS = `${ACTION_PREPEND}/DECREMENT_ACTIONS`;
-const TOGGLE_CARD_SELECTION = `${ACTION_PREPEND}/TOGGLE_CARD_SELECTION`;
-const TOGGLE_TARGET_SELECTION = `${ACTION_PREPEND}/TOGGLE_TARGET_SELECTION`;
+const ENABLE_TARGET_SELECTION = `${ACTION_PREPEND}/ENABLE_TARGET_SELECTION`;
+const DISABLE_TARGET_SELECTION = `${ACTION_PREPEND}/DISABLE_TARGET_SELECTION`;
 const ADD_MONSTER = `${ACTION_PREPEND}/ADD_MONSTER`;
 const ATTACK_MONSTER = `${ACTION_PREPEND}/ATTACK_MONSTER`;
+const ATTACK_TARGETED_MONSTER = `${ACTION_PREPEND}/ATTACK_TARGETED_MONSTER`;
 const SET_BATTLE_DECK = `${ACTION_PREPEND}/SET_BATTLE_DECK`;
 const SET_DISCARD_DECK = `${ACTION_PREPEND}/SET_DISCARD_DECK`;
 const SET_HAND_DECK = `${ACTION_PREPEND}/SET_HAND_DECK`;
 const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
 const SET_BATTLE_CURRENT_AP = `${ACTION_PREPEND}/SET_BATTLE_CURRENT_AP`;
 const SET_BATTLE_MAX_AP = `${ACTION_PREPEND}/SET_BATTLE_MAX_AP`;
+const SET_QUEUED_ACTIONS = `${ACTION_PREPEND}/SET_QUEUED_ACTIONS`;
+const SET_SELECTED_TARGET = `${ACTION_PREPEND}/SET_SELECTED_TARGET`;
 
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
@@ -27,7 +30,7 @@ export const initialState = {
   player: {
     hp: 100,
     deck: [],
-    maxAP: 3
+    maxAP: 100
   },
   cards: {
     allIds: [],
@@ -40,12 +43,14 @@ export const initialState = {
   battle: {
     selectingCard: true,
     selectingTarget: false,
+    selectedTarget: null,
     hp: 0,
     currentAP: 0,
     maxAP: 0,
     deck: [],
     hand: [],
-    discard: []
+    discard: [],
+    queuedActions: []
   }
 };
 
@@ -63,78 +68,87 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case ADD_CARD_TO_BATTLE_DECK: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          deck: [...state.battle.deck, id]
+          deck: [
+            ...state.battle.deck,
+            state.player.deck.find(card => card.uuid === uuid)
+          ]
         }
       };
     }
 
     case ADD_CARD_TO_DISCARD: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          discard: [...state.battle.discard, id]
+          discard: [
+            ...state.battle.discard,
+            state.player.deck.find((card) => card.uuid === uuid)
+          ]
         }
       };
     }
 
     case ADD_CARD_TO_HAND: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: [...state.battle.hand, id]
+          hand: [
+            ...state.battle.hand,
+            state.battle.deck.find((card) => card.uuid === uuid)
+          ]
         }
       };
     }
 
     case REMOVE_CARD_FROM_DECK: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         player: {
           ...state.player,
-          deck: state.player.deck.filter(card => card !== id)
+          deck: state.player.deck.filter(card => card.uuid !== uuid)
         }
       };
     }
 
     case REMOVE_CARD_FROM_BATTLE_DECK: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          deck: state.battle.deck.filter(card => card !== id)
+          deck: state.battle.deck.filter(card => card.uuid !== uuid)
         }
       };
     }
 
     case REMOVE_CARD_FROM_DISCARD: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: state.battle.discard.filter(card => card !== id)
+          discard: state.battle.discard.filter(card => card.uuid !== uuid)
         }
       };
     }
 
     case REMOVE_CARD_FROM_HAND: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: state.battle.hand.filter(card => card !== id)
+          hand: state.battle.hand.filter(card => card.uuid !== uuid)
         }
       };
     }
@@ -214,6 +228,28 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
+    case SET_QUEUED_ACTIONS: {
+      const { actions } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          queuedActions: actions
+        }
+      };
+    }
+
+    case SET_SELECTED_TARGET: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          selectedTarget: id
+        }
+      };
+    }
+
     case SET_BATTLE_CURRENT_AP: {
       const { ap } = action.payload;
       return {
@@ -255,6 +291,25 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
+    case ATTACK_TARGETED_MONSTER: {
+      const { dmg } = action.payload;
+      return {
+        ...state,
+        monsters: {
+          allIds: [...state.monsters.allIds],
+          byIds: {
+            ...state.monsters.byIds,
+            [state.battle.selectedTarget]: {
+              hp:
+                dmg <= state.monsters.byIds[state.battle.selectedTarget].hp
+                  ? state.monsters.byIds[state.battle.selectedTarget].hp - dmg
+                  : 0
+            }
+          }
+        }
+      };
+    }
+
     case CREATE_CARD: {
       const { id, name, description, cost, actions } = action.payload;
       return {
@@ -274,21 +329,26 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case TOGGLE_TARGET_SELECTION: {
-      const { isEnabled } = action.payload;
+    case ENABLE_TARGET_SELECTION: {
       return {
         ...state,
-        selectingCard: isEnabled ? false : state.selectingCard,
-        selectingTarget: isEnabled ? true : false
+        battle: {
+          ...state.battle,
+          selectingCard: false,
+          selectingTarget: true,
+          selectedTarget: undefined
+        }
       };
     }
 
-    case TOGGLE_CARD_SELECTION: {
-      const { isEnabled } = action.payload;
+    case DISABLE_TARGET_SELECTION: {
       return {
         ...state,
-        selectingCard: isEnabled ? true : false,
-        selectingTarget: isEnabled ? false : state.selectingTarget
+        battle: {
+          ...state.battle,
+          selectingCard: true,
+          selectingTarget: false,
+        }
       };
     }
 
@@ -305,52 +365,52 @@ export const addCardToDeck = id => ({
   }
 });
 
-export const addCardToBattleDeck = id => ({
+export const addCardToBattleDeck = uuid => ({
   type: ADD_CARD_TO_BATTLE_DECK,
   payload: {
-    id
+    uuid
   }
 });
 
-export const addCardToDiscard = id => ({
+export const addCardToDiscard = uuid => ({
   type: ADD_CARD_TO_DISCARD,
   payload: {
-    id
+    uuid
   }
 });
 
-export const addCardToHand = id => ({
+export const addCardToHand = uuid => ({
   type: ADD_CARD_TO_HAND,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromDeck = id => ({
+export const removeCardFromDeck = uuid => ({
   type: REMOVE_CARD_FROM_DECK,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromBattleDeck = id => ({
+export const removeCardFromBattleDeck = uuid => ({
   type: REMOVE_CARD_FROM_BATTLE_DECK,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromDiscard = id => ({
+export const removeCardFromDiscard = uuid => ({
   type: REMOVE_CARD_FROM_DISCARD,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromHand = id => ({
+export const removeCardFromHand = uuid => ({
   type: REMOVE_CARD_FROM_HAND,
   payload: {
-    id
+    uuid
   }
 });
 
@@ -379,12 +439,18 @@ export const addMonster = hp => ({
   }
 });
 
-export const attackMonster = (id, dmg, cost) => ({
+export const attackMonster = (dmg) => ({
+  type: ATTACK_TARGETED_MONSTER,
+  payload: {
+    dmg
+  }
+});
+
+export const attackMonsterById = (id, dmg) => ({
   type: ATTACK_MONSTER,
   payload: {
     id,
-    dmg,
-    cost
+    dmg
   }
 });
 
@@ -417,11 +483,41 @@ export const setBattleMaxAP = ap => ({
   type: SET_BATTLE_MAX_AP,
   payload: { ap }
 });
+
+export const setQueuedActions = actions => ({
+  type: SET_QUEUED_ACTIONS,
+  payload: { actions }
+});
+
+export const setSelectedTarget = id => ({
+  type: SET_SELECTED_TARGET,
+  payload: { id }
+});
+
+export const enableTargetSelection = () => ({
+  type: ENABLE_TARGET_SELECTION,
+  payload: {}
+});
+
+export const disableTargetSelection = () => ({
+  type: DISABLE_TARGET_SELECTION,
+  payload: {}
+});
+
 //GETS
 export const getAllState = store => store;
 
-export const getPlayerActions = store =>
-  getAllState(store) ? getAllState(store).battle.actions : 0;
+export const getCurrentAP = store =>
+  getAllState(store) ? getAllState(store).battle.currentAP : 0;
+
+export const getIsSelectingCard = store =>
+  getAllState(store) ? getAllState(store).battle.selectingCard : false;
+
+export const getIsSelectingTarget = store =>
+  getAllState(store) ? getAllState(store).battle.selectingTarget : false;
+
+export const getQueuedActions = store =>
+  getAllState(store) ? getAllState(store).battle.queuecActions : [];
 
 export const getCardState = store => store.cards;
 

@@ -10,7 +10,7 @@ import * as game from "../ducks/game";
 
 import styled from "styled-components";
 
-const MonsterWrapper = styled.div`
+const Centered = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-end;
@@ -50,6 +50,8 @@ class Battle extends Component {
 
     props.addMonster(30);
     props.addMonster(30);
+
+    this.dispatchQueuedActions = this.dispatchQueuedActions.bind(this);
   }
 
   endTurn() {
@@ -87,11 +89,29 @@ class Battle extends Component {
   render() {
     return (
       <div>
-        <MonsterWrapper>
+        <Centered>
           {this.props.monsters.map(monster => {
-            return <Monster key={monster.id} hp={monster.hp} />;
+            return (
+              <Monster
+                key={monster.id}
+                id={monster.id}
+                hp={monster.hp}
+                dispatchQueuedActions={this.dispatchQueuedActions}
+              />
+            );
           })}
-        </MonsterWrapper>
+        </Centered>
+
+        <Centered
+          style={
+            this.props.isSelectingTarget
+              ? { visibility: "visible" }
+              : { visibility: "hidden" }
+          }
+        >
+          Select Target
+        </Centered>
+
         <br />
         <BattleStats>
           Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -124,9 +144,11 @@ class Battle extends Component {
                 <Card
                   label={cardInHand.ref.name}
                   key={cardInHand.card.uuid}
+                  uuid={cardInHand.card.uuid}
                   cost={cardInHand.ref.cost}
                   actions={cardInHand.ref.actions}
                   description={cardInHand.ref.description}
+                  dispatchQueuedActions={this.dispatchQueuedActions}
                 />
               );
             })}
@@ -135,17 +157,27 @@ class Battle extends Component {
       </div>
     );
   }
+
+  dispatchQueuedActions() {
+    this.props.allState.battle.queuedActions.map(action =>
+      this.props.dispatch(action)
+    );
+  }
 }
 
 const mapStateToProps = state => {
   const allState = game.getAllState(state);
   const cards = game.getCards(state);
   const monsters = game.getMonsters(state);
-  return { allState, monsters, cards };
+  const isSelectingTarget = game.getIsSelectingTarget(state);
+  return { allState, monsters, cards, isSelectingTarget };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...game }, dispatch);
+  return {
+    ...bindActionCreators({ ...game }, dispatch),
+    dispatch
+  };
 };
 
 export default connect(

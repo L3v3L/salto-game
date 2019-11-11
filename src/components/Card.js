@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import * as ducks from "../ducks/game";
+import * as game from "../ducks/game";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -67,22 +67,55 @@ export class Card extends Component {
     this.label = props.label;
     this.key = props.key;
     this.cost = props.cost;
-    this.uniqueId = props.uniqueId;
+    this.uuid = props.uuid;
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
 
     this.actions = props.actions ? props.actions : [];
+    this.dispatchQueuedActions = props.dispatchQueuedActions;
+    this.shouldDispatchActions = true;
   }
 
   action() {
-    if (this.cost <= this.props.remainingActions) {
-      if (this.props.actions) {
-        this.props.actions.map(action => this.props.dispatch(action));
+    if (this.props.isSelectingCard) {
+      this.props.setQueuedActions([]);
+
+      if (this.cost <= this.props.currentAP) {
+        if (this.props.actions) {
+          this.props.setQueuedActions(this.buildActionQueue(this.props.actions));
+
+          if (this.shouldDispatchActions) {
+            this.dispatchQueuedActions();
+          }
+        }
+        this.props.decrementPlayerActions(this.cost);
+        this.props.removeCardFromHand(this.uuid);
+        this.props.addCardToDiscard(this.uuid);
       }
-      this.props.decrementPlayerActions(this.cost);
-      this.props.removeCardFromHand(this.uniqueId);
-      this.props.addCardToDiscard(this.uniqueId);
+    }
+  }
+
+  buildActionQueue(actions) {
+    this.shouldDispatchActions = true;
+    let actionsToQueue = actions;
+
+    if (actions[0]["type"] === "target" ) {
+      this.props.enableTargetSelection(true);
+      this.shouldDispatchActions = false;
+      actionsToQueue = actions.slice(1);
+    }
+
+    return actionsToQueue.map(action => this.createAction(action)).filter((action) => action);
+  }
+
+  createAction(action) {
+    switch(action.type) {
+      case 'attack':
+        return game.attackMonster(action.value);
+
+      default:
+        break;
     }
   }
 
@@ -108,13 +141,16 @@ export class Card extends Component {
 }
 
 const mapStateToProps = state => {
-  const remainingActions = ducks.getPlayerActions(state);
-  return { remainingActions };
+  const currentAP = game.getCurrentAP(state);
+  const monsters = game.getMonsters(state);
+  const isSelectingCard = game.getIsSelectingCard(state);
+  const isSelectingTarget = game.getIsSelectingTarget(state);
+  return { currentAP, monsters, isSelectingCard, isSelectingTarget };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({ ...ducks }, dispatch),
+    ...bindActionCreators({ ...game }, dispatch),
     dispatch
   };
 };
