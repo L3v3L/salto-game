@@ -101,9 +101,6 @@ export class Card extends Component {
     let actionsToQueue = actions;
 
     if (actions[0]["type"] === "target" ) {
-      // if first action is of type target
-      // fire it immediately and don't add
-      // it to the action queue
       this.props.enableTargetSelection(true);
       this.shouldDispatchActions = false;
       actionsToQueue = actions.slice(1);
