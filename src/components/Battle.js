@@ -50,6 +50,8 @@ class Battle extends Component {
 
     props.addMonster(30);
     props.addMonster(30);
+
+    this.dispatchQueuedActions = this.dispatchQueuedActions.bind(this);
   }
 
   endTurn() {
@@ -89,7 +91,12 @@ class Battle extends Component {
       <div>
         <MonsterWrapper>
           {this.props.monsters.map(monster => {
-            return <Monster key={monster.id} hp={monster.hp} />;
+            return <Monster
+              key={monster.id}
+              id={monster.id}
+              hp={monster.hp}
+              dispatchQueuedActions={this.dispatchQueuedActions}
+            />;
           })}
         </MonsterWrapper>
         <br />
@@ -127,6 +134,7 @@ class Battle extends Component {
                   cost={cardInHand.ref.cost}
                   actions={cardInHand.ref.actions}
                   description={cardInHand.ref.description}
+                  dispatchQueuedActions={this.dispatchQueuedActions}
                 />
               );
             })}
@@ -135,17 +143,24 @@ class Battle extends Component {
       </div>
     );
   }
+
+  dispatchQueuedActions() {
+    this.props.allState.battle.queuedActions.map(action => this.props.dispatch(action));
+  }
 }
 
 const mapStateToProps = state => {
   const allState = game.getAllState(state);
   const cards = game.getCards(state);
   const monsters = game.getMonsters(state);
-  return { allState, monsters, cards };
+  return { allState, monsters, cards};
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...game }, dispatch);
+  return {
+    ...bindActionCreators({ ...game }, dispatch),
+    dispatch
+  };
 };
 
 export default connect(

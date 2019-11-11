@@ -13,12 +13,15 @@ const TOGGLE_CARD_SELECTION = `${ACTION_PREPEND}/TOGGLE_CARD_SELECTION`;
 const TOGGLE_TARGET_SELECTION = `${ACTION_PREPEND}/TOGGLE_TARGET_SELECTION`;
 const ADD_MONSTER = `${ACTION_PREPEND}/ADD_MONSTER`;
 const ATTACK_MONSTER = `${ACTION_PREPEND}/ATTACK_MONSTER`;
+const ATTACK_TARGETED_MONSTER = `${ACTION_PREPEND}/ATTACK_TARGETED_MONSTER`;
 const SET_BATTLE_DECK = `${ACTION_PREPEND}/SET_BATTLE_DECK`;
 const SET_DISCARD_DECK = `${ACTION_PREPEND}/SET_DISCARD_DECK`;
 const SET_HAND_DECK = `${ACTION_PREPEND}/SET_HAND_DECK`;
 const SET_BATTLE_HP = `${ACTION_PREPEND}/SET_BATTLE_HP`;
 const SET_BATTLE_CURRENT_AP = `${ACTION_PREPEND}/SET_BATTLE_CURRENT_AP`;
 const SET_BATTLE_MAX_AP = `${ACTION_PREPEND}/SET_BATTLE_MAX_AP`;
+const SET_QUEUED_ACTIONS = `${ACTION_PREPEND}/SET_QUEUED_ACTIONS`;
+const SET_SELECTED_TARGET = `${ACTION_PREPEND}/SET_SELECTED_TARGET`;
 
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
@@ -27,7 +30,7 @@ export const initialState = {
   player: {
     hp: 100,
     deck: [],
-    maxAP: 3
+    maxAP: 9
   },
   cards: {
     allIds: [],
@@ -40,12 +43,14 @@ export const initialState = {
   battle: {
     selectingCard: true,
     selectingTarget: false,
+    selectedTarget: null,
     hp: 0,
     currentAP: 0,
     maxAP: 0,
     deck: [],
     hand: [],
-    discard: []
+    discard: [],
+    queuedActions: []
   }
 };
 
@@ -214,6 +219,28 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
+    case SET_QUEUED_ACTIONS: {
+      const { actions } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          queuedActions: actions
+        }
+      };
+    }
+
+    case SET_SELECTED_TARGET: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          selectedTarget: id
+        }
+      };
+    }
+
     case SET_BATTLE_CURRENT_AP: {
       const { ap } = action.payload;
       return {
@@ -255,6 +282,25 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
+    case ATTACK_TARGETED_MONSTER: {
+      const { dmg } = action.payload;
+      return {
+        ...state,
+        monsters: {
+          allIds: [...state.monsters.allIds],
+          byIds: {
+            ...state.monsters.byIds,
+            [state.battle.selectedTarget]: {
+              hp:
+                dmg <= state.monsters.byIds[state.battle.selectedTarget].hp
+                  ? state.monsters.byIds[state.battle.selectedTarget].hp - dmg
+                  : 0
+            }
+          }
+        }
+      };
+    }
+
     case CREATE_CARD: {
       const { id, name, description, cost, actions } = action.payload;
       return {
@@ -278,8 +324,11 @@ export default function reducer(state = initialState, action = {}) {
       const { isEnabled } = action.payload;
       return {
         ...state,
-        selectingCard: isEnabled ? false : state.selectingCard,
-        selectingTarget: isEnabled ? true : false
+        battle: {
+          ...state.battle,
+          selectingCard: isEnabled ? false : state.battle.selectingCard,
+          selectingTarget: isEnabled ? true : false
+        }
       };
     }
 
@@ -287,8 +336,11 @@ export default function reducer(state = initialState, action = {}) {
       const { isEnabled } = action.payload;
       return {
         ...state,
-        selectingCard: isEnabled ? true : false,
-        selectingTarget: isEnabled ? false : state.selectingTarget
+        battle: {
+          ...state.battle,
+          selectingCard: isEnabled ? true : false,
+          selectingTarget: isEnabled ? false : state.battle.selectingTarget
+        }
       };
     }
 
@@ -379,12 +431,18 @@ export const addMonster = hp => ({
   }
 });
 
-export const attackMonster = (id, dmg, cost) => ({
+export const attackMonster = (dmg) => ({
+  type: ATTACK_TARGETED_MONSTER,
+  payload: {
+    dmg
+  }
+});
+
+export const attackMonsterById = (id, dmg) => ({
   type: ATTACK_MONSTER,
   payload: {
     id,
-    dmg,
-    cost
+    dmg
   }
 });
 
@@ -417,11 +475,36 @@ export const setBattleMaxAP = ap => ({
   type: SET_BATTLE_MAX_AP,
   payload: { ap }
 });
+
+export const setQueuedActions = actions => ({
+  type: SET_QUEUED_ACTIONS,
+  payload: { actions }
+});
+
+export const setSelectedTarget = id => ({
+  type: SET_SELECTED_TARGET,
+  payload: { id }
+});
+
+export const toggleTargetSelection = isEnabled => ({
+  type: TOGGLE_TARGET_SELECTION,
+  payload: { isEnabled }
+});
+
 //GETS
 export const getAllState = store => store;
 
-export const getPlayerActions = store =>
-  getAllState(store) ? getAllState(store).battle.actions : 0;
+export const getCurrentAP = store =>
+  getAllState(store) ? getAllState(store).battle.currentAP : 0;
+
+export const getIsSelectingCard = store =>
+  getAllState(store) ? getAllState(store).battle.selectingCard : false;
+
+export const getIsSelectingTarget = store =>
+  getAllState(store) ? getAllState(store).battle.selectingTarget : false;
+
+export const getQueuedActions = store =>
+  getAllState(store) ? getAllState(store).battle.queuecActions : [];
 
 export const getCardState = store => store.cards;
 

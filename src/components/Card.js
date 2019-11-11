@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import * as ducks from "../ducks/game";
+import * as game from "../ducks/game";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -73,16 +73,47 @@ export class Card extends Component {
       : "";
 
     this.actions = props.actions ? props.actions : [];
+    this.dispatchQueuedActions = props.dispatchQueuedActions;
   }
 
   action() {
-    if (this.cost <= this.props.remainingActions) {
-      if (this.props.actions) {
-        this.props.actions.map(action => this.props.dispatch(action));
+    if (this.props.isSelectingCard) {
+      if (this.cost <= this.props.currentAP) {
+        if (this.props.actions) {
+          this.props.setQueuedActions(this.buildActionQueue(this.props.actions));
+
+          if (!this.isSelectingTarget) {
+            this.dispatchQueuedActions();
+          }
+        }
+        this.props.decrementPlayerActions(this.cost);
+        this.props.removeCardFromHand(this.uniqueId);
+        this.props.addCardToDiscard(this.uniqueId);
       }
-      this.props.decrementPlayerActions(this.cost);
-      this.props.removeCardFromHand(this.uniqueId);
-      this.props.addCardToDiscard(this.uniqueId);
+    }
+  }
+
+  buildActionQueue(actions) {
+    if (actions[0]["type"] === "target" ) {
+      // if first action is of type target
+      // fire it immediately and don't add
+      // it to the action queue
+      this.props.toggleTargetSelection(true);
+      actions.shift();
+    }
+    return actions.map(action => this.createAction(action));
+  }
+
+  createAction(action) {
+    switch(action.type) {
+      case 'attack':
+        return game.attackMonster(action.value);
+
+      case 'untarget':
+        return game.toggleTargetSelection(false);
+
+      default:
+        break;
     }
   }
 
@@ -108,13 +139,16 @@ export class Card extends Component {
 }
 
 const mapStateToProps = state => {
-  const remainingActions = ducks.getPlayerActions(state);
-  return { remainingActions };
+  const currentAP = game.getCurrentAP(state);
+  const monsters = game.getMonsters(state);
+  const isSelectingCard = game.getIsSelectingCard(state);
+  const isSelectingTarget = game.getIsSelectingTarget(state);
+  return { currentAP, monsters, isSelectingCard, isSelectingTarget };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({ ...ducks }, dispatch),
+    ...bindActionCreators({ ...game }, dispatch),
     dispatch
   };
 };

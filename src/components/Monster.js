@@ -1,8 +1,12 @@
-import React, { Component } from "react";
-import { Sprite, SpriteCanvasHelper } from "mixel";
-import styled, { keyframes } from "styled-components";
+import { bindActionCreators } from "redux";
 import { bounce } from "react-animations";
+import { connect } from "react-redux";
 import { MonsterSprite } from "./Sprites";
+import { Sprite, SpriteCanvasHelper } from "mixel";
+import React, { Component } from "react";
+import styled, { keyframes } from "styled-components";
+
+import * as game from "../ducks/game";
 
 const bounceAnimation = keyframes`${bounce}`;
 
@@ -14,7 +18,10 @@ export class Monster extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.id = props.id;
+    this.dispatchQueuedActions = props.dispatchQueuedActions;
   }
+
   componentDidMount() {
     let sprite = new Sprite(MonsterSprite, {
       colored: true,
@@ -34,9 +41,16 @@ export class Monster extends Component {
     this.setState({ dataURI });
   }
 
+  action() {
+    if (this.props.isSelectingTarget) {
+      this.props.setSelectedTarget(this.id);
+      this.dispatchQueuedActions();
+    }
+  }
+
   render() {
     return (
-      <BouncyDiv>
+      <BouncyDiv onClick={() => this.action()}>
         <img width="100px" src={this.state.dataURI} alt="Monster" />
         <br />
         <code>HP: {this.props.hp}</code>
@@ -45,4 +59,19 @@ export class Monster extends Component {
   }
 }
 
-export default Monster;
+const mapStateToProps = state => {
+  const isSelectingTarget = game.getIsSelectingTarget(state);
+  return { isSelectingTarget };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    ...bindActionCreators({ ...game }, dispatch),
+    dispatch
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Monster);

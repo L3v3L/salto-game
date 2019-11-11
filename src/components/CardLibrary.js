@@ -6,10 +6,15 @@ export const CardLibrary = [
     description: "attacks %value",
     actions: [
       {
+        type: "target",
+      },
+      {
         type: "attack",
         value: 3,
-        target: true
-      }
+      },
+      {
+        type: "untarget",
+      },
     ]
   },
   {
@@ -23,5 +28,17 @@ export const CardLibrary = [
         value: 2
       }
     ]
-  }
+  },
+  {
+    id: 3,
+    name: "Attack All",
+    cost: 3,
+    description: "attacks %value",
+    actions: [
+      {
+        type: "attack",
+        value: 3,
+      }
+    ]
+  },
 ];
