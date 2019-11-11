@@ -1,13 +1,13 @@
 import React from "react";
 import "./App.css";
 import Game from "./components/Game";
-// import Start from './components/Start';
+import Portal from './components/Portal';
 
 function App() {
   return (
     <div className="salto__wrapper">
-      <Game />
-      {/* <Start /> */}
+      {/* <Game /> */}
+      <Portal />
     </div>
   );
 }
