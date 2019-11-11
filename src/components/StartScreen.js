@@ -11,7 +11,7 @@ const StartButton = styled.button`
   }
 `;
 
-class Start extends Component {
+class StartScreen extends Component {
   render() {
     return (
       <StartButton onClick={() => console.log('start button')}>
@@ -21,4 +21,4 @@ class Start extends Component {
   }
 };
 
-export default Start;
+export default StartScreen;

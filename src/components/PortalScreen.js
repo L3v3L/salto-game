@@ -19,7 +19,7 @@ const Portals = styled.div`
   }
 `;
 
-class Portal extends Component {
+class PortalScreen extends Component {
   render() {
     return (
       <Portals>
@@ -31,4 +31,4 @@ class Portal extends Component {
   }
 };
 
-export default Portal;
+export default PortalScreen;

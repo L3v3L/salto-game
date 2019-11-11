@@ -13,7 +13,7 @@ const CardContainer = styled.div`
   }
 `;
 
-class Reward extends Component {
+class RewardScreen extends Component {
   render() {
     return (
       <RewardWrapper>
@@ -31,4 +31,4 @@ class Reward extends Component {
   }
 };
 
-export default Reward;
+export default RewardScreen;

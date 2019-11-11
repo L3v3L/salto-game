@@ -26,18 +26,18 @@ const Arrow = styled.span`
 
 const mapSize = [1,2,3,4,5];
 
-class Map extends Component {
+class MapScreen extends Component {
   render() {
     return (
       <PortalMap>
         {
           mapSize.map((item, index) => {
             return (
-              <Fragment>
-                <Item>{item}</Item>
+              <Fragment key={index}>
+                <Item >{item}</Item>
                 {
                   index !== mapSize.length-1
-                  && <Arrow class="arrow">&#8594;</Arrow>
+                  && <Arrow>&#8594;</Arrow>
                 }
               </Fragment>
             )
@@ -48,4 +48,4 @@ class Map extends Component {
   }
 };
 
-export default Map;
+export default MapScreen;
