@@ -83,7 +83,9 @@ export class Card extends Component {
 
       if (this.cost <= this.props.currentAP) {
         if (this.props.actions) {
-          this.props.setQueuedActions(this.buildActionQueue(this.props.actions));
+          this.props.setQueuedActions(
+            this.buildActionQueue(this.props.actions)
+          );
 
           if (this.shouldDispatchActions) {
             this.dispatchQueuedActions();
@@ -100,18 +102,20 @@ export class Card extends Component {
     this.shouldDispatchActions = true;
     let actionsToQueue = actions;
 
-    if (actions[0]["type"] === "target" ) {
+    if (actions[0]["type"] === "target") {
       this.props.enableTargetSelection(true);
       this.shouldDispatchActions = false;
       actionsToQueue = actions.slice(1);
     }
 
-    return actionsToQueue.map(action => this.createAction(action)).filter((action) => action);
+    return actionsToQueue
+      .map(action => this.createAction(action))
+      .filter(action => action);
   }
 
   createAction(action) {
-    switch(action.type) {
-      case 'attack':
+    switch (action.type) {
+      case "attack":
         return game.attackMonster(action.value);
 
       default:

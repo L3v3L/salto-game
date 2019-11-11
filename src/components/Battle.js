@@ -48,9 +48,8 @@ class Battle extends Component {
     props.setBattleDeck(battleDeck);
     props.setHandDeck(handDeck);
 
-    props.addMonster(30);
-    props.addMonster(30);
-
+    props.addMonster(1);
+    props.addMonster(0);
     this.dispatchQueuedActions = this.dispatchQueuedActions.bind(this);
   }
 
@@ -84,22 +83,69 @@ class Battle extends Component {
     this.props.setDiscardDeck(newDiscardArray);
 
     this.props.setBattleCurrentAP(this.props.allState.battle.maxAP);
+
+    //run monster queue attacks
+
+    this.props.allState.battle.monsters.map(monster => {
+      if (this.props.allState.battle.monsterMoves[monster.uuid]) {
+        this.props.allState.battle.monsterMoves[monster.uuid].map(move => {
+          switch (move.type) {
+            case "attack":
+              this.props.setBattleHP(
+                this.props.allState.battle.hp - move.value
+              );
+              break;
+            case "block":
+              console.log("block " + move.value);
+              break;
+            default:
+              break;
+          }
+          return null;
+        });
+      }
+      return null;
+    });
+
+    this.props.resetMonsterMoves();
+
+    this.props.allState.battle.monsters.map(monster => {
+      let monsterRef = this.props.monsters.find(
+        monsterLib => monsterLib.id === monster.id
+      );
+      this.props.setMonsterMoves(
+        monster.uuid,
+        monsterRef.moves[Math.floor(Math.random() * monsterRef.moves.length)]
+      );
+      return null;
+    });
   }
 
   render() {
     return (
       <div>
         <Centered>
-          {this.props.monsters.map(monster => {
-            return (
-              <Monster
-                key={monster.id}
-                id={monster.id}
-                hp={monster.hp}
-                dispatchQueuedActions={this.dispatchQueuedActions}
-              />
-            );
-          })}
+          {this.props.allState.battle.monsters
+            .map(monster => {
+              return {
+                ref: this.props.monsters.find(
+                  monsterLib => monsterLib.id === monster.id
+                ),
+                monster: monster
+              };
+            })
+            .map(monster => {
+              return (
+                <Monster
+                  key={monster.monster.uuid}
+                  uuid={monster.monster.uuid}
+                  id={monster.monster.id}
+                  hp={monster.monster.hp}
+                  maxHp={monster.ref.hp}
+                  dispatchQueuedActions={this.dispatchQueuedActions}
+                />
+              );
+            })}
         </Centered>
 
         <Centered
