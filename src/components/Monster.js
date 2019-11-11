@@ -19,6 +19,7 @@ export class Monster extends Component {
     super(props);
     this.state = {};
     this.id = props.id;
+    this.uuid = props.uuid;
     this.dispatchQueuedActions = props.dispatchQueuedActions;
   }
 
@@ -43,7 +44,7 @@ export class Monster extends Component {
 
   action() {
     if (this.props.isSelectingTarget) {
-      this.props.setSelectedTarget(this.id);
+      this.props.setSelectedTarget(this.uuid);
       this.dispatchQueuedActions();
       this.props.disableTargetSelection();
     }
