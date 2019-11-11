@@ -67,50 +67,55 @@ export class Card extends Component {
     this.label = props.label;
     this.key = props.key;
     this.cost = props.cost;
-    this.uniqueId = props.uniqueId;
+    this.uuid = props.uuid;
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
 
     this.actions = props.actions ? props.actions : [];
     this.dispatchQueuedActions = props.dispatchQueuedActions;
+    this.shouldDispatchActions = true;
   }
 
   action() {
     if (this.props.isSelectingCard) {
+      this.props.setQueuedActions([]);
+
       if (this.cost <= this.props.currentAP) {
         if (this.props.actions) {
           this.props.setQueuedActions(this.buildActionQueue(this.props.actions));
 
-          if (!this.isSelectingTarget) {
+          if (this.shouldDispatchActions) {
             this.dispatchQueuedActions();
           }
         }
         this.props.decrementPlayerActions(this.cost);
-        this.props.removeCardFromHand(this.uniqueId);
-        this.props.addCardToDiscard(this.uniqueId);
+        this.props.removeCardFromHand(this.uuid);
+        this.props.addCardToDiscard(this.uuid);
       }
     }
   }
 
   buildActionQueue(actions) {
+    this.shouldDispatchActions = true;
+    let actionsToQueue = actions;
+
     if (actions[0]["type"] === "target" ) {
       // if first action is of type target
       // fire it immediately and don't add
       // it to the action queue
-      this.props.toggleTargetSelection(true);
-      actions.shift();
+      this.props.enableTargetSelection(true);
+      this.shouldDispatchActions = false;
+      actionsToQueue = actions.slice(1);
     }
-    return actions.map(action => this.createAction(action));
+
+    return actionsToQueue.map(action => this.createAction(action)).filter((action) => action);
   }
 
   createAction(action) {
     switch(action.type) {
       case 'attack':
         return game.attackMonster(action.value);
-
-      case 'untarget':
-        return game.toggleTargetSelection(false);
 
       default:
         break;

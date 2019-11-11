@@ -9,8 +9,8 @@ const REMOVE_CARD_FROM_DECK = `${ACTION_PREPEND}/REMOVE_CARD_FROM_DECK`;
 const REMOVE_CARD_FROM_DISCARD = `${ACTION_PREPEND}/REMOVE_CARD_FROM_DISCARD`;
 const REMOVE_CARD_FROM_HAND = `${ACTION_PREPEND}/REMOVE_CARD_FROM_HAND`;
 const DECREMENT_ACTIONS = `${ACTION_PREPEND}/DECREMENT_ACTIONS`;
-const TOGGLE_CARD_SELECTION = `${ACTION_PREPEND}/TOGGLE_CARD_SELECTION`;
-const TOGGLE_TARGET_SELECTION = `${ACTION_PREPEND}/TOGGLE_TARGET_SELECTION`;
+const ENABLE_TARGET_SELECTION = `${ACTION_PREPEND}/ENABLE_TARGET_SELECTION`;
+const DISABLE_TARGET_SELECTION = `${ACTION_PREPEND}/DISABLE_TARGET_SELECTION`;
 const ADD_MONSTER = `${ACTION_PREPEND}/ADD_MONSTER`;
 const ATTACK_MONSTER = `${ACTION_PREPEND}/ATTACK_MONSTER`;
 const ATTACK_TARGETED_MONSTER = `${ACTION_PREPEND}/ATTACK_TARGETED_MONSTER`;
@@ -30,7 +30,7 @@ export const initialState = {
   player: {
     hp: 100,
     deck: [],
-    maxAP: 9
+    maxAP: 100
   },
   cards: {
     allIds: [],
@@ -68,78 +68,87 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case ADD_CARD_TO_BATTLE_DECK: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          deck: [...state.battle.deck, id]
+          deck: [
+            ...state.battle.deck,
+            state.player.deck.find(card => card.uuid === uuid)
+          ]
         }
       };
     }
 
     case ADD_CARD_TO_DISCARD: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          discard: [...state.battle.discard, id]
+          discard: [
+            ...state.battle.discard,
+            state.player.deck.find((card) => card.uuid === uuid)
+          ]
         }
       };
     }
 
     case ADD_CARD_TO_HAND: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: [...state.battle.hand, id]
+          hand: [
+            ...state.battle.hand,
+            state.battle.deck.find((card) => card.uuid === uuid)
+          ]
         }
       };
     }
 
     case REMOVE_CARD_FROM_DECK: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         player: {
           ...state.player,
-          deck: state.player.deck.filter(card => card !== id)
+          deck: state.player.deck.filter(card => card.uuid !== uuid)
         }
       };
     }
 
     case REMOVE_CARD_FROM_BATTLE_DECK: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          deck: state.battle.deck.filter(card => card !== id)
+          deck: state.battle.deck.filter(card => card.uuid !== uuid)
         }
       };
     }
 
     case REMOVE_CARD_FROM_DISCARD: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: state.battle.discard.filter(card => card !== id)
+          discard: state.battle.discard.filter(card => card.uuid !== uuid)
         }
       };
     }
 
     case REMOVE_CARD_FROM_HAND: {
-      const { id } = action.payload;
+      const { uuid } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: state.battle.hand.filter(card => card !== id)
+          hand: state.battle.hand.filter(card => card.uuid !== uuid)
         }
       };
     }
@@ -320,26 +329,25 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case TOGGLE_TARGET_SELECTION: {
-      const { isEnabled } = action.payload;
+    case ENABLE_TARGET_SELECTION: {
       return {
         ...state,
         battle: {
           ...state.battle,
-          selectingCard: isEnabled ? false : state.battle.selectingCard,
-          selectingTarget: isEnabled ? true : false
+          selectingCard: false,
+          selectingTarget: true,
+          selectedTarget: undefined
         }
       };
     }
 
-    case TOGGLE_CARD_SELECTION: {
-      const { isEnabled } = action.payload;
+    case DISABLE_TARGET_SELECTION: {
       return {
         ...state,
         battle: {
           ...state.battle,
-          selectingCard: isEnabled ? true : false,
-          selectingTarget: isEnabled ? false : state.battle.selectingTarget
+          selectingCard: true,
+          selectingTarget: false,
         }
       };
     }
@@ -357,52 +365,52 @@ export const addCardToDeck = id => ({
   }
 });
 
-export const addCardToBattleDeck = id => ({
+export const addCardToBattleDeck = uuid => ({
   type: ADD_CARD_TO_BATTLE_DECK,
   payload: {
-    id
+    uuid
   }
 });
 
-export const addCardToDiscard = id => ({
+export const addCardToDiscard = uuid => ({
   type: ADD_CARD_TO_DISCARD,
   payload: {
-    id
+    uuid
   }
 });
 
-export const addCardToHand = id => ({
+export const addCardToHand = uuid => ({
   type: ADD_CARD_TO_HAND,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromDeck = id => ({
+export const removeCardFromDeck = uuid => ({
   type: REMOVE_CARD_FROM_DECK,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromBattleDeck = id => ({
+export const removeCardFromBattleDeck = uuid => ({
   type: REMOVE_CARD_FROM_BATTLE_DECK,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromDiscard = id => ({
+export const removeCardFromDiscard = uuid => ({
   type: REMOVE_CARD_FROM_DISCARD,
   payload: {
-    id
+    uuid
   }
 });
 
-export const removeCardFromHand = id => ({
+export const removeCardFromHand = uuid => ({
   type: REMOVE_CARD_FROM_HAND,
   payload: {
-    id
+    uuid
   }
 });
 
@@ -486,9 +494,14 @@ export const setSelectedTarget = id => ({
   payload: { id }
 });
 
-export const toggleTargetSelection = isEnabled => ({
-  type: TOGGLE_TARGET_SELECTION,
-  payload: { isEnabled }
+export const enableTargetSelection = () => ({
+  type: ENABLE_TARGET_SELECTION,
+  payload: {}
+});
+
+export const disableTargetSelection = () => ({
+  type: DISABLE_TARGET_SELECTION,
+  payload: {}
 });
 
 //GETS

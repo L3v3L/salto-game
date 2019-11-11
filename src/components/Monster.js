@@ -45,6 +45,7 @@ export class Monster extends Component {
     if (this.props.isSelectingTarget) {
       this.props.setSelectedTarget(this.id);
       this.dispatchQueuedActions();
+      this.props.disableTargetSelection();
     }
   }
 

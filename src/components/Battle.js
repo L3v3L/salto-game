@@ -131,6 +131,7 @@ class Battle extends Component {
                 <Card
                   label={cardInHand.ref.name}
                   key={cardInHand.card.uuid}
+                  uuid={cardInHand.card.uuid}
                   cost={cardInHand.ref.cost}
                   actions={cardInHand.ref.actions}
                   description={cardInHand.ref.description}
