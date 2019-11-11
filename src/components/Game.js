@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as game from "../ducks/game";
 import Battle from "./Battle";
 import { CardLibrary } from "./CardLibrary";
+import { MonsterLibrary } from "./MonsterLibrary";
 
 export class Game extends Component {
   constructor(props) {
@@ -12,6 +13,11 @@ export class Game extends Component {
     //initialize player starter deck
     CardLibrary.map(function(item) {
       return props.createCard(item);
+    });
+
+    //initialize monsters
+    MonsterLibrary.map(function(item) {
+      return props.createMonster(item);
     });
 
     let starterDeck = [{ id: 1, quantity: 5 }, { id: 2, quantity: 5 }];
