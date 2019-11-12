@@ -1,12 +1,17 @@
-import { bindActionCreators } from "redux";
+import React, { Component } from "react";
+import styled, { keyframes } from "styled-components";
 import { bounce } from "react-animations";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { MonsterSprite } from "./Sprites";
 import { Sprite, SpriteCanvasHelper } from "mixel";
-import React, { Component } from "react";
-import styled, { keyframes } from "styled-components";
 
-import * as game from "../ducks/game";
+import { getIsSelectingTarget } from '../ducks/selectors'
+
+import {
+  disableTargetSelection,
+  setSelectedTarget
+} from "../ducks/actionCreators";
 
 const bounceAnimation = keyframes`${bounce}`;
 
@@ -62,13 +67,16 @@ export class Monster extends Component {
 }
 
 const mapStateToProps = state => {
-  const isSelectingTarget = game.getIsSelectingTarget(state);
+  const isSelectingTarget = getIsSelectingTarget(state);
   return { isSelectingTarget };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({ ...game }, dispatch),
+    ...bindActionCreators({
+      setSelectedTarget,
+      disableTargetSelection
+    }, dispatch),
     dispatch
   };
 };

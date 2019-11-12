@@ -3,7 +3,17 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import * as game from "../ducks/game";
+import * as selectors from "../ducks/selectors";
+
+import {
+  addCardToDiscard,
+  attackMonster,
+  decrementPlayerActions,
+  removeCardFromHand,
+  setQueuedActions,
+  enableTargetSelection,
+  setSelectedTarget
+} from "../ducks/actionCreators";
 
 const CardButton = styled.div`
   font-weight: bold;
@@ -116,7 +126,7 @@ export class Card extends Component {
   createAction(action) {
     switch (action.type) {
       case "attack":
-        return game.attackMonster(action.value);
+        return attackMonster(action.value);
 
       default:
         break;
@@ -145,16 +155,25 @@ export class Card extends Component {
 }
 
 const mapStateToProps = state => {
-  const currentAP = game.getCurrentAP(state);
-  const monsters = game.getMonsters(state);
-  const isSelectingCard = game.getIsSelectingCard(state);
-  const isSelectingTarget = game.getIsSelectingTarget(state);
+  const currentAP = selectors.getCurrentAP(state);
+  const monsters = selectors.getMonsters(state);
+  const isSelectingCard = selectors.getIsSelectingCard(state);
+  const isSelectingTarget = selectors.getIsSelectingTarget(state);
+
   return { currentAP, monsters, isSelectingCard, isSelectingTarget };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({ ...game }, dispatch),
+    ...bindActionCreators({
+      addCardToDiscard,
+      attackMonster,
+      decrementPlayerActions,
+      removeCardFromHand,
+      setQueuedActions,
+      enableTargetSelection,
+      setSelectedTarget
+    }, dispatch),
     dispatch
   };
 };

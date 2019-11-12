@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as game from "../ducks/game";
-import Battle from "./Battle";
 import { CardLibrary } from "./CardLibrary";
 import { MonsterLibrary } from "./MonsterLibrary";
+import Battle from "./Battle";
+
+import { getAllState } from "../ducks/selectors";
+import * as actionCreators from "../ducks/actionCreators";
 
 export class Game extends Component {
   constructor(props) {
@@ -36,12 +38,12 @@ export class Game extends Component {
 }
 
 const mapStateToProps = state => {
-  const allState = game.getAllState(state);
+  const allState = getAllState(state);
   return { allState };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...game }, dispatch);
+  return bindActionCreators({ ...actionCreators }, dispatch);
 };
 
 export default connect(

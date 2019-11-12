@@ -7,7 +7,7 @@ import configureStore from "./configureStore";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { initialState } from "./ducks/game";
+import { initialState } from "./ducks/reducer";
 
 const rootElement = document.getElementById("root");
 

@@ -1,8 +1,8 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 
-import reducer from "./ducks/game";
-import { buffAttack } from "./ducks/game"
+import reducer from "./ducks/reducer";
+import { buffAttack } from "./ducks/middlewares"
 
 const loggerMiddleware = createLogger({
   collapsed: (getState, action, logEntry) => !logEntry.error
