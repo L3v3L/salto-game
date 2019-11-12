@@ -6,7 +6,8 @@ import _ from "lodash";
 import Card from "./Card";
 import Monster from "./Monster";
 
-import * as game from "../ducks/game";
+import * as selectors from "../ducks/selectors";
+import * as actionCreators from "../ducks/actionCreators";
 
 import styled from "styled-components";
 
@@ -212,16 +213,17 @@ class Battle extends Component {
 }
 
 const mapStateToProps = state => {
-  const allState = game.getAllState(state);
-  const cards = game.getCards(state);
-  const monsters = game.getMonsters(state);
-  const isSelectingTarget = game.getIsSelectingTarget(state);
+  const allState = selectors.getAllState(state);
+  const cards = selectors.getCards(state);
+  const monsters = selectors.getMonsters(state);
+  const isSelectingTarget = selectors.getIsSelectingTarget(state);
+
   return { allState, monsters, cards, isSelectingTarget };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({ ...game }, dispatch),
+    ...bindActionCreators({ ...actionCreators }, dispatch),
     dispatch
   };
 };
