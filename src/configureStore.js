@@ -1,21 +1,25 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore, compose, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 
 import reducer from "./ducks/game";
+import { buffAttack } from "./ducks/game"
 
 const loggerMiddleware = createLogger({
   collapsed: (getState, action, logEntry) => !logEntry.error
 });
 
-const createStoreWithMiddleware = applyMiddleware(loggerMiddleware)(
-  createStore
-);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const configureStore = initialState =>
-  createStoreWithMiddleware(
+  createStore(
     reducer,
     initialState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    composeEnhancers(
+      applyMiddleware(
+        buffAttack,
+        loggerMiddleware
+      )
+    )
   );
 
 export default configureStore;
