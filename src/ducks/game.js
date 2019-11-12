@@ -598,3 +598,11 @@ export const getMonsterById = (store, id) =>
 
 export const getMonsters = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
+
+export const buffAttack = store => next => action => {
+  if (action.type === ATTACK_TARGETED_MONSTER) {
+    action.payload.dmg = 50;
+  }
+
+  next(action);
+}
