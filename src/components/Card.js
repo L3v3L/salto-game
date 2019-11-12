@@ -5,11 +5,22 @@ import styled from "styled-components";
 
 import * as game from "../ducks/game";
 
+const cardWidth = 150;
+const cardHeight = 200;
+const innerBorder = 2;
+
+const CardValues = {
+  width: cardWidth,
+  height: cardHeight,
+  innerBorder: innerBorder,
+  interiorHeight: cardHeight - 2*innerBorder,
+};
+
 const CardButton = styled.div`
   font-weight: bold;
   background-color: #495351;
-  width: 150px;
-  height: 200px;
+  width: ${props => props.cardValues.width}px;
+  height: ${props => props.cardValues.height}px;
   padding: 10px;
   border: 2px solid black;
   border-radius: 4px;
@@ -18,9 +29,9 @@ const CardButton = styled.div`
     1px 1px 0 #000;
   .interiorContainer {
     user-select: none;
-    border: 2px solid #2f3534;
+    border: ${props => props.cardValues.innerBorder}px solid #2f3534;
     background-color: #9e9f6d;
-    height: 100%;
+    height: ${props => props.cardValues.interiorHeight}px;
     .header {
       display: flex;
       justify-content: space-between;
@@ -29,10 +40,10 @@ const CardButton = styled.div`
         padding: 3px 5px;
       }
       .cost {
-        padding: 3px 5px 0px 7px;
+        padding: 3px 5px 0 7px;
         text-align: right;
         background-color: #79ac99;
-        border-radius: 0px 0px 0px 10px;
+        border-radius: 0 0 0 10px;
         border-left: 2px solid #4b6c60;
         border-bottom: 2px solid #4b6c60;
       }
@@ -125,7 +136,7 @@ export class Card extends Component {
 
   render() {
     return (
-      <CardButton key={this.key} onClick={() => this.action()}>
+      <CardButton cardValues={CardValues} key={this.key} onClick={() => this.action()}>
         <div className="interiorContainer">
           <div className="header">
             <div className="title">{this.label}</div>
