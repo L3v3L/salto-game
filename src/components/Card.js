@@ -6,10 +6,10 @@ import styled from "styled-components";
 import * as selectors from "../ducks/selectors";
 
 import {
-  addCardToDiscard,
+  addCardToBattleDeck,
   attackMonster,
   decrementPlayerActions,
-  removeCardFromHand,
+  removeCardFromBattleDeck,
   setQueuedActions,
   enableTargetSelection,
   setSelectedTarget
@@ -23,7 +23,7 @@ const CardValues = {
   width: cardWidth,
   height: cardHeight,
   innerBorder: innerBorder,
-  interiorHeight: cardHeight - 2*innerBorder,
+  interiorHeight: cardHeight - 2 * innerBorder
 };
 
 const CardButton = styled.div`
@@ -113,8 +113,16 @@ export class Card extends Component {
           }
         }
         this.props.decrementPlayerActions(this.cost);
-        this.props.removeCardFromHand(this.uuid);
-        this.props.addCardToDiscard(this.uuid);
+
+        this.removeCardFromBattleDeck({
+          uuid: this.uuid,
+          targetDeck: "hand"
+        });
+
+        this.addCardToBattleDeck({
+          uuid: this.uuid,
+          targetDeck: "discard"
+        });
       }
     }
   }
@@ -146,7 +154,11 @@ export class Card extends Component {
 
   render() {
     return (
-      <CardButton cardValues={CardValues} key={this.key} onClick={() => this.action()}>
+      <CardButton
+        cardValues={CardValues}
+        key={this.key}
+        onClick={() => this.action()}
+      >
         <div className="interiorContainer">
           <div className="header">
             <div className="title">{this.label}</div>
@@ -176,20 +188,20 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({
-      addCardToDiscard,
-      attackMonster,
-      decrementPlayerActions,
-      removeCardFromHand,
-      setQueuedActions,
-      enableTargetSelection,
-      setSelectedTarget
-    }, dispatch),
+    ...bindActionCreators(
+      {
+        addCardToBattleDeck,
+        attackMonster,
+        decrementPlayerActions,
+        removeCardFromBattleDeck,
+        setQueuedActions,
+        enableTargetSelection,
+        setSelectedTarget
+      },
+      dispatch
+    ),
     dispatch
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Card);
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

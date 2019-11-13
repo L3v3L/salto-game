@@ -46,8 +46,8 @@ class Battle extends Component {
     props.setBattleMaxAP(props.allState.player.maxAP);
     props.setBattleCurrentAP(props.allState.player.maxAP);
 
-    props.setBattleDeck(battleDeck);
-    props.setHandDeck(handDeck);
+    props.setBattleDeck(battleDeck, "deck");
+    props.setBattleDeck(handDeck, "hand");
 
     props.addMonster(1);
     props.addMonster(0);
@@ -228,7 +228,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Battle);
+export default connect(mapStateToProps, mapDispatchToProps)(Battle);
