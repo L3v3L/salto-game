@@ -29,12 +29,23 @@ export const initialState = {
     discard: [],
     queuedActions: [],
     monsters: [],
-    monsterMoves: {}
+    monsterMoves: {},
+    turn: 0
   }
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case types.ADD_BATTLE_TURN: {
+      const { value } = action.payload;
+      return {
+        ...state,
+        batte: {
+          ...state.battle,
+          turn: state.battle.turn + value
+        }
+      };
+    }
     case types.ADD_CARD_TO_DECK: {
       const { id } = action.payload;
       return {

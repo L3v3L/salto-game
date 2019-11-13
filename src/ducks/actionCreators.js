@@ -80,6 +80,13 @@ export const attackMonsterById = (id, dmg) => ({
   }
 });
 
+export const addToBattleTurn = value => ({
+  type: types.ADD_BATTLE_TURN,
+  payload: {
+    value
+  }
+});
+
 export const setBattleDeck = ({ deckArray, targetDeck }) => ({
   type: types.SET_BATTLE_DECK,
   payload: { deckArray, targetDeck }
