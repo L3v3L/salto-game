@@ -278,7 +278,7 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.ACTIVATE_CARD: {
+    case types.ACTIVATE_CARD_FROM_HAND: {
       const { uuid } = action.payload;
 
       const cardsInHand = state.battle.hand.map((card) => {
@@ -301,14 +301,23 @@ export default function reducer(state = initialState, action = {}) {
       }
     }
 
-    case types.DEACTIVATE_CARD: {
+    case types.DEACTIVATE_CARD_FROM_HAND: {
+      const { uuid } = action.payload;
+
+      const cardsInHand = state.battle.hand.map((card) => {
+        if (card.uuid === uuid) {
+          card.isActive = false;
+        }
+        return card;
+      });
+
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: {
-            ...state.battle.hand
-          }
+          hand: [
+            ...cardsInHand
+          ]
         }
       }
     }

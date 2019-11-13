@@ -107,7 +107,7 @@ export const playCardActivate = store => next => action => {
 
   if (action.type === types.PLAY_CARD && !card) {
     store.dispatch(actions.enableTargetSelection());
-    store.dispatch(actions.activateCard(action.payload.uuid));
+    store.dispatch(actions.activateCardFromHand(action.payload.uuid));
   }
 
   next(action);

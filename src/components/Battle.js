@@ -34,7 +34,7 @@ class Battle extends Component {
     super(props);
     this.state = {};
 
-    let battleDeck = _.shuffle(props.allState.player.deck);
+    let battleDeck = _.cloneDeep(_.shuffle(props.allState.player.deck));
     let handDeck = [];
 
     let amountCardsStarting = 5;
