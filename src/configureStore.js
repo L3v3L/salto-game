@@ -2,7 +2,13 @@ import { createStore, compose, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 
 import reducer from "./ducks/reducer";
-import { buffAttack, endTurn } from "./ducks/middlewares";
+import {
+  buffAttack,
+  endTurn,
+  playCardActivate,
+  playCardExecute,
+  targetSelectionDisable,
+} from "./ducks/middlewares";
 
 const loggerMiddleware = createLogger({
   collapsed: (getState, action, logEntry) => !logEntry.error
@@ -14,7 +20,16 @@ const configureStore = initialState =>
   createStore(
     reducer,
     initialState,
-    composeEnhancers(applyMiddleware(buffAttack, endTurn, loggerMiddleware))
+    composeEnhancers(
+      applyMiddleware(
+        buffAttack,
+        targetSelectionDisable,
+        playCardActivate,
+        playCardExecute,
+        endTurn,
+        loggerMiddleware
+      )
+    )
   );
 
 export default configureStore;

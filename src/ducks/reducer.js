@@ -20,7 +20,6 @@ export const initialState = {
   battle: {
     selectingCard: true,
     selectingTarget: false,
-    selectedTarget: null,
     hp: 100,
     currentAP: 0,
     maxAP: 0,
@@ -52,7 +51,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         player: {
           ...state.player,
-          deck: [...state.player.deck, { id: id, uuid: ++nextCardUUID }]
+          deck: [...state.player.deck, { id: id, uuid: ++nextCardUUID, isActive: false }]
         }
       };
     }
@@ -199,17 +198,6 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.SET_SELECTED_TARGET: {
-      const { uuid } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          selectedTarget: uuid
-        }
-      };
-    }
-
     case types.SET_BATTLE_CURRENT_AP: {
       const { ap } = action.payload;
       return {
@@ -248,24 +236,8 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.ATTACK_TARGETED_MONSTER: {
-      const { dmg } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsters: state.battle.monsters.map(monster => {
-            if (monster.uuid === state.battle.selectedTarget) {
-              monster.hp = dmg <= monster.hp ? monster.hp - dmg : 0;
-            }
-            return monster;
-          })
-        }
-      };
-    }
-
     case types.CREATE_CARD: {
-      const { id, name, description, cost, actions } = action.payload;
+      const { id, name, description, cost, actions, needsTarget, target } = action.payload;
       return {
         ...state,
         cards: {
@@ -276,7 +248,9 @@ export default function reducer(state = initialState, action = {}) {
               name,
               cost,
               description,
-              actions
+              actions,
+              needsTarget,
+              target
             }
           }
         }
@@ -290,7 +264,6 @@ export default function reducer(state = initialState, action = {}) {
           ...state.battle,
           selectingCard: false,
           selectingTarget: true,
-          selectedTarget: undefined
         }
       };
     }
@@ -304,6 +277,41 @@ export default function reducer(state = initialState, action = {}) {
           selectingTarget: false
         }
       };
+    }
+
+    case types.ACTIVATE_CARD: {
+      const { uuid } = action.payload;
+
+      const cardsInHand = state.battle.hand.map((card) => {
+        if (card.uuid === uuid) {
+          card.isActive = true;
+        } else {
+          card.isActive = false;
+        }
+        return card;
+      });
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          hand: [
+            ...cardsInHand
+          ]
+        }
+      }
+    }
+
+    case types.DEACTIVATE_CARD: {
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          hand: {
+            ...state.battle.hand
+          }
+        }
+      }
     }
 
     default:

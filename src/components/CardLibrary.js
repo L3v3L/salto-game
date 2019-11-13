@@ -1,17 +1,15 @@
+import * as creators from '../ducks/actionCreators'
+
 export const CardLibrary = [
   {
     id: 1,
     name: "Attack",
     cost: 3,
     description: "attacks %value",
+    needsTarget: true,
+    target: null,
     actions: [
-      {
-        type: "target",
-      },
-      {
-        type: "attack",
-        value: 3,
-      }
+      creators.attackMonster({dmg: 3})
     ]
   },
   {
@@ -19,11 +17,10 @@ export const CardLibrary = [
     name: "Block",
     cost: 2,
     description: "blocks %value",
+    needsTarget: true,
+    target: null,
     actions: [
-      {
-        type: "block",
-        value: 2
-      }
+      creators.attackMonster({dmg: 3})
     ]
   }
 ];

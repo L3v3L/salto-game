@@ -50,7 +50,6 @@ class Battle extends Component {
 
     props.addMonster(1);
     props.addMonster(0);
-    this.dispatchQueuedActions = this.dispatchQueuedActions.bind(this);
   }
 
   render() {
@@ -74,7 +73,6 @@ class Battle extends Component {
                   id={monster.monster.id}
                   hp={monster.monster.hp}
                   maxHp={monster.ref.hp}
-                  dispatchQueuedActions={this.dispatchQueuedActions}
                 />
               );
             })}
@@ -123,22 +121,16 @@ class Battle extends Component {
                   label={cardInHand.ref.name}
                   key={cardInHand.card.uuid}
                   uuid={cardInHand.card.uuid}
+                  id={cardInHand.card.id}
                   cost={cardInHand.ref.cost}
                   actions={cardInHand.ref.actions}
                   description={cardInHand.ref.description}
-                  dispatchQueuedActions={this.dispatchQueuedActions}
                 />
               );
             })}
         </Hand>
         <button onClick={() => this.props.addToBattleTurn(1)}>End Turn</button>
       </div>
-    );
-  }
-
-  dispatchQueuedActions() {
-    this.props.allState.battle.queuedActions.map(action =>
-      this.props.dispatch(action)
     );
   }
 }
