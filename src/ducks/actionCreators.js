@@ -92,9 +92,9 @@ export const setBattleDeck = ({ deckArray, targetDeck }) => ({
   payload: { deckArray, targetDeck }
 });
 
-export const setBattleHP = hp => ({
-  type: types.SET_BATTLE_HP,
-  payload: { hp }
+export const addToBattleHP = value => ({
+  type: types.ADD_TO_BATTLE_HP,
+  payload: { value }
 });
 
 export const setBattleCurrentAP = ap => ({

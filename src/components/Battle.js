@@ -42,12 +42,11 @@ class Battle extends Component {
       handDeck.push(battleDeck.pop());
     }
 
-    props.setBattleHP(props.allState.player.hp);
     props.setBattleMaxAP(props.allState.player.maxAP);
     props.setBattleCurrentAP(props.allState.player.maxAP);
 
-    props.setBattleDeck(battleDeck, "deck");
-    props.setBattleDeck(handDeck, "hand");
+    props.setBattleDeck({ deckArray: battleDeck, targetDeck: "deck" });
+    props.setBattleDeck({ deckArray: handDeck, targetDeck: "hand" });
 
     props.addMonster(1);
     props.addMonster(0);

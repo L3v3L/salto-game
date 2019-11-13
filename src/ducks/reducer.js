@@ -21,7 +21,7 @@ export const initialState = {
     selectingCard: true,
     selectingTarget: false,
     selectedTarget: null,
-    hp: 0,
+    hp: 100,
     currentAP: 0,
     maxAP: 0,
     deck: [],
@@ -40,7 +40,7 @@ export default function reducer(state = initialState, action = {}) {
       const { value } = action.payload;
       return {
         ...state,
-        batte: {
+        battle: {
           ...state.battle,
           turn: state.battle.turn + value
         }
@@ -177,13 +177,13 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.SET_BATTLE_HP: {
-      const { hp } = action.payload;
+    case types.ADD_TO_BATTLE_HP: {
+      const { value } = action.payload;
       return {
         ...state,
         battle: {
           ...state.battle,
-          hp: hp
+          hp: state.battle.hp + value
         }
       };
     }
