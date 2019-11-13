@@ -33,3 +33,5 @@ export const getMonsterById = (store, id) =>
 
 export const getMonsters = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
+
+export const getHP = store => getAllState(store).battle.hp;

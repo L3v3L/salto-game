@@ -39,9 +39,18 @@ export const endTurn = store => next => action => {
       amountCardsToDraw--;
     }
 
-    store.dispatch(actions.setBattleDeck(newdeckArray, "deck"));
-    store.dispatch(actions.setBattleDeck(newHandArray, "hand"));
-    store.dispatch(actions.setBattleDeck(newDiscardArray, "discard"));
+    store.dispatch(
+      actions.setBattleDeck({ deckArray: newdeckArray, targetDeck: "deck" })
+    );
+    store.dispatch(
+      actions.setBattleDeck({ deckArray: newHandArray, targetDeck: "hand" })
+    );
+    store.dispatch(
+      actions.setBattleDeck({
+        deckArray: newDiscardArray,
+        targetDeck: "discard"
+      })
+    );
 
     store.dispatch(actions.setBattleCurrentAP(state.battle.maxAP));
 
@@ -51,7 +60,7 @@ export const endTurn = store => next => action => {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
             case "attack":
-              store.dispatch(actions.setBattleHP(state.battle.hp - move.value));
+              store.dispatch(actions.addToBattleHP(0 - move.value));
               break;
             case "block":
               console.log("block " + move.value);

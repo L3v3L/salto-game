@@ -114,12 +114,12 @@ export class Card extends Component {
         }
         this.props.decrementPlayerActions(this.cost);
 
-        this.removeCardFromBattleDeck({
+        this.props.removeCardFromBattleDeck({
           uuid: this.uuid,
           targetDeck: "hand"
         });
 
-        this.addCardToBattleDeck({
+        this.props.addCardToBattleDeck({
           uuid: this.uuid,
           targetDeck: "discard"
         });
