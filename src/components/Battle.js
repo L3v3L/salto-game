@@ -54,74 +54,6 @@ class Battle extends Component {
     this.dispatchQueuedActions = this.dispatchQueuedActions.bind(this);
   }
 
-  endTurn() {
-    const maxCardsToDraw = 5;
-
-    let newDiscardArray = this.props.allState.battle.discard;
-    let newHandArray = this.props.allState.battle.hand;
-    let newdeckArray = this.props.allState.battle.deck;
-
-    let amountCardsToDraw = Math.min(
-      newDiscardArray.length + newdeckArray.length,
-      maxCardsToDraw
-    );
-
-    newDiscardArray = newDiscardArray.concat(newHandArray);
-    newHandArray = [];
-
-    while (amountCardsToDraw) {
-      if (!newdeckArray.length) {
-        newdeckArray = newDiscardArray;
-        newDiscardArray = [];
-        newdeckArray = _.shuffle(newdeckArray);
-      }
-      newHandArray.push(newdeckArray.pop());
-      amountCardsToDraw--;
-    }
-
-    this.props.setBattleDeck(newdeckArray);
-    this.props.setHandDeck(newHandArray);
-    this.props.setDiscardDeck(newDiscardArray);
-
-    this.props.setBattleCurrentAP(this.props.allState.battle.maxAP);
-
-    //run monster queue attacks
-
-    this.props.allState.battle.monsters.map(monster => {
-      if (this.props.allState.battle.monsterMoves[monster.uuid]) {
-        this.props.allState.battle.monsterMoves[monster.uuid].map(move => {
-          switch (move.type) {
-            case "attack":
-              this.props.setBattleHP(
-                this.props.allState.battle.hp - move.value
-              );
-              break;
-            case "block":
-              console.log("block " + move.value);
-              break;
-            default:
-              break;
-          }
-          return null;
-        });
-      }
-      return null;
-    });
-
-    this.props.resetMonsterMoves();
-
-    this.props.allState.battle.monsters.map(monster => {
-      let monsterRef = this.props.monsters.find(
-        monsterLib => monsterLib.id === monster.id
-      );
-      this.props.setMonsterMoves(
-        monster.uuid,
-        monsterRef.moves[Math.floor(Math.random() * monsterRef.moves.length)]
-      );
-      return null;
-    });
-  }
-
   render() {
     return (
       <div>
@@ -200,7 +132,7 @@ class Battle extends Component {
               );
             })}
         </Hand>
-        <button onClick={() => this.endTurn()}>End Turn</button>
+        <button onClick={() => this.props.addToBattleTurn(1)}>End Turn</button>
       </div>
     );
   }
