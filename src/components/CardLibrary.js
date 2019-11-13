@@ -7,9 +7,8 @@ export const CardLibrary = [
     cost: 3,
     description: "attacks %value",
     needsTarget: true,
-    target: null,
     actions: [
-      creators.attackMonster({dmg: 3})
+      creators.attackMonster({dmg: 10})
     ]
   },
   {
@@ -18,9 +17,8 @@ export const CardLibrary = [
     cost: 2,
     description: "blocks %value",
     needsTarget: true,
-    target: null,
     actions: [
-      creators.attackMonster({dmg: 3})
+      creators.attackMonster({dmg: -10})
     ]
   }
 ];

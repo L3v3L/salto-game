@@ -22,7 +22,6 @@ const configureStore = initialState =>
     initialState,
     composeEnhancers(
       applyMiddleware(
-        buffAttack,
         targetSelectionDisable,
         playCardActivate,
         playCardExecute,

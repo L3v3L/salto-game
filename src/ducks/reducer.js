@@ -237,7 +237,7 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case types.CREATE_CARD: {
-      const { id, name, description, cost, actions, needsTarget, target } = action.payload;
+      const { id, name, description, cost, actions, needsTarget } = action.payload;
       return {
         ...state,
         cards: {
@@ -249,8 +249,7 @@ export default function reducer(state = initialState, action = {}) {
               cost,
               description,
               actions,
-              needsTarget,
-              target
+              needsTarget
             }
           }
         }
