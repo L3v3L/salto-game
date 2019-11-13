@@ -1,4 +1,4 @@
-import * as types from './actionTypes'
+import * as types from "./actionTypes";
 
 export const addCardToDeck = id => ({
   type: types.ADD_CARD_TO_DECK,
@@ -7,24 +7,11 @@ export const addCardToDeck = id => ({
   }
 });
 
-export const addCardToBattleDeck = uuid => ({
+export const addCardToBattleDeck = ({ uuid, targetDeck }) => ({
   type: types.ADD_CARD_TO_BATTLE_DECK,
   payload: {
-    uuid
-  }
-});
-
-export const addCardToDiscard = uuid => ({
-  type: types.ADD_CARD_TO_DISCARD,
-  payload: {
-    uuid
-  }
-});
-
-export const addCardToHand = uuid => ({
-  type: types.ADD_CARD_TO_HAND,
-  payload: {
-    uuid
+    uuid,
+    targetDeck
   }
 });
 
@@ -35,24 +22,11 @@ export const removeCardFromDeck = uuid => ({
   }
 });
 
-export const removeCardFromBattleDeck = uuid => ({
+export const removeCardFromBattleDeck = ({ uuid, targetDeck }) => ({
   type: types.REMOVE_CARD_FROM_BATTLE_DECK,
   payload: {
-    uuid
-  }
-});
-
-export const removeCardFromDiscard = uuid => ({
-  type: types.REMOVE_CARD_FROM_DISCARD,
-  payload: {
-    uuid
-  }
-});
-
-export const removeCardFromHand = uuid => ({
-  type: types.REMOVE_CARD_FROM_HAND,
-  payload: {
-    uuid
+    uuid,
+    targetDeck
   }
 });
 
@@ -106,19 +80,16 @@ export const attackMonsterById = (id, dmg) => ({
   }
 });
 
-export const setBattleDeck = deck => ({
+export const addToBattleTurn = value => ({
+  type: types.ADD_BATTLE_TURN,
+  payload: {
+    value
+  }
+});
+
+export const setBattleDeck = ({ deckArray, targetDeck }) => ({
   type: types.SET_BATTLE_DECK,
-  payload: { deck }
-});
-
-export const setDiscardDeck = deck => ({
-  type: types.SET_DISCARD_DECK,
-  payload: { deck }
-});
-
-export const setHandDeck = deck => ({
-  type: types.SET_HAND_DECK,
-  payload: { deck }
+  payload: { deckArray, targetDeck }
 });
 
 export const setBattleHP = hp => ({
