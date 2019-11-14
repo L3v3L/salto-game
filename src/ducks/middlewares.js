@@ -1,11 +1,11 @@
-import * as types from "./actionTypes";
-import * as actions from "./actionCreators";
-import * as selectors from "../ducks/selectors";
 import _ from "lodash";
+import * as types from './actionTypes'
+import * as actions from './actionCreators'
+import * as selectors from './selectors'
 
 export const buffAttack = store => next => action => {
-  if (action.type === types.ATTACK_TARGETED_MONSTER) {
-    action.payload.dmg = 50;
+  if (action.type === types.ATTACK_MONSTER) {
+    action.payload.dmg = 10;
   }
 
   next(action);
@@ -17,9 +17,26 @@ export const endTurn = store => next => action => {
 
     const maxCardsToDraw = 5;
 
-    let newDiscardArray = state.battle.discard;
-    let newHandArray = state.battle.hand;
-    let newdeckArray = state.battle.deck;
+    store.dispatch(actions.disableTargetSelection());
+
+    let newDiscardArray = state.battle.discard.map((card) => {
+      if (card.isActive) {
+        card.isActive = false;
+      }
+      return card;
+    });
+    let newHandArray = state.battle.hand.map((card) => {
+      if (card.isActive) {
+        card.isActive = false;
+      }
+      return card;
+    });
+    let newdeckArray = state.battle.deck.map((card) => {
+      if (card.isActive) {
+        card.isActive = false;
+      }
+      return card;
+    });
 
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
@@ -92,3 +109,56 @@ export const endTurn = store => next => action => {
 
   next(action);
 };
+
+export const targetSelectionDisable = store => next => action => {
+  if (action.type === types.SET_SELECTED_TARGET) {
+    store.dispatch(actions.disableTargetSelection());
+  }
+
+  next(action);
+}
+
+export const playCardActivate = store => next => action => {
+  const state = store.getState();
+  const card = selectors.getActiveCard(state);
+
+  if (action.type === types.PLAY_CARD && !card) {
+    store.dispatch(actions.enableTargetSelection());
+    store.dispatch(actions.activateCardFromHand(action.payload.uuid));
+  }
+
+  next(action);
+}
+
+export const playCardExecute = store => next => action => {
+  const { target } = action.payload;
+  const state = store.getState();
+
+  const activeCard = selectors.getActiveCard(state);
+  const card = activeCard ? selectors.getCardById(state, activeCard.id) : undefined;
+
+  if (action.type === types.PLAY_CARD && card && target !== undefined) {
+    store.dispatch(actions.disableTargetSelection());
+
+    card.actions.map((action) => {
+      if (card.needsTarget && action.type === types.ATTACK_MONSTER) {
+        action.payload.uuid = target;
+      }
+      return store.dispatch(action)
+    });
+
+    store.dispatch(actions.decrementPlayerActions(card.cost));
+    
+    store.dispatch(actions.removeCardFromBattleDeck({
+      uuid: activeCard.uuid,
+      targetDeck: "hand"
+    }));
+
+    store.dispatch(actions.addCardToBattleDeck({
+      uuid: activeCard.uuid,
+      targetDeck: "discard"
+    }));
+  }
+
+  next(action);
+}

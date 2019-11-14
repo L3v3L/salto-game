@@ -34,7 +34,7 @@ class Battle extends Component {
     super(props);
     this.state = {};
 
-    let battleDeck = _.shuffle(props.allState.player.deck);
+    let battleDeck = _.cloneDeep(_.shuffle(props.allState.player.deck));
     let handDeck = [];
 
     let amountCardsStarting = 5;
@@ -50,7 +50,6 @@ class Battle extends Component {
 
     props.addMonster(1);
     props.addMonster(0);
-    this.dispatchQueuedActions = this.dispatchQueuedActions.bind(this);
   }
 
   render() {
@@ -74,7 +73,6 @@ class Battle extends Component {
                   id={monster.monster.id}
                   hp={monster.monster.hp}
                   maxHp={monster.ref.hp}
-                  dispatchQueuedActions={this.dispatchQueuedActions}
                 />
               );
             })}
@@ -120,25 +118,20 @@ class Battle extends Component {
             .map(cardInHand => {
               return (
                 <Card
-                  label={cardInHand.ref.name}
                   key={cardInHand.card.uuid}
                   uuid={cardInHand.card.uuid}
+                  isActive={this.props.activeCard ? this.props.activeCard.uuid === cardInHand.card.uuid : false}
+                  id={cardInHand.card.id}
+                  label={cardInHand.ref.name}
                   cost={cardInHand.ref.cost}
                   actions={cardInHand.ref.actions}
                   description={cardInHand.ref.description}
-                  dispatchQueuedActions={this.dispatchQueuedActions}
                 />
               );
             })}
         </Hand>
         <button onClick={() => this.props.addToBattleTurn(1)}>End Turn</button>
       </div>
-    );
-  }
-
-  dispatchQueuedActions() {
-    this.props.allState.battle.queuedActions.map(action =>
-      this.props.dispatch(action)
     );
   }
 }
@@ -148,8 +141,9 @@ const mapStateToProps = state => {
   const cards = selectors.getCards(state);
   const monsters = selectors.getMonsters(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
+  const activeCard = selectors.getActiveCard(state);
 
-  return { allState, monsters, cards, isSelectingTarget };
+  return { allState, monsters, cards, isSelectingTarget, activeCard };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -1,28 +1,24 @@
 export const getAllState = store => store;
 
+// Battle
+export const getBattleState = store => store.battle;
+
 export const getCurrentAP = store =>
-  getAllState(store) ? getAllState(store).battle.currentAP : 0;
+  getBattleState(store) ? getBattleState(store).currentAP : 0;
+
+export const getHP = store =>
+  getBattleState(store) ? getBattleState(store).hp : 0;
 
 export const getIsSelectingCard = store =>
-  getAllState(store) ? getAllState(store).battle.selectingCard : false;
+  getBattleState(store) ? getBattleState(store).selectingCard : false;
 
 export const getIsSelectingTarget = store =>
-  getAllState(store) ? getAllState(store).battle.selectingTarget : false;
+  getBattleState(store) ? getBattleState(store).selectingTarget : false;
 
 export const getQueuedActions = store =>
-  getAllState(store) ? getAllState(store).battle.queuecActions : [];
+  getBattleState(store) ? getBattleState(store).queuedActions : [];
 
-export const getCardState = store => store.cards;
-
-export const getCardList = store =>
-  getCardState(store) ? getCardState(store).allIds : [];
-
-export const getCardById = (store, id) =>
-  getCardState(store) ? { ...getCardState(store).byIds[id], id } : {};
-
-export const getCards = store =>
-  getCardList(store).map(id => getCardById(store, id));
-
+// Monsters
 export const getMonsterState = store => (store.monsters ? store.monsters : {});
 
 export const getMonsterList = store =>
@@ -34,4 +30,21 @@ export const getMonsterById = (store, id) =>
 export const getMonsters = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
 
-export const getHP = store => getAllState(store).battle.hp;
+// Cards
+export const getCardsState = store => store.cards;
+
+export const getCardList = store =>
+  getCardsState(store) ? getCardsState(store).allIds : [];
+
+export const getCardById = (store, id) =>
+  getCardsState(store) ? { ...getCardsState(store).byIds[id], id } : {};
+
+export const getCards = store =>
+  getCardList(store).map(id => getCardById(store, id));
+
+
+export const getHandState = store => 
+  getBattleState(store) ? getBattleState(store).hand : [];
+
+export const getActiveCard = store => 
+  getHandState(store).find(card => card["isActive"])

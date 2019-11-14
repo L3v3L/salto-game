@@ -10,7 +10,8 @@ import { getIsSelectingTarget } from '../ducks/selectors'
 
 import {
   disableTargetSelection,
-  setSelectedTarget
+  setSelectedTarget,
+  playCard
 } from "../ducks/actionCreators";
 
 const bounceAnimation = keyframes`${bounce}`;
@@ -25,7 +26,6 @@ export class Monster extends Component {
     this.state = {};
     this.id = props.id;
     this.uuid = props.uuid;
-    this.dispatchQueuedActions = props.dispatchQueuedActions;
   }
 
   componentDidMount() {
@@ -49,9 +49,7 @@ export class Monster extends Component {
 
   action() {
     if (this.props.isSelectingTarget) {
-      this.props.setSelectedTarget(this.uuid);
-      this.dispatchQueuedActions();
-      this.props.disableTargetSelection();
+      this.props.playCard({target: this.uuid});
     }
   }
 
@@ -75,7 +73,8 @@ const mapDispatchToProps = dispatch => {
   return {
     ...bindActionCreators({
       setSelectedTarget,
-      disableTargetSelection
+      disableTargetSelection,
+      playCard
     }, dispatch),
     dispatch
   };

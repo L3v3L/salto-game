@@ -6,13 +6,9 @@ import styled from "styled-components";
 import * as selectors from "../ducks/selectors";
 
 import {
-  addCardToBattleDeck,
-  attackMonster,
-  decrementPlayerActions,
-  removeCardFromBattleDeck,
-  setQueuedActions,
-  enableTargetSelection,
-  setSelectedTarget
+  deactivateCardFromHand,
+  disableTargetSelection,
+  playCard
 } from "../ducks/actionCreators";
 
 const cardWidth = 150;
@@ -89,66 +85,26 @@ export class Card extends Component {
     this.key = props.key;
     this.cost = props.cost;
     this.uuid = props.uuid;
+    this.id = props.id;
+
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
 
     this.actions = props.actions ? props.actions : [];
-    this.dispatchQueuedActions = props.dispatchQueuedActions;
-    this.shouldDispatchActions = true;
   }
+
 
   action() {
     if (this.props.isSelectingCard) {
-      this.props.setQueuedActions([]);
-
       if (this.cost <= this.props.currentAP) {
-        if (this.props.actions) {
-          this.props.setQueuedActions(
-            this.buildActionQueue(this.props.actions)
-          );
-
-          if (this.shouldDispatchActions) {
-            this.dispatchQueuedActions();
-          }
-        }
-        this.props.decrementPlayerActions(this.cost);
-
-        this.props.removeCardFromBattleDeck({
+        this.props.playCard({
           uuid: this.uuid,
-          targetDeck: "hand"
-        });
-
-        this.props.addCardToBattleDeck({
-          uuid: this.uuid,
-          targetDeck: "discard"
         });
       }
-    }
-  }
-
-  buildActionQueue(actions) {
-    this.shouldDispatchActions = true;
-    let actionsToQueue = actions;
-
-    if (actions[0]["type"] === "target") {
-      this.props.enableTargetSelection(true);
-      this.shouldDispatchActions = false;
-      actionsToQueue = actions.slice(1);
-    }
-
-    return actionsToQueue
-      .map(action => this.createAction(action))
-      .filter(action => action);
-  }
-
-  createAction(action) {
-    switch (action.type) {
-      case "attack":
-        return attackMonster(action.value);
-
-      default:
-        break;
+    } else if (this.props.isActive) {
+      this.props.deactivateCardFromHand(this.uuid);
+      this.props.disableTargetSelection();
     }
   }
 
@@ -166,8 +122,8 @@ export class Card extends Component {
           </div>
           <div className="image">
             <image></image>
+          <div>{this.props.isActive ? 'ACTIVE' : ''}</div>
           </div>
-
           <div className="body">
             <div>{this.description}</div>
           </div>
@@ -182,21 +138,18 @@ const mapStateToProps = state => {
   const monsters = selectors.getMonsters(state);
   const isSelectingCard = selectors.getIsSelectingCard(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
+  const activeCard = selectors.getActiveCard(state);
 
-  return { currentAP, monsters, isSelectingCard, isSelectingTarget };
+  return { currentAP, monsters, isSelectingCard, isSelectingTarget, activeCard };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     ...bindActionCreators(
       {
-        addCardToBattleDeck,
-        attackMonster,
-        decrementPlayerActions,
-        removeCardFromBattleDeck,
-        setQueuedActions,
-        enableTargetSelection,
-        setSelectedTarget
+        playCard,
+        deactivateCardFromHand,
+        disableTargetSelection
       },
       dispatch
     ),

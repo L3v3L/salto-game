@@ -37,14 +37,16 @@ export const decrementPlayerActions = amount => ({
   }
 });
 
-export const createCard = ({ id, name, description, cost, actions }) => ({
+export const createCard = ({ id, name, description, cost, actions, needsTarget, target }) => ({
   type: types.CREATE_CARD,
   payload: {
     id,
     name,
     description,
     cost,
-    actions
+    actions,
+    needsTarget,
+    target
   }
 });
 
@@ -65,17 +67,10 @@ export const addMonster = id => ({
   }
 });
 
-export const attackMonster = dmg => ({
-  type: types.ATTACK_TARGETED_MONSTER,
-  payload: {
-    dmg
-  }
-});
-
-export const attackMonsterById = (id, dmg) => ({
+export const attackMonster = ({uuid, dmg}) => ({
   type: types.ATTACK_MONSTER,
   payload: {
-    id,
+    uuid,
     dmg
   }
 });
@@ -136,3 +131,18 @@ export const resetMonsterMoves = () => ({
   type: types.RESET_ALL_MONSTER_MOVES,
   payload: {}
 });
+
+export const playCard = ({uuid, target}) => ({
+  type: types.PLAY_CARD,
+  payload: { uuid, target}
+})
+
+export const activateCardFromHand = (uuid) => ({
+  type: types.ACTIVATE_CARD_FROM_HAND,
+  payload: { uuid }
+})
+
+export const deactivateCardFromHand = (uuid) => ({
+  type: types.DEACTIVATE_CARD_FROM_HAND,
+  payload: { uuid }
+})
