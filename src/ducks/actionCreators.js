@@ -138,11 +138,11 @@ export const playCard = ({uuid, target}) => ({
 })
 
 export const activateCardFromHand = (uuid) => ({
-  type: types.ACTIVATE_CARD_FROM_HAND,
+  type: types.ACTIVATE_CARD,
   payload: { uuid }
 })
 
 export const deactivateCardFromHand = (uuid) => ({
-  type: types.DEACTIVATE_CARD_FROM_HAND,
+  type: types.DEACTIVATE_CARD,
   payload: { uuid }
 })

@@ -51,7 +51,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         player: {
           ...state.player,
-          deck: [...state.player.deck, { id: id, uuid: ++nextCardUUID, isActive: false }]
+          deck: [...state.player.deck, { id: id, uuid: ++nextCardUUID }]
         }
       };
     }
@@ -278,46 +278,25 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.ACTIVATE_CARD_FROM_HAND: {
+    case types.ACTIVATE_CARD: {
       const { uuid } = action.payload;
-
-      const cardsInHand = state.battle.hand.map((card) => {
-        if (card.uuid === uuid) {
-          card.isActive = true;
-        } else {
-          card.isActive = false;
-        }
-        return card;
-      });
 
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: [
-            ...cardsInHand
-          ]
+          activeCard: uuid
         }
       }
     }
 
-    case types.DEACTIVATE_CARD_FROM_HAND: {
-      const { uuid } = action.payload;
-
-      const cardsInHand = state.battle.hand.map((card) => {
-        if (card.uuid === uuid) {
-          card.isActive = false;
-        }
-        return card;
-      });
+    case types.DEACTIVATE_CARD: {
 
       return {
         ...state,
         battle: {
           ...state.battle,
-          hand: [
-            ...cardsInHand
-          ]
+          activeCard: null,
         }
       }
     }

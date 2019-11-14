@@ -46,5 +46,11 @@ export const getCards = store =>
 export const getHandState = store => 
   getBattleState(store) ? getBattleState(store).hand : [];
 
-export const getActiveCard = store => 
-  getHandState(store).find(card => card["isActive"])
+export const getActiveCard = store => {
+  const state = getBattleState(store);
+  if(state && state.activeCard) {
+    return state.hand.find((card) => {
+      return card.uuid === state.activeCard;
+    })
+  }
+}
