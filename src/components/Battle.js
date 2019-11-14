@@ -5,6 +5,7 @@ import _ from "lodash";
 
 import Card from "./Card";
 import Monster from "./Monster";
+import CardPile from './CardPile';
 
 import * as selectors from "../ducks/selectors";
 import * as actionCreators from "../ducks/actionCreators";
@@ -26,8 +27,11 @@ const Hand = styled.div`
 `;
 
 const BattleStats = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-family: monospace;
 `;
+
 
 class Battle extends Component {
   constructor(props) {
@@ -55,6 +59,17 @@ class Battle extends Component {
   render() {
     return (
       <div>
+        <BattleStats>
+          <CardPile
+            name='deck'
+            size={this.props.allState.battle.deck.length}
+          />
+          <CardPile
+            name='discard'
+            size={this.props.allState.battle.discard.length}
+          />
+        </BattleStats>
+
         <Centered>
           {this.props.allState.battle.monsters
             .map(monster => {
@@ -93,13 +108,7 @@ class Battle extends Component {
           Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {this.props.allState.battle.hp}
           <br />
-          Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.deck.length}
-          <br />
           Cards in Hand:&nbsp;&nbsp;{this.props.allState.battle.hand.length}
-          <br />
-          Discard Pile:&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.discard.length}
           <br />
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {this.props.allState.battle.currentAP}/
