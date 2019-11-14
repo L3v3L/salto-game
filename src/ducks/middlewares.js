@@ -1,15 +1,7 @@
-import _ from "lodash";
-import * as types from './actionTypes'
-import * as actions from './actionCreators'
-import * as selectors from './selectors'
-
-export const buffAttack = store => next => action => {
-  if (action.type === types.ATTACK_MONSTER) {
-    action.payload.dmg = 10;
-  }
-
-  next(action);
-};
+import _ from 'lodash';
+import * as types from './actionTypes';
+import * as actions from './actionCreators';
+import * as selectors from './selectors';
 
 export const endTurn = store => next => action => {
   if (action.type === types.ADD_BATTLE_TURN) {
