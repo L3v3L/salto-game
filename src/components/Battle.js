@@ -118,10 +118,11 @@ class Battle extends Component {
             .map(cardInHand => {
               return (
                 <Card
-                  label={cardInHand.ref.name}
                   key={cardInHand.card.uuid}
                   uuid={cardInHand.card.uuid}
+                  isActive={this.props.activeCard ? this.props.activeCard.uuid === cardInHand.card.uuid : false}
                   id={cardInHand.card.id}
+                  label={cardInHand.ref.name}
                   cost={cardInHand.ref.cost}
                   actions={cardInHand.ref.actions}
                   description={cardInHand.ref.description}
@@ -140,8 +141,9 @@ const mapStateToProps = state => {
   const cards = selectors.getCards(state);
   const monsters = selectors.getMonsters(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
+  const activeCard = selectors.getActiveCard(state);
 
-  return { allState, monsters, cards, isSelectingTarget };
+  return { allState, monsters, cards, isSelectingTarget, activeCard };
 };
 
 const mapDispatchToProps = dispatch => {

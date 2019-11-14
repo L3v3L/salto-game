@@ -6,13 +6,8 @@ import styled from "styled-components";
 import * as selectors from "../ducks/selectors";
 
 import {
-  addCardToBattleDeck,
-  attackMonster,
-  decrementPlayerActions,
-  removeCardFromBattleDeck,
-  setQueuedActions,
-  enableTargetSelection,
-  setSelectedTarget,
+  deactivateCardFromHand,
+  disableTargetSelection,
   playCard
 } from "../ducks/actionCreators";
 
@@ -40,7 +35,7 @@ const CardButton = styled.div`
     1px 1px 0 #000;
   .interiorContainer {
     user-select: none;
-    border: ${props => props.cardValues.innerBorder}px solid #2f3534;
+    border: ${props => props.cardValues.innerBorder}px solid ${props => props.isActive ? 'red' : '#2f3534'};
     background-color: #9e9f6d;
     height: ${props => props.cardValues.interiorHeight}px;
     .header {
@@ -91,12 +86,14 @@ export class Card extends Component {
     this.cost = props.cost;
     this.uuid = props.uuid;
     this.id = props.id;
+
     this.description = props.description
       ? props.description.replace("%value", props.value)
       : "";
 
     this.actions = props.actions ? props.actions : [];
   }
+
 
   action() {
     if (this.props.isSelectingCard) {
@@ -105,6 +102,9 @@ export class Card extends Component {
           uuid: this.uuid,
         });
       }
+    } else if (this.props.isActive) {
+      this.props.deactivateCardFromHand(this.uuid);
+      this.props.disableTargetSelection();
     }
   }
 
@@ -122,8 +122,8 @@ export class Card extends Component {
           </div>
           <div className="image">
             <image></image>
+          <div>{this.props.isActive ? 'ACTIVE' : ''}</div>
           </div>
-
           <div className="body">
             <div>{this.description}</div>
           </div>
@@ -138,27 +138,21 @@ const mapStateToProps = state => {
   const monsters = selectors.getMonsters(state);
   const isSelectingCard = selectors.getIsSelectingCard(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
+  const activeCard = selectors.getActiveCard(state);
 
-  return { currentAP, monsters, isSelectingCard, isSelectingTarget };
+  return { currentAP, monsters, isSelectingCard, isSelectingTarget, activeCard };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     ...bindActionCreators(
       {
-        addCardToBattleDeck,
-        attackMonster,
-        decrementPlayerActions,
-        removeCardFromBattleDeck,
-        setQueuedActions,
-        enableTargetSelection,
-        setSelectedTarget
+        playCard,
+        deactivateCardFromHand,
+        disableTargetSelection
       },
       dispatch
     ),
-    ...bindActionCreators({
-      playCard,
-    }, dispatch),
     dispatch
   };
 };
