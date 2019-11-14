@@ -146,7 +146,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         battle: {
           ...state.battle,
-          [targetDeck]: deckArray
+          [targetDeck]: deckArray.map((item) => Object.assign({}, item))
         }
       };
     }
