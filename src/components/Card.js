@@ -35,7 +35,7 @@ const CardButton = styled.div`
     1px 1px 0 #000;
   .interiorContainer {
     user-select: none;
-    border: ${props => props.cardValues.innerBorder}px solid ${props => props.isActive ? 'red' : '#2f3534'};
+    border: ${props => props.cardValues.innerBorder}px solid #2f3534;
     background-color: #9e9f6d;
     height: ${props => props.cardValues.interiorHeight}px;
     .header {
