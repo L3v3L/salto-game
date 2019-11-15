@@ -104,12 +104,16 @@ export const targetSelectionDisable = store => next => action => {
 }
 
 export const playCardActivate = store => next => action => {
-  const state = store.getState();
-  const card = selectors.getActiveCard(state);
+  if (action.type === types.PLAY_CARD) {
+    const { id, uuid } = action.payload;
+    const state = store.getState();
+    const playedCardRef = selectors.getCardById(state, id);
+    const activeCard = selectors.getActiveCard(state);
 
-  if (action.type === types.PLAY_CARD && !card) {
-    store.dispatch(actions.enableTargetSelection());
-    store.dispatch(actions.activateCardFromHand(action.payload.uuid));
+    if (!activeCard && playedCardRef.needsTarget) {
+      store.dispatch(actions.enableTargetSelection());
+      store.dispatch(actions.activateCardFromHand(uuid));
+    }
   }
 
   next(action);
