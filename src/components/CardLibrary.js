@@ -13,12 +13,12 @@ export const CardLibrary = [
   },
   {
     id: 2,
-    name: "Block",
+    name: "Attack All",
     cost: 2,
-    description: "blocks %value",
-    needsTarget: true,
+    description: "Deals 6 dmg to all targets",
+    needsTarget: false,
     actions: [
-      creators.attackMonster({dmg: -10})
+      creators.attackAllMonsters({dmg: 6})
     ]
-  }
+  },
 ];
