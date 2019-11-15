@@ -67,10 +67,17 @@ export const addMonster = id => ({
   }
 });
 
-export const attackMonster = ({uuid, dmg}) => ({
+export const attackMonster = ({ uuid, dmg }) => ({
   type: types.ATTACK_MONSTER,
   payload: {
     uuid,
+    dmg
+  }
+});
+
+export const attackAllMonsters = ({ dmg }) => ({
+  type: types.ATTACK_ALL_MONSTERS,
+  payload: {
     dmg
   }
 });
