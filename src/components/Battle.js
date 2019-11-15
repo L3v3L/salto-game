@@ -5,7 +5,8 @@ import _ from "lodash";
 
 import Card from "./Card";
 import Monster from "./Monster";
-import CardPile from './CardPile';
+import DeckPile from './DeckPile';
+import DiscardPile from './DiscardPile';
 
 import * as selectors from "../ducks/selectors";
 import * as actionCreators from "../ducks/actionCreators";
@@ -60,12 +61,10 @@ class Battle extends Component {
     return (
       <div>
         <BattleStats>
-          <CardPile
-            name='deck'
+          <DeckPile
             size={this.props.allState.battle.deck.length}
           />
-          <CardPile
-            name='discard'
+          <DiscardPile
             size={this.props.allState.battle.discard.length}
           />
         </BattleStats>
