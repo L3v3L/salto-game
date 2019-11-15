@@ -11,24 +11,9 @@ export const endTurn = store => next => action => {
 
     store.dispatch(actions.disableTargetSelection());
 
-    let newDiscardArray = state.battle.discard.map((card) => {
-      if (card.isActive) {
-        card.isActive = false;
-      }
-      return card;
-    });
-    let newHandArray = state.battle.hand.map((card) => {
-      if (card.isActive) {
-        card.isActive = false;
-      }
-      return card;
-    });
-    let newdeckArray = state.battle.deck.map((card) => {
-      if (card.isActive) {
-        card.isActive = false;
-      }
-      return card;
-    });
+    let newDiscardArray = state.battle.discard;
+    let newHandArray = state.battle.hand;
+    let newdeckArray = state.battle.deck;
 
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
