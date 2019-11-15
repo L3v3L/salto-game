@@ -5,7 +5,7 @@ export const CardLibrary = [
     id: 1,
     name: "Attack",
     cost: 3,
-    description: "attacks %value",
+    description: "Deals 10 dmg to a single target",
     needsTarget: true,
     actions: [
       creators.attackMonster({dmg: 10})
