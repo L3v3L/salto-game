@@ -132,9 +132,9 @@ export const resetMonsterMoves = () => ({
   payload: {}
 });
 
-export const playCard = ({uuid, target}) => ({
+export const playCard = ({id, uuid, target}) => ({
   type: types.PLAY_CARD,
-  payload: { uuid, target}
+  payload: { id, uuid, target}
 })
 
 export const activateCardFromHand = (uuid) => ({
