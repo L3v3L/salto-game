@@ -77,7 +77,7 @@ export const endTurn = store => next => action => {
 
     state.battle.monsters.map(monster => {
       let monsterRef = selectors
-        .getMonsters(state)
+        .getMonsterRefs(state)
         .find(monsterLib => monsterLib.id === monster.id);
       store.dispatch(
         actions.setMonsterMoves(

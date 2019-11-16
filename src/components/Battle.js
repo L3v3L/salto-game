@@ -62,7 +62,7 @@ class Battle extends Component {
           {this.props.allState.battle.monsters
             .map(monster => {
               return {
-                ref: this.props.monsters.find(
+                ref: this.props.monsterRefs.find(
                   monsterLib => monsterLib.id === monster.id
                 ),
                 monster: monster
@@ -114,7 +114,7 @@ class Battle extends Component {
           {this.props.handCards
             .map(handCard => {
               return {
-                ref: this.props.cards.find(card => card.id === handCard.id),
+                ref: this.props.cardRefs.find(card => card.id === handCard.id),
                 card: handCard
               };
             })
@@ -145,8 +145,8 @@ class Battle extends Component {
 
 const mapStateToProps = state => {
   const allState = selectors.getAllState(state);
-  const cards = selectors.getCards(state);
-  const monsters = selectors.getMonsters(state);
+  const cardRefs = selectors.getCardRefs(state);
+  const monsterRefs = selectors.getMonsterRefs(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
@@ -156,8 +156,8 @@ const mapStateToProps = state => {
 
   return {
     allState,
-    monsters,
-    cards,
+    monsterRefs,
+    cardRefs,
     isSelectingTarget,
     activeCard,
     deckCards,
