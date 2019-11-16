@@ -146,3 +146,8 @@ export const deactivateCardFromHand = (uuid) => ({
   type: types.DEACTIVATE_CARD,
   payload: { uuid }
 })
+
+export const moveCard = ({uuid, targetDeck}) => ({
+    type: types.MOVE_BATTLE_CARD_TO_DECK,
+    payload: {uuid, targetDeck}
+})

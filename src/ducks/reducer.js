@@ -301,6 +301,46 @@ export default function reducer(state = initialState, action = {}) {
       }
     }
 
+    case types.MOVE_BATTLE_CARD_TO_DECK: {
+        const {uuid, targetDeck} = action.payload;
+
+        let deckNames = [
+            'deck',
+            'hand',
+            'discard'
+        ]
+
+        let diffDecks = {}
+        let cardToMove
+
+        deckNames.map(deckName => {
+            let selectedDeck = [...state.battle[deckName]];
+
+            let findResult = selectedDeck.find(card => card.uuid === uuid)
+
+            if(findResult){
+                cardToMove = findResult;
+                selectedDeck = selectedDeck.filter(card => card.uuid !== uuid)
+            }
+
+            diffDecks[deckName] = selectedDeck;
+            return null;
+        })
+
+        if(!cardToMove){
+            return state;
+        }
+
+        diffDecks[targetDeck].push(cardToMove)
+        return {
+            ...state,
+            battle: {
+                ...state.battle,
+                ...diffDecks
+            }
+        }
+    }
+
     default:
       return state;
   }
