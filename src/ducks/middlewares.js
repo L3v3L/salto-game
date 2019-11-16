@@ -1,7 +1,7 @@
-import _ from "lodash";
-import * as types from './actionTypes'
-import * as actions from './actionCreators'
-import * as selectors from './selectors'
+import _ from 'lodash';
+import * as types from './actionTypes';
+import * as actions from './actionCreators';
+import * as selectors from './selectors';
 
 export const endTurn = store => next => action => {
   if (action.type === types.ADD_BATTLE_TURN) {

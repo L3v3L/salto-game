@@ -1,13 +1,13 @@
-import { createStore, compose, applyMiddleware } from "redux";
-import { createLogger } from "redux-logger";
+import { createStore, compose, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
 
-import reducer from "./ducks/reducer";
+import reducer from './ducks/reducer';
 import {
   endTurn,
   playCardActivate,
   playCardExecute,
-  targetSelectionDisable,
-} from "./ducks/middlewares";
+  targetSelectionDisable
+} from './ducks/middlewares';
 
 const loggerMiddleware = createLogger({
   collapsed: (getState, action, logEntry) => !logEntry.error
