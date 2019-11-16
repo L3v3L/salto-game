@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
-import Card from "./Card";
-import Monster from "./Monster";
+import Card from './Card';
+import Monster from './Monster';
 
-import * as selectors from "../ducks/selectors";
-import * as actionCreators from "../ducks/actionCreators";
+import * as selectors from '../ducks/selectors';
+import * as actionCreators from '../ducks/actionCreators';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Centered = styled.div`
   width: 100%;
@@ -36,9 +36,9 @@ class Battle extends Component {
 
     let battleCards = _.cloneDeep(_.shuffle(props.allState.player.deck));
     battleCards = battleCards.map(card => {
-        card.deck = 'deck';
-        return card;
-    })
+      card.deck = 'deck';
+      return card;
+    });
 
     let amountCardsStarting = 5;
 
@@ -84,8 +84,8 @@ class Battle extends Component {
         <Centered
           style={
             this.props.isSelectingTarget
-              ? { visibility: "visible" }
-              : { visibility: "hidden" }
+              ? { visibility: 'visible' }
+              : { visibility: 'hidden' }
           }
         >
           Select Target
@@ -123,7 +123,11 @@ class Battle extends Component {
                 <Card
                   key={cardInHand.card.uuid}
                   uuid={cardInHand.card.uuid}
-                  isActive={this.props.activeCard ? this.props.activeCard.uuid === cardInHand.card.uuid : false}
+                  isActive={
+                    this.props.activeCard
+                      ? this.props.activeCard.uuid === cardInHand.card.uuid
+                      : false
+                  }
                   id={cardInHand.card.id}
                   label={cardInHand.ref.name}
                   cost={cardInHand.ref.cost}

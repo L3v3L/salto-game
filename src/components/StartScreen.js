@@ -17,8 +17,8 @@ class StartScreen extends Component {
       <StartButton onClick={() => console.log('start button')}>
         Start
       </StartButton>
-    )
+    );
   }
-};
+}
 
 export default StartScreen;

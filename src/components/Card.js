@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-import * as selectors from "../ducks/selectors";
+import * as selectors from '../ducks/selectors';
 
 import {
   deactivateCardFromHand,
   disableTargetSelection,
   playCard
-} from "../ducks/actionCreators";
+} from '../ducks/actionCreators';
 
 const cardWidth = 150;
 const cardHeight = 200;
@@ -88,19 +88,18 @@ export class Card extends Component {
     this.id = props.id;
 
     this.description = props.description
-      ? props.description.replace("%value", props.value)
-      : "";
+      ? props.description.replace('%value', props.value)
+      : '';
 
     this.actions = props.actions ? props.actions : [];
   }
-
 
   action() {
     if (this.props.isSelectingCard) {
       if (this.cost <= this.props.currentAP) {
         this.props.playCard({
           id: this.id,
-          uuid: this.uuid,
+          uuid: this.uuid
         });
       }
     } else if (this.props.isActive) {
@@ -116,16 +115,16 @@ export class Card extends Component {
         key={this.key}
         onClick={() => this.action()}
       >
-        <div className="interiorContainer">
-          <div className="header">
-            <div className="title">{this.label}</div>
-            {this.cost && <div className="cost">{this.cost}</div>}
+        <div className='interiorContainer'>
+          <div className='header'>
+            <div className='title'>{this.label}</div>
+            {this.cost && <div className='cost'>{this.cost}</div>}
           </div>
-          <div className="image">
+          <div className='image'>
             <image></image>
-          <div>{this.props.isActive ? 'ACTIVE' : ''}</div>
+            <div>{this.props.isActive ? 'ACTIVE' : ''}</div>
           </div>
-          <div className="body">
+          <div className='body'>
             <div>{this.description}</div>
           </div>
         </div>
@@ -141,7 +140,13 @@ const mapStateToProps = state => {
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
-  return { currentAP, monsters, isSelectingCard, isSelectingTarget, activeCard };
+  return {
+    currentAP,
+    monsters,
+    isSelectingCard,
+    isSelectingTarget,
+    activeCard
+  };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -39,15 +39,15 @@ export const endTurn = store => next => action => {
     }
 
     store.dispatch(
-      actions.moveCardByCard({ cardArray: newdeckArray, targetDeck: "deck" })
+      actions.moveCardByCard({ cardArray: newdeckArray, targetDeck: 'deck' })
     );
     store.dispatch(
-      actions.moveCardByCard({ cardArray: newHandArray, targetDeck: "hand" })
+      actions.moveCardByCard({ cardArray: newHandArray, targetDeck: 'hand' })
     );
     store.dispatch(
       actions.moveCardByCard({
         cardArray: newDiscardArray,
-        targetDeck: "discard"
+        targetDeck: 'discard'
       })
     );
 
@@ -58,11 +58,11 @@ export const endTurn = store => next => action => {
       if (state.battle.monsterMoves[monster.uuid]) {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
-            case "attack":
+            case 'attack':
               store.dispatch(actions.addToBattleHP(0 - move.value));
               break;
-            case "block":
-              console.log("block " + move.value);
+            case 'block':
+              console.log('block ' + move.value);
               break;
             default:
               break;
@@ -98,7 +98,7 @@ export const targetSelectionDisable = store => next => action => {
   }
 
   next(action);
-}
+};
 
 export const playCardActivate = store => next => action => {
   if (action.type === types.PLAY_CARD) {
@@ -114,42 +114,49 @@ export const playCardActivate = store => next => action => {
   }
 
   next(action);
-}
+};
 
 export const playCardExecute = store => next => action => {
   if (action.type === types.PLAY_CARD) {
     const { id, uuid, target } = action.payload;
     const state = store.getState();
     const activeCard = selectors.getActiveCard(state);
-    const activeCardRef = activeCard ? selectors.getCardById(state, activeCard.id) : null;
+    const activeCardRef = activeCard
+      ? selectors.getCardById(state, activeCard.id)
+      : null;
     const playedCardRef = id ? selectors.getCardById(state, id) : null;
 
-    const cardNeedsTargetAndHasTarget = activeCardRef && activeCardRef.needsTarget && target;
+    const cardNeedsTargetAndHasTarget =
+      activeCardRef && activeCardRef.needsTarget && target;
     const cardDoesntNeedTarget = playedCardRef && !playedCardRef.needsTarget;
 
     const card = playedCardRef || activeCardRef;
     const cardUuid = uuid || activeCard.uuid;
 
     if (cardNeedsTargetAndHasTarget || cardDoesntNeedTarget) {
-
       if (cardNeedsTargetAndHasTarget) {
         store.dispatch(actions.disableTargetSelection());
       }
 
-      card.actions.map((action) => {
-        if (action.type === types.ATTACK_MONSTER && cardNeedsTargetAndHasTarget) {
+      card.actions.map(action => {
+        if (
+          action.type === types.ATTACK_MONSTER &&
+          cardNeedsTargetAndHasTarget
+        ) {
           action.payload.uuid = target;
         }
 
-        return store.dispatch(action)
+        return store.dispatch(action);
       });
 
       store.dispatch(actions.decrementPlayerActions(card.cost));
 
-      store.dispatch(actions.moveCardByUUID({
-        uuidArray: [cardUuid],
-        targetDeck: "discard"
-      }));
+      store.dispatch(
+        actions.moveCardByUUID({
+          uuidArray: [cardUuid],
+          targetDeck: 'discard'
+        })
+      );
 
       if (activeCard && activeCard.uuid) {
         store.dispatch(actions.deactivateCardFromHand(activeCard.uuid));
@@ -158,4 +165,4 @@ export const playCardExecute = store => next => action => {
   }
 
   next(action);
-}
+};

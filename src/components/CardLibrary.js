@@ -1,24 +1,20 @@
-import * as creators from '../ducks/actionCreators'
+import * as creators from '../ducks/actionCreators';
 
 export const CardLibrary = [
   {
     id: 1,
-    name: "Attack",
+    name: 'Attack',
     cost: 3,
-    description: "Deals 10 dmg to a single target",
+    description: 'Deals 10 dmg to a single target',
     needsTarget: true,
-    actions: [
-      creators.attackMonster({dmg: 10})
-    ]
+    actions: [creators.attackMonster({ dmg: 10 })]
   },
   {
     id: 2,
-    name: "Attack All",
+    name: 'Attack All',
     cost: 2,
-    description: "Deals 6 dmg to all targets",
+    description: 'Deals 6 dmg to all targets',
     needsTarget: false,
-    actions: [
-      creators.attackAllMonsters({dmg: 6})
-    ]
-  },
+    actions: [creators.attackAllMonsters({ dmg: 6 })]
+  }
 ];

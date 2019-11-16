@@ -1,10 +1,10 @@
-import * as types from "./actionTypes";
+import * as types from './actionTypes';
 
-export const setBattleCards = ({cards}) => ({
-    type: types.SET_BATTLE_CARDS,
-    payload: {
-        cards,
-    }
+export const setBattleCards = ({ cards }) => ({
+  type: types.SET_BATTLE_CARDS,
+  payload: {
+    cards
+  }
 });
 
 export const addCardToDeck = id => ({
@@ -28,7 +28,15 @@ export const decrementPlayerActions = amount => ({
   }
 });
 
-export const createCard = ({ id, name, description, cost, actions, needsTarget, target }) => ({
+export const createCard = ({
+  id,
+  name,
+  description,
+  cost,
+  actions,
+  needsTarget,
+  target
+}) => ({
   type: types.CREATE_CARD,
   payload: {
     id,
@@ -125,27 +133,27 @@ export const resetMonsterMoves = () => ({
   payload: {}
 });
 
-export const playCard = ({id, uuid, target}) => ({
+export const playCard = ({ id, uuid, target }) => ({
   type: types.PLAY_CARD,
-  payload: { id, uuid, target}
-})
+  payload: { id, uuid, target }
+});
 
-export const activateCardFromHand = (uuid) => ({
+export const activateCardFromHand = uuid => ({
   type: types.ACTIVATE_CARD,
   payload: { uuid }
-})
+});
 
-export const deactivateCardFromHand = (uuid) => ({
+export const deactivateCardFromHand = uuid => ({
   type: types.DEACTIVATE_CARD,
   payload: { uuid }
-})
+});
 
-export const moveCardByCard = ({cardArray, targetDeck}) => ({
-    type: types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD,
-    payload: {cardArray, targetDeck}
-})
+export const moveCardByCard = ({ cardArray, targetDeck }) => ({
+  type: types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD,
+  payload: { cardArray, targetDeck }
+});
 
-export const moveCardByUUID = ({uuidArray, targetDeck}) => ({
-    type: types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID,
-    payload: {uuidArray, targetDeck}
-})
+export const moveCardByUUID = ({ uuidArray, targetDeck }) => ({
+  type: types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID,
+  payload: { uuidArray, targetDeck }
+});

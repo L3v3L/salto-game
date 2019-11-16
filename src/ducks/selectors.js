@@ -44,14 +44,14 @@ export const getCards = store =>
 
 export const getActiveCard = store => {
   const state = getBattleState(store);
-  if(state && state.activeCard) {
-    return getCardsByDeck(store, 'hand').find((card) => {
+  if (state && state.activeCard) {
+    return getCardsByDeck(store, 'hand').find(card => {
       return card.uuid === state.activeCard;
-    })
+    });
   }
-}
+};
 
 export const getCardsByDeck = (store, deckName) => {
-    const state = getBattleState(store);
-    return state.cards.filter(card => card.deck === deckName)
-}
+  const state = getBattleState(store);
+  return state.cards.filter(card => card.deck === deckName);
+};
