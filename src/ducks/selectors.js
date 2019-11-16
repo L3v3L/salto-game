@@ -30,6 +30,9 @@ export const getMonsterById = (store, id) =>
 export const getMonsterRefs = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
 
+export const getMonstersAlive = store =>
+  store.battle.monsters.filter(monster => monster.hp > 0);
+
 // Cards
 export const getCardsState = store => store.cards;
 

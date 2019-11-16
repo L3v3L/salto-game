@@ -59,7 +59,7 @@ class Battle extends Component {
     return (
       <div>
         <Centered>
-          {this.props.allState.battle.monsters
+          {this.props.monsters
             .map(monster => {
               return {
                 ref: this.props.monsterRefs.find(
@@ -147,6 +147,7 @@ const mapStateToProps = state => {
   const allState = selectors.getAllState(state);
   const cardRefs = selectors.getCardRefs(state);
   const monsterRefs = selectors.getMonsterRefs(state);
+  const monsters = selectors.getMonstersAlive(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
@@ -162,7 +163,8 @@ const mapStateToProps = state => {
     activeCard,
     deckCards,
     handCards,
-    discardCards
+    discardCards,
+    monsters
   };
 };
 
