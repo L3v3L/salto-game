@@ -36,7 +36,12 @@ export class Game extends Component {
   }
 
   render() {
-    return <Battle />;
+    return (
+      <div>
+        {this.props.allState.gameState}
+        {this.props.allState.gameState === 'battle' ? <Battle /> : ''}
+      </div>
+    );
   }
 }
 

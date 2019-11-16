@@ -3,7 +3,13 @@ import * as types from './actionTypes';
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
 
+const gameState = {
+  BATTLE: 'battle',
+  REWARD: 'reward'
+};
+
 export const initialState = {
+  gameState: gameState.BATTLE,
   player: {
     hp: 100,
     deck: [],
