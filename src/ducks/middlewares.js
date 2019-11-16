@@ -145,13 +145,8 @@ export const playCardExecute = store => next => action => {
       });
 
       store.dispatch(actions.decrementPlayerActions(card.cost));
-      
-      store.dispatch(actions.removeCardFromBattleDeck({
-        uuid: cardUuid,
-        targetDeck: "hand"
-      }));
 
-      store.dispatch(actions.addCardToBattleDeck({
+      store.dispatch(actions.moveCard({
         uuid: cardUuid,
         targetDeck: "discard"
       }));
