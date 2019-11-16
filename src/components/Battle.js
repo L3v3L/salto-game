@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
-import Card from "./Card";
-import Monster from "./Monster";
+import Card from './Card';
+import Monster from './Monster';
 
-import * as selectors from "../ducks/selectors";
-import * as actionCreators from "../ducks/actionCreators";
+import * as selectors from '../ducks/selectors';
+import * as actionCreators from '../ducks/actionCreators';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Centered = styled.div`
   width: 100%;
@@ -34,19 +34,22 @@ class Battle extends Component {
     super(props);
     this.state = {};
 
-    let battleDeck = _.cloneDeep(_.shuffle(props.allState.player.deck));
-    let handDeck = [];
+    let battleCards = _.cloneDeep(_.shuffle(props.allState.player.deck));
+    battleCards = battleCards.map(card => {
+      card.deck = 'deck';
+      return card;
+    });
 
     let amountCardsStarting = 5;
+
     for (let i = 0; i < amountCardsStarting; i++) {
-      handDeck.push(battleDeck.pop());
+      battleCards[i].deck = 'hand';
     }
+
+    props.setBattleCards({ cards: battleCards });
 
     props.setBattleMaxAP(props.allState.player.maxAP);
     props.setBattleCurrentAP(props.allState.player.maxAP);
-
-    props.setBattleDeck({ deckArray: battleDeck, targetDeck: "deck" });
-    props.setBattleDeck({ deckArray: handDeck, targetDeck: "hand" });
 
     props.addMonster(1);
     props.addMonster(0);
@@ -81,8 +84,8 @@ class Battle extends Component {
         <Centered
           style={
             this.props.isSelectingTarget
-              ? { visibility: "visible" }
-              : { visibility: "hidden" }
+              ? { visibility: 'visible' }
+              : { visibility: 'hidden' }
           }
         >
           Select Target
@@ -94,12 +97,12 @@ class Battle extends Component {
           {this.props.allState.battle.hp}
           <br />
           Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.deck.length}
+          {this.props.deckCards.length}
           <br />
-          Cards in Hand:&nbsp;&nbsp;{this.props.allState.battle.hand.length}
+          Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
           <br />
           Discard Pile:&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.discard.length}
+          {this.props.discardCards.length}
           <br />
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {this.props.allState.battle.currentAP}/
@@ -108,7 +111,7 @@ class Battle extends Component {
         </BattleStats>
         <br />
         <Hand>
-          {this.props.allState.battle.hand
+          {this.props.handCards
             .map(handCard => {
               return {
                 ref: this.props.cards.find(card => card.id === handCard.id),
@@ -120,7 +123,11 @@ class Battle extends Component {
                 <Card
                   key={cardInHand.card.uuid}
                   uuid={cardInHand.card.uuid}
-                  isActive={this.props.activeCard ? this.props.activeCard.uuid === cardInHand.card.uuid : false}
+                  isActive={
+                    this.props.activeCard
+                      ? this.props.activeCard.uuid === cardInHand.card.uuid
+                      : false
+                  }
                   id={cardInHand.card.id}
                   label={cardInHand.ref.name}
                   cost={cardInHand.ref.cost}
@@ -143,7 +150,20 @@ const mapStateToProps = state => {
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
-  return { allState, monsters, cards, isSelectingTarget, activeCard };
+  const deckCards = selectors.getCardsByDeck(state, 'deck');
+  const handCards = selectors.getCardsByDeck(state, 'hand');
+  const discardCards = selectors.getCardsByDeck(state, 'discard');
+
+  return {
+    allState,
+    monsters,
+    cards,
+    isSelectingTarget,
+    activeCard,
+    deckCards,
+    handCards,
+    discardCards
+  };
 };
 
 const mapDispatchToProps = dispatch => {

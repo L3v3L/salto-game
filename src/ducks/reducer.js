@@ -1,4 +1,4 @@
-import * as types from "./actionTypes";
+import * as types from './actionTypes';
 
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
@@ -18,14 +18,12 @@ export const initialState = {
     byIds: {}
   },
   battle: {
+    cards: [],
     selectingCard: true,
     selectingTarget: false,
     hp: 100,
     currentAP: 0,
     maxAP: 0,
-    deck: [],
-    hand: [],
-    discard: [],
     queuedActions: [],
     monsters: [],
     monsterMoves: {},
@@ -35,6 +33,17 @@ export const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case types.SET_BATTLE_CARDS: {
+      const { cards } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          cards: cards
+        }
+      };
+    }
+
     case types.ADD_BATTLE_TURN: {
       const { value } = action.payload;
       return {
@@ -56,20 +65,6 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.ADD_CARD_TO_BATTLE_DECK: {
-      const { uuid, targetDeck } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          [targetDeck]: [
-            ...state.battle[targetDeck],
-            state.player.deck.find(card => card.uuid === uuid)
-          ]
-        }
-      };
-    }
-
     case types.REMOVE_CARD_FROM_DECK: {
       const { uuid } = action.payload;
       return {
@@ -77,19 +72,6 @@ export default function reducer(state = initialState, action = {}) {
         player: {
           ...state.player,
           deck: state.player.deck.filter(card => card.uuid !== uuid)
-        }
-      };
-    }
-
-    case types.REMOVE_CARD_FROM_BATTLE_DECK: {
-      const { uuid, targetDeck } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          [targetDeck]: state.battle[targetDeck].filter(
-            card => card.uuid !== uuid
-          )
         }
       };
     }
@@ -136,17 +118,6 @@ export default function reducer(state = initialState, action = {}) {
             ...state.battle.monsters,
             { id: id, uuid: ++nextMonsterUUID, hp: state.monsters.byIds[id].hp }
           ]
-        }
-      };
-    }
-
-    case types.SET_BATTLE_DECK: {
-      const { deckArray, targetDeck } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          [targetDeck]: deckArray.map((item) => Object.assign({}, item))
         }
       };
     }
@@ -251,7 +222,14 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case types.CREATE_CARD: {
-      const { id, name, description, cost, actions, needsTarget } = action.payload;
+      const {
+        id,
+        name,
+        description,
+        cost,
+        actions,
+        needsTarget
+      } = action.payload;
       return {
         ...state,
         cards: {
@@ -276,7 +254,7 @@ export default function reducer(state = initialState, action = {}) {
         battle: {
           ...state.battle,
           selectingCard: false,
-          selectingTarget: true,
+          selectingTarget: true
         }
       };
     }
@@ -301,58 +279,53 @@ export default function reducer(state = initialState, action = {}) {
           ...state.battle,
           activeCard: uuid
         }
-      }
+      };
     }
 
     case types.DEACTIVATE_CARD: {
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          activeCard: null
+        }
+      };
+    }
+
+    case types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD: {
+      const { cardArray, targetDeck } = action.payload;
+
+      let uuidArray = cardArray.map(card => card.uuid);
 
       return {
         ...state,
         battle: {
           ...state.battle,
-          activeCard: null,
+          cards: state.battle.cards.map(card => {
+            if (uuidArray.includes(card.uuid)) {
+              card.deck = targetDeck;
+            }
+            return card;
+          })
         }
-      }
+      };
     }
 
-    case types.MOVE_BATTLE_CARD_TO_DECK: {
-        const {uuid, targetDeck} = action.payload;
+    case types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID: {
+      const { uuidArray, targetDeck } = action.payload;
 
-        let deckNames = [
-            'deck',
-            'hand',
-            'discard'
-        ]
-
-        let diffDecks = {}
-        let cardToMove
-
-        deckNames.map(deckName => {
-            let selectedDeck = [...state.battle[deckName]];
-
-            let findResult = selectedDeck.find(card => card.uuid === uuid)
-
-            if(findResult){
-                cardToMove = findResult;
-                selectedDeck = selectedDeck.filter(card => card.uuid !== uuid)
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          cards: state.battle.cards.map(card => {
+            if (uuidArray.includes(card.uuid)) {
+              card.deck = targetDeck;
             }
-
-            diffDecks[deckName] = selectedDeck;
-            return null;
-        })
-
-        if(!cardToMove){
-            return state;
+            return card;
+          })
         }
-
-        diffDecks[targetDeck].push(cardToMove)
-        return {
-            ...state,
-            battle: {
-                ...state.battle,
-                ...diffDecks
-            }
-        }
+      };
     }
 
     default:

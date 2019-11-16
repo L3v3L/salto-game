@@ -1,18 +1,18 @@
 export const MonsterLibrary = [
   {
     id: 1,
-    name: "Blob",
+    name: 'Blob',
     hp: 100,
     moves: [
       [
         {
-          type: "attack",
+          type: 'attack',
           value: 3
         }
       ],
       [
         {
-          type: "block",
+          type: 'block',
           value: 10
         }
       ]
@@ -20,22 +20,22 @@ export const MonsterLibrary = [
   },
   {
     id: 0,
-    name: "Dito",
+    name: 'Dito',
     hp: 100,
     moves: [
       [
         {
-          type: "attack",
+          type: 'attack',
           value: 3
         },
         {
-          type: "block",
+          type: 'block',
           value: 10
         }
       ],
       [
         {
-          type: "attack",
+          type: 'attack',
           value: 3
         }
       ]

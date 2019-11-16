@@ -27,8 +27,8 @@ class RewardScreen extends Component {
           <Card />
         </CardContainer>
       </RewardWrapper>
-    )
+    );
   }
-};
+}
 
 export default RewardScreen;
