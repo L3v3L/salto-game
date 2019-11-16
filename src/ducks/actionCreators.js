@@ -1,5 +1,12 @@
 import * as types from "./actionTypes";
 
+export const setBattleCards = ({cards}) => ({
+    type: types.SET_BATTLE_CARDS,
+    payload: {
+        cards,
+    }
+});
+
 export const addCardToDeck = id => ({
   type: types.ADD_CARD_TO_DECK,
   payload: {
@@ -73,11 +80,6 @@ export const addToBattleTurn = value => ({
   }
 });
 
-export const setBattleDeck = ({ deckArray, targetDeck }) => ({
-  type: types.SET_BATTLE_DECK,
-  payload: { deckArray, targetDeck }
-});
-
 export const addToBattleHP = value => ({
   type: types.ADD_TO_BATTLE_HP,
   payload: { value }
@@ -138,7 +140,12 @@ export const deactivateCardFromHand = (uuid) => ({
   payload: { uuid }
 })
 
-export const moveCard = ({uuid, targetDeck}) => ({
-    type: types.MOVE_BATTLE_CARD_TO_DECK,
-    payload: {uuid, targetDeck}
+export const moveCardByCard = ({cardArray, targetDeck}) => ({
+    type: types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD,
+    payload: {cardArray, targetDeck}
+})
+
+export const moveCardByUUID = ({uuidArray, targetDeck}) => ({
+    type: types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID,
+    payload: {uuidArray, targetDeck}
 })

@@ -16,9 +16,9 @@ export const endTurn = store => next => action => {
 
     store.dispatch(actions.disableTargetSelection());
 
-    let newDiscardArray = state.battle.discard;
-    let newHandArray = state.battle.hand;
-    let newdeckArray = state.battle.deck;
+    let newDiscardArray = selectors.getCardsByDeck(state, 'discard');
+    let newHandArray = selectors.getCardsByDeck(state, 'hand');
+    let newdeckArray = selectors.getCardsByDeck(state, 'deck');
 
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
@@ -39,14 +39,14 @@ export const endTurn = store => next => action => {
     }
 
     store.dispatch(
-      actions.setBattleDeck({ deckArray: newdeckArray, targetDeck: "deck" })
+      actions.moveCardByCard({ cardArray: newdeckArray, targetDeck: "deck" })
     );
     store.dispatch(
-      actions.setBattleDeck({ deckArray: newHandArray, targetDeck: "hand" })
+      actions.moveCardByCard({ cardArray: newHandArray, targetDeck: "hand" })
     );
     store.dispatch(
-      actions.setBattleDeck({
-        deckArray: newDiscardArray,
+      actions.moveCardByCard({
+        cardArray: newDiscardArray,
         targetDeck: "discard"
       })
     );
@@ -146,8 +146,8 @@ export const playCardExecute = store => next => action => {
 
       store.dispatch(actions.decrementPlayerActions(card.cost));
 
-      store.dispatch(actions.moveCard({
-        uuid: cardUuid,
+      store.dispatch(actions.moveCardByUUID({
+        uuidArray: [cardUuid],
         targetDeck: "discard"
       }));
 

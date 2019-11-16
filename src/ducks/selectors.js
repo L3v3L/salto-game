@@ -42,15 +42,16 @@ export const getCardById = (store, id) =>
 export const getCards = store =>
   getCardList(store).map(id => getCardById(store, id));
 
-
-export const getHandState = store => 
-  getBattleState(store) ? getBattleState(store).hand : [];
-
 export const getActiveCard = store => {
   const state = getBattleState(store);
   if(state && state.activeCard) {
-    return state.hand.find((card) => {
+    return getCardsByDeck(store, 'hand').find((card) => {
       return card.uuid === state.activeCard;
     })
   }
+}
+
+export const getCardsByDeck = (store, deckName) => {
+    const state = getBattleState(store);
+    return state.cards.filter(card => card.deck === deckName)
 }

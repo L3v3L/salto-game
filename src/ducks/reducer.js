@@ -18,14 +18,12 @@ export const initialState = {
     byIds: {}
   },
   battle: {
+    cards: [],
     selectingCard: true,
     selectingTarget: false,
     hp: 100,
     currentAP: 0,
     maxAP: 0,
-    deck: [],
-    hand: [],
-    discard: [],
     queuedActions: [],
     monsters: [],
     monsterMoves: {},
@@ -35,6 +33,18 @@ export const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+
+    case types.SET_BATTLE_CARDS: {
+        const { cards } = action.payload;
+        return {
+            ...state,
+            battle:{
+                ...state.battle,
+                cards: cards
+            }
+        };
+    }
+
     case types.ADD_BATTLE_TURN: {
       const { value } = action.payload;
       return {
@@ -109,17 +119,6 @@ export default function reducer(state = initialState, action = {}) {
             ...state.battle.monsters,
             { id: id, uuid: ++nextMonsterUUID, hp: state.monsters.byIds[id].hp }
           ]
-        }
-      };
-    }
-
-    case types.SET_BATTLE_DECK: {
-      const { deckArray, targetDeck } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          [targetDeck]: deckArray.map((item) => Object.assign({}, item))
         }
       };
     }
@@ -288,42 +287,38 @@ export default function reducer(state = initialState, action = {}) {
       }
     }
 
-    case types.MOVE_BATTLE_CARD_TO_DECK: {
-        const {uuid, targetDeck} = action.payload;
+    case types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD: {
+        const {cardArray, targetDeck} = action.payload;
 
-        let deckNames = [
-            'deck',
-            'hand',
-            'discard'
-        ]
+        let uuidArray = cardArray.map( card => card.uuid)
 
-        let diffDecks = {}
-        let cardToMove
-
-        deckNames.map(deckName => {
-            let selectedDeck = [...state.battle[deckName]];
-
-            let findResult = selectedDeck.find(card => card.uuid === uuid)
-
-            if(findResult){
-                cardToMove = findResult;
-                selectedDeck = selectedDeck.filter(card => card.uuid !== uuid)
-            }
-
-            diffDecks[deckName] = selectedDeck;
-            return null;
-        })
-
-        if(!cardToMove){
-            return state;
-        }
-
-        diffDecks[targetDeck].push(cardToMove)
         return {
             ...state,
             battle: {
                 ...state.battle,
-                ...diffDecks
+                cards: state.battle.cards.map(card => {
+                    if(uuidArray.includes(card.uuid)){
+                        card.deck = targetDeck
+                    }
+                    return card
+                })
+            }
+        }
+    }
+
+    case types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID: {
+        const {uuidArray, targetDeck} = action.payload;
+
+        return {
+            ...state,
+            battle: {
+                ...state.battle,
+                cards: state.battle.cards.map(card => {
+                    if(uuidArray.includes(card.uuid)){
+                        card.deck = targetDeck
+                    }
+                    return card
+                })
             }
         }
     }
