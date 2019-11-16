@@ -7,26 +7,10 @@ export const addCardToDeck = id => ({
   }
 });
 
-export const addCardToBattleDeck = ({ uuid, targetDeck }) => ({
-  type: types.ADD_CARD_TO_BATTLE_DECK,
-  payload: {
-    uuid,
-    targetDeck
-  }
-});
-
 export const removeCardFromDeck = uuid => ({
   type: types.REMOVE_CARD_FROM_DECK,
   payload: {
     uuid
-  }
-});
-
-export const removeCardFromBattleDeck = ({ uuid, targetDeck }) => ({
-  type: types.REMOVE_CARD_FROM_BATTLE_DECK,
-  payload: {
-    uuid,
-    targetDeck
   }
 });
 

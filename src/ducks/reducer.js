@@ -56,20 +56,6 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
-    case types.ADD_CARD_TO_BATTLE_DECK: {
-      const { uuid, targetDeck } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          [targetDeck]: [
-            ...state.battle[targetDeck],
-            state.player.deck.find(card => card.uuid === uuid)
-          ]
-        }
-      };
-    }
-
     case types.REMOVE_CARD_FROM_DECK: {
       const { uuid } = action.payload;
       return {
@@ -77,19 +63,6 @@ export default function reducer(state = initialState, action = {}) {
         player: {
           ...state.player,
           deck: state.player.deck.filter(card => card.uuid !== uuid)
-        }
-      };
-    }
-
-    case types.REMOVE_CARD_FROM_BATTLE_DECK: {
-      const { uuid, targetDeck } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          [targetDeck]: state.battle[targetDeck].filter(
-            card => card.uuid !== uuid
-          )
         }
       };
     }
