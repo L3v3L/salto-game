@@ -10,7 +10,7 @@ export const endTurn = store => next => action => {
     const maxCardsToDraw = 5;
     const activeCard = selectors.getActiveCard(state);
 
-    if (activeCard) {
+    if (activeCard && activeCard.uuid) {
       store.dispatch(actions.deactivateCardFromHand(activeCard.uuid));
     }
 
@@ -156,8 +156,8 @@ export const playCardExecute = store => next => action => {
         targetDeck: "discard"
       }));
 
-      if (activeCard) {
-        store.dispatch(actions.deactivateCardFromHand(cardUuid));
+      if (activeCard && activeCard.uuid) {
+        store.dispatch(actions.deactivateCardFromHand(activeCard.uuid));
       }
     }
   }
