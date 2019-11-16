@@ -236,6 +236,20 @@ export default function reducer(state = initialState, action = {}) {
       };
     }
 
+    case types.ATTACK_ALL_MONSTERS: {
+      const { dmg } = action.payload;
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          monsters: state.battle.monsters.map(monster => {
+            monster.hp = dmg <= monster.hp ? monster.hp - dmg : 0;
+            return monster;
+          })
+        }
+      };
+    }
+
     case types.CREATE_CARD: {
       const { id, name, description, cost, actions, needsTarget } = action.payload;
       return {

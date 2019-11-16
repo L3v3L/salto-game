@@ -99,6 +99,7 @@ export class Card extends Component {
     if (this.props.isSelectingCard) {
       if (this.cost <= this.props.currentAP) {
         this.props.playCard({
+          id: this.id,
           uuid: this.uuid,
         });
       }

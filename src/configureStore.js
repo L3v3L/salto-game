@@ -3,7 +3,6 @@ import { createLogger } from "redux-logger";
 
 import reducer from "./ducks/reducer";
 import {
-  buffAttack,
   endTurn,
   playCardActivate,
   playCardExecute,

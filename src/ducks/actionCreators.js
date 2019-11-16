@@ -67,10 +67,17 @@ export const addMonster = id => ({
   }
 });
 
-export const attackMonster = ({uuid, dmg}) => ({
+export const attackMonster = ({ uuid, dmg }) => ({
   type: types.ATTACK_MONSTER,
   payload: {
     uuid,
+    dmg
+  }
+});
+
+export const attackAllMonsters = ({ dmg }) => ({
+  type: types.ATTACK_ALL_MONSTERS,
+  payload: {
     dmg
   }
 });
@@ -132,9 +139,9 @@ export const resetMonsterMoves = () => ({
   payload: {}
 });
 
-export const playCard = ({uuid, target}) => ({
+export const playCard = ({id, uuid, target}) => ({
   type: types.PLAY_CARD,
-  payload: { uuid, target}
+  payload: { id, uuid, target}
 })
 
 export const activateCardFromHand = (uuid) => ({
