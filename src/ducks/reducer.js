@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 import * as utils from './utils';
+import _ from 'lodash';
 
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
@@ -14,7 +15,8 @@ export const initialState = {
   player: {
     hp: 100,
     deck: [],
-    maxAP: 100
+    maxAP: 100,
+    amountCardToDraw: 5
   },
   cards: {
     allIds: [],
@@ -25,10 +27,11 @@ export const initialState = {
     byIds: {}
   },
   battle: {
+    amountCardToDraw: 0,
     cards: [],
     selectingCard: true,
     selectingTarget: false,
-    hp: 100,
+    hp: 0,
     currentAP: 0,
     maxAP: 0,
     queuedActions: [],
@@ -40,6 +43,31 @@ export const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case types.RESET_BATTLE: {
+      let returnState = {
+        ...state,
+        battle: {
+          ...state.battle,
+          amountCardToDraw: state.player.amountCardToDraw,
+          hp: state.player.hp,
+          maxAP: state.player.maxAP,
+          currentAP: state.player.maxAP,
+          turn: 1,
+          cards: _.cloneDeep(_.shuffle(state.player.deck))
+        }
+      };
+
+      for (let i = 0; i < returnState.battle.cards.length; i++) {
+        if (i < returnState.battle.amountCardToDraw) {
+          returnState.battle.cards[i].deck = 'hand';
+        } else {
+          returnState.battle.cards[i].deck = 'deck';
+        }
+      }
+
+      return returnState;
+    }
+
     case types.SET_GAME_STATE: {
       const { targetState } = action.payload;
       return {
