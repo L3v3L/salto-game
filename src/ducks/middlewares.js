@@ -7,7 +7,6 @@ export const endTurn = store => next => action => {
   if (action.type === types.ADD_BATTLE_TURN) {
     let state = store.getState();
 
-    const maxCardsToDraw = 5;
     const activeCard = selectors.getActiveCard(state);
 
     if (activeCard && activeCard.uuid) {
@@ -22,7 +21,7 @@ export const endTurn = store => next => action => {
 
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
-      maxCardsToDraw
+      state.battle.amountCardToDraw
     );
 
     newDiscardArray = newDiscardArray.concat(newHandArray);
