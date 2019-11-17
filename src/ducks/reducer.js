@@ -3,13 +3,13 @@ import * as types from './actionTypes';
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
 
-const gameState = {
+const gameStates = {
   BATTLE: 'battle',
   REWARD: 'reward'
 };
 
 export const initialState = {
-  gameState: gameState.BATTLE,
+  gameState: gameStates.BATTLE,
   player: {
     hp: 100,
     deck: [],
@@ -39,6 +39,14 @@ export const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case types.SET_GAME_STATE: {
+      const { targetState } = action.payload;
+      return {
+        ...state,
+        gameState: targetState
+      };
+    }
+
     case types.SET_BATTLE_CARDS: {
       const { cards } = action.payload;
       return {
