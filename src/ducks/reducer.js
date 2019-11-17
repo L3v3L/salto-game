@@ -172,7 +172,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         battle: {
           ...state.battle,
-          hp: state.battle.hp + value
+          hp: Math.max(0, state.battle.hp + value)
         }
       };
 
@@ -228,7 +228,7 @@ export default function reducer(state = initialState, action = {}) {
           ...state.battle,
           monsters: state.battle.monsters.map(monster => {
             if (monster.uuid === uuid) {
-              monster.hp = dmg <= monster.hp ? monster.hp - dmg : 0;
+              monster.hp = Math.max(0, monster.hp - dmg);
             }
             return monster;
           })
@@ -253,7 +253,7 @@ export default function reducer(state = initialState, action = {}) {
         battle: {
           ...state.battle,
           monsters: state.battle.monsters.map(monster => {
-            monster.hp = dmg <= monster.hp ? monster.hp - dmg : 0;
+            monster.hp = Math.max(0, monster.hp - dmg);
             return monster;
           })
         }
