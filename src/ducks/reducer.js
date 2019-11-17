@@ -1,4 +1,5 @@
 import * as types from './actionTypes';
+import * as utils from './utils';
 
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
@@ -7,10 +8,6 @@ const gameStates = {
   BATTLE: 'battle',
   REWARD: 'reward'
 };
-
-function isMonstersAlive(state) {
-  return state.battle.monsters.filter(monster => monster.hp > 0).length;
-}
 
 export const initialState = {
   gameState: gameStates.BATTLE,
@@ -237,7 +234,7 @@ export default function reducer(state = initialState, action = {}) {
 
       if (
         returnState.gameState === gameStates.BATTLE &&
-        !isMonstersAlive(returnState)
+        !utils.isMonstersAlive(returnState)
       ) {
         returnState.gameState = gameStates.REWARD;
       }
@@ -261,7 +258,7 @@ export default function reducer(state = initialState, action = {}) {
 
       if (
         returnState.gameState === gameStates.BATTLE &&
-        !isMonstersAlive(returnState)
+        !utils.isMonstersAlive(returnState)
       ) {
         returnState.gameState = gameStates.REWARD;
       }
