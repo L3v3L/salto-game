@@ -157,3 +157,10 @@ export const moveCardByUUID = ({ uuidArray, targetDeck }) => ({
   type: types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID,
   payload: { uuidArray, targetDeck }
 });
+
+export const setGameState = targetState => ({
+  type: types.SET_GAME_STATE,
+  payload: {
+    targetState
+  }
+});

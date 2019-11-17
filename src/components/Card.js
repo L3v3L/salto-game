@@ -135,14 +135,14 @@ export class Card extends Component {
 
 const mapStateToProps = state => {
   const currentAP = selectors.getCurrentAP(state);
-  const monsters = selectors.getMonsters(state);
+  const monsterRefs = selectors.getMonsterRefs(state);
   const isSelectingCard = selectors.getIsSelectingCard(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
   return {
     currentAP,
-    monsters,
+    monsterRefs,
     isSelectingCard,
     isSelectingTarget,
     activeCard
