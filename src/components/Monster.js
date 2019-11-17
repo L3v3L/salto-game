@@ -32,8 +32,8 @@ export class Monster extends Component {
     let sprite = new Sprite(MonsterSprite, {
       colored: true,
       colorVariations: 1,
-      edgeBrightness: 0,
-      brightnessNoise: 1,
+      edgeBrightness: 0.1,
+      brightnessNoise: 0.5,
       saturation: 1,
       tint: {
         r: 0.2,
@@ -43,8 +43,9 @@ export class Monster extends Component {
       }
     });
 
-    const dataURI = SpriteCanvasHelper.createCanvas(sprite).toDataURL();
-    this.setState({ dataURI });
+    let canvas = SpriteCanvasHelper.createCanvas(sprite);
+    canvas = SpriteCanvasHelper.resizeCanvas(canvas, 8);
+    this.setState({ dataURI: canvas.toDataURL() });
   }
 
   action() {
@@ -56,7 +57,7 @@ export class Monster extends Component {
   render() {
     return (
       <BouncyDiv onClick={() => this.action()}>
-        <img width='100px' src={this.state.dataURI} alt='Monster' />
+        <img src={this.state.dataURI} alt='Monster' />
         <br />
         <code>HP: {this.props.hp}</code>
       </BouncyDiv>
