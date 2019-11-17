@@ -8,6 +8,10 @@ const gameStates = {
   REWARD: 'reward'
 };
 
+function isMonstersAlive(state) {
+  return state.battle.monsters.filter(monster => monster.hp > 0).length;
+}
+
 export const initialState = {
   gameState: gameStates.BATTLE,
   player: {
@@ -163,13 +167,23 @@ export default function reducer(state = initialState, action = {}) {
 
     case types.ADD_TO_BATTLE_HP: {
       const { value } = action.payload;
-      return {
+
+      let returnState = {
         ...state,
         battle: {
           ...state.battle,
           hp: state.battle.hp + value
         }
       };
+
+      if (
+        returnState.gameState === gameStates.BATTLE &&
+        returnState.battle.hp <= 0
+      ) {
+        returnState.gameState = gameStates.REWARD;
+      }
+
+      return returnState;
     }
 
     case types.SET_QUEUED_ACTIONS: {
@@ -207,7 +221,8 @@ export default function reducer(state = initialState, action = {}) {
 
     case types.ATTACK_MONSTER: {
       const { uuid, dmg } = action.payload;
-      return {
+
+      let returnState = {
         ...state,
         battle: {
           ...state.battle,
@@ -219,11 +234,21 @@ export default function reducer(state = initialState, action = {}) {
           })
         }
       };
+
+      if (
+        returnState.gameState === gameStates.BATTLE &&
+        !isMonstersAlive(returnState)
+      ) {
+        returnState.gameState = gameStates.REWARD;
+      }
+
+      return returnState;
     }
 
     case types.ATTACK_ALL_MONSTERS: {
       const { dmg } = action.payload;
-      return {
+
+      let returnState = {
         ...state,
         battle: {
           ...state.battle,
@@ -233,6 +258,15 @@ export default function reducer(state = initialState, action = {}) {
           })
         }
       };
+
+      if (
+        returnState.gameState === gameStates.BATTLE &&
+        !isMonstersAlive(returnState)
+      ) {
+        returnState.gameState = gameStates.REWARD;
+      }
+
+      return returnState;
     }
 
     case types.CREATE_CARD: {
