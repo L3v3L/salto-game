@@ -33,24 +33,7 @@ class Battle extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
-    let battleCards = _.cloneDeep(_.shuffle(props.allState.player.deck));
-    battleCards = battleCards.map(card => {
-      card.deck = 'deck';
-      return card;
-    });
-
-    let amountCardsStarting = 5;
-
-    for (let i = 0; i < amountCardsStarting; i++) {
-      battleCards[i].deck = 'hand';
-    }
-
-    props.setBattleCards({ cards: battleCards });
-
-    props.setBattleMaxAP(props.allState.player.maxAP);
-    props.setBattleCurrentAP(props.allState.player.maxAP);
-
+    props.resetBattle();
     props.addMonster(1);
     props.addMonster(0);
   }

@@ -164,3 +164,7 @@ export const setGameState = targetState => ({
     targetState
   }
 });
+
+export const resetBattle = () => ({
+    type: types.RESET_BATTLE
+});
