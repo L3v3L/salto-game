@@ -1,46 +1,27 @@
-import _ from "lodash";
-import * as types from './actionTypes'
-import * as actions from './actionCreators'
-import * as selectors from './selectors'
-
-export const buffAttack = store => next => action => {
-  if (action.type === types.ATTACK_MONSTER) {
-    action.payload.dmg = 10;
-  }
-
-  next(action);
-};
+import _ from 'lodash';
+import * as types from './actionTypes';
+import * as actions from './actionCreators';
+import * as selectors from './selectors';
 
 export const endTurn = store => next => action => {
   if (action.type === types.ADD_BATTLE_TURN) {
     let state = store.getState();
 
-    const maxCardsToDraw = 5;
+    const activeCard = selectors.getActiveCard(state);
+
+    if (activeCard && activeCard.uuid) {
+      store.dispatch(actions.deactivateCardFromHand(activeCard.uuid));
+    }
 
     store.dispatch(actions.disableTargetSelection());
 
-    let newDiscardArray = state.battle.discard.map((card) => {
-      if (card.isActive) {
-        card.isActive = false;
-      }
-      return card;
-    });
-    let newHandArray = state.battle.hand.map((card) => {
-      if (card.isActive) {
-        card.isActive = false;
-      }
-      return card;
-    });
-    let newdeckArray = state.battle.deck.map((card) => {
-      if (card.isActive) {
-        card.isActive = false;
-      }
-      return card;
-    });
+    let newDiscardArray = selectors.getCardsByDeck(state, 'discard');
+    let newHandArray = selectors.getCardsByDeck(state, 'hand');
+    let newdeckArray = selectors.getCardsByDeck(state, 'deck');
 
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
-      maxCardsToDraw
+      state.battle.amountCardToDraw
     );
 
     newDiscardArray = newDiscardArray.concat(newHandArray);
@@ -57,15 +38,15 @@ export const endTurn = store => next => action => {
     }
 
     store.dispatch(
-      actions.setBattleDeck({ deckArray: newdeckArray, targetDeck: "deck" })
+      actions.moveCardByCard({ cardArray: newdeckArray, targetDeck: 'deck' })
     );
     store.dispatch(
-      actions.setBattleDeck({ deckArray: newHandArray, targetDeck: "hand" })
+      actions.moveCardByCard({ cardArray: newHandArray, targetDeck: 'hand' })
     );
     store.dispatch(
-      actions.setBattleDeck({
-        deckArray: newDiscardArray,
-        targetDeck: "discard"
+      actions.moveCardByCard({
+        cardArray: newDiscardArray,
+        targetDeck: 'discard'
       })
     );
 
@@ -76,11 +57,11 @@ export const endTurn = store => next => action => {
       if (state.battle.monsterMoves[monster.uuid]) {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
-            case "attack":
+            case 'attack':
               store.dispatch(actions.addToBattleHP(0 - move.value));
               break;
-            case "block":
-              console.log("block " + move.value);
+            case 'block':
+              console.log('block ' + move.value);
               break;
             default:
               break;
@@ -95,7 +76,7 @@ export const endTurn = store => next => action => {
 
     state.battle.monsters.map(monster => {
       let monsterRef = selectors
-        .getMonsters(state)
+        .getMonsterRefs(state)
         .find(monsterLib => monsterLib.id === monster.id);
       store.dispatch(
         actions.setMonsterMoves(
@@ -116,49 +97,71 @@ export const targetSelectionDisable = store => next => action => {
   }
 
   next(action);
-}
+};
 
 export const playCardActivate = store => next => action => {
-  const state = store.getState();
-  const card = selectors.getActiveCard(state);
+  if (action.type === types.PLAY_CARD) {
+    const { id, uuid } = action.payload;
+    const state = store.getState();
+    const playedCardRef = selectors.getCardById(state, id);
+    const activeCard = selectors.getActiveCard(state);
 
-  if (action.type === types.PLAY_CARD && !card) {
-    store.dispatch(actions.enableTargetSelection());
-    store.dispatch(actions.activateCardFromHand(action.payload.uuid));
+    if (!activeCard && playedCardRef.needsTarget) {
+      store.dispatch(actions.enableTargetSelection());
+      store.dispatch(actions.activateCardFromHand(uuid));
+    }
   }
 
   next(action);
-}
+};
 
 export const playCardExecute = store => next => action => {
-  const { target } = action.payload;
-  const state = store.getState();
+  if (action.type === types.PLAY_CARD) {
+    const { id, uuid, target } = action.payload;
+    const state = store.getState();
+    const activeCard = selectors.getActiveCard(state);
+    const activeCardRef = activeCard
+      ? selectors.getCardById(state, activeCard.id)
+      : null;
+    const playedCardRef = id ? selectors.getCardById(state, id) : null;
 
-  const activeCard = selectors.getActiveCard(state);
-  const card = activeCard ? selectors.getCardById(state, activeCard.id) : undefined;
+    const cardNeedsTargetAndHasTarget =
+      activeCardRef && activeCardRef.needsTarget && target;
+    const cardDoesntNeedTarget = playedCardRef && !playedCardRef.needsTarget;
 
-  if (action.type === types.PLAY_CARD && card && target !== undefined) {
-    store.dispatch(actions.disableTargetSelection());
+    const card = playedCardRef || activeCardRef;
+    const cardUuid = uuid || activeCard.uuid;
 
-    card.actions.map((action) => {
-      if (card.needsTarget && action.type === types.ATTACK_MONSTER) {
-        action.payload.uuid = target;
+    if (cardNeedsTargetAndHasTarget || cardDoesntNeedTarget) {
+      if (cardNeedsTargetAndHasTarget) {
+        store.dispatch(actions.disableTargetSelection());
       }
-      return store.dispatch(action)
-    });
 
-    store.dispatch(actions.decrementPlayerActions(card.cost));
-    
-    store.dispatch(actions.removeCardFromBattleDeck({
-      uuid: activeCard.uuid,
-      targetDeck: "hand"
-    }));
+      card.actions.map(action => {
+        if (
+          action.type === types.ATTACK_MONSTER &&
+          cardNeedsTargetAndHasTarget
+        ) {
+          action.payload.uuid = target;
+        }
 
-    store.dispatch(actions.addCardToBattleDeck({
-      uuid: activeCard.uuid,
-      targetDeck: "discard"
-    }));
+        return store.dispatch(action);
+      });
+
+      store.dispatch(actions.decrementPlayerActions(card.cost));
+
+      store.dispatch(
+        actions.moveCardByUUID({
+          uuidArray: [cardUuid],
+          targetDeck: 'discard'
+        })
+      );
+
+      if (activeCard && activeCard.uuid) {
+        store.dispatch(actions.deactivateCardFromHand(activeCard.uuid));
+      }
+    }
   }
 
   next(action);
-}
+};

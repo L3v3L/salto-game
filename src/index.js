@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import { Provider } from "react-redux";
-import configureStore from "./configureStore";
+import { Provider } from 'react-redux';
+import configureStore from './configureStore';
 
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import { initialState } from "./ducks/reducer";
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+import { initialState } from './ducks/reducer';
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById('root');
 
 ReactDOM.render(
   <Provider store={configureStore(initialState)}>

@@ -27,8 +27,8 @@ class PortalScreen extends Component {
         <button onClick={() => console.log('Portal2')}>Portal 2</button>
         <button onClick={() => console.log('Portal3')}>Portal 3</button>
       </Portals>
-    )
+    );
   }
-};
+}
 
 export default PortalScreen;

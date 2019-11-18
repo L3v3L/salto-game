@@ -16,7 +16,6 @@ const Item = styled.div`
   &:hover {
     cursor: pointer;
   }
-}
 `;
 
 const Arrow = styled.span`
@@ -24,28 +23,23 @@ const Arrow = styled.span`
   align-items: center;
 `;
 
-const mapSize = [1,2,3,4,5];
+const mapSize = [1, 2, 3, 4, 5];
 
 class MapScreen extends Component {
   render() {
     return (
       <PortalMap>
-        {
-          mapSize.map((item, index) => {
-            return (
-              <Fragment key={index}>
-                <Item >{item}</Item>
-                {
-                  index !== mapSize.length-1
-                  && <Arrow>&#8594;</Arrow>
-                }
-              </Fragment>
-            )
-          })
-        }
+        {mapSize.map((item, index) => {
+          return (
+            <Fragment key={index}>
+              <Item>{item}</Item>
+              {index !== mapSize.length - 1 && <Arrow>&#8594;</Arrow>}
+            </Fragment>
+          );
+        })}
       </PortalMap>
-    )
+    );
   }
-};
+}
 
 export default MapScreen;

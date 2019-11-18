@@ -1,17 +1,18 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { GlobalHotKeys } from 'react-hotkeys';
 
 import Card from "./Card";
 import Monster from "./Monster";
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
 
-import * as selectors from "../ducks/selectors";
-import * as actionCreators from "../ducks/actionCreators";
+import * as selectors from '../ducks/selectors';
+import * as actionCreators from '../ducks/actionCreators';
 
-import styled from "styled-components";
+
+import styled from 'styled-components';
 
 const Centered = styled.div`
   width: 100%;
@@ -38,117 +39,137 @@ class Battle extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
-    let battleDeck = _.cloneDeep(_.shuffle(props.allState.player.deck));
-    let handDeck = [];
-
-    let amountCardsStarting = 5;
-    for (let i = 0; i < amountCardsStarting; i++) {
-      handDeck.push(battleDeck.pop());
-    }
-
-    props.setBattleMaxAP(props.allState.player.maxAP);
-    props.setBattleCurrentAP(props.allState.player.maxAP);
-
-    props.setBattleDeck({ deckArray: battleDeck, targetDeck: "deck" });
-    props.setBattleDeck({ deckArray: handDeck, targetDeck: "hand" });
-
+    props.resetBattle();
     props.addMonster(1);
     props.addMonster(0);
   }
 
+  endTurn() {
+    this.props.addToBattleTurn(1);
+  }
+
   render() {
+    const handlers = {
+      spaceKey: event => {
+        event.preventDefault();
+        this.endTurn();
+      }
+    };
+
     return (
-      <div>
-        <Centered>
-          {this.props.allState.battle.monsters
-            .map(monster => {
-              return {
-                ref: this.props.monsters.find(
-                  monsterLib => monsterLib.id === monster.id
-                ),
-                monster: monster
-              };
-            })
-            .map(monster => {
-              return (
-                <Monster
-                  key={monster.monster.uuid}
-                  uuid={monster.monster.uuid}
-                  id={monster.monster.id}
-                  hp={monster.monster.hp}
-                  maxHp={monster.ref.hp}
-                />
-              );
-            })}
-        </Centered>
+      <GlobalHotKeys handlers={handlers}>
+        <div>
+          <Centered>
+            {this.props.monsters
+              .map(monster => {
+                return {
+                  ref: this.props.monsterRefs.find(
+                    monsterLib => monsterLib.id === monster.id
+                  ),
+                  monster: monster
+                };
+              })
+              .map(monster => {
+                return (
+                  <Monster
+                    key={monster.monster.uuid}
+                    uuid={monster.monster.uuid}
+                    id={monster.monster.id}
+                    hp={monster.monster.hp}
+                    maxHp={monster.ref.hp}
+                  />
+                );
+              })}
+          </Centered>
 
-        <Centered
-          style={
-            this.props.isSelectingTarget
-              ? { visibility: "visible" }
-              : { visibility: "hidden" }
-          }
-        >
-          Select Target
-        </Centered>
+          <Centered
+            style={
+              this.props.isSelectingTarget
+                ? { visibility: 'visible' }
+                : { visibility: 'hidden' }
+            }
+          >
+            Select Target
+          </Centered>
 
-        <br />
-        <BattleStats>
-          <DeckPile
-            size={this.props.allState.battle.deck.length}
-          />
-          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.hp}
           <br />
-          Cards in Hand:&nbsp;&nbsp;{this.props.allState.battle.hand.length}
+          <BattleStats>
+            <DeckPile
+              size={this.props.allState.battle.deck.length}
+            />
+            Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.allState.battle.hp}
+            <br />
+            Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
+            <br />
+            Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.allState.battle.currentAP}/
+            {this.props.allState.battle.maxAP}
+            <br />
+            <DiscardPile
+              size={this.props.allState.battle.discard.length}
+            />
+          </BattleStats>
           <br />
-          Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.currentAP}/
-          {this.props.allState.battle.maxAP}
-          <DiscardPile
-            size={this.props.allState.battle.discard.length}
-          />
-          <br />
-        </BattleStats>
-        <br />
-        <Hand>
-          {this.props.allState.battle.hand
-            .map(handCard => {
-              return {
-                ref: this.props.cards.find(card => card.id === handCard.id),
-                card: handCard
-              };
-            })
-            .map(cardInHand => {
-              return (
-                <Card
-                  key={cardInHand.card.uuid}
-                  uuid={cardInHand.card.uuid}
-                  isActive={this.props.activeCard ? this.props.activeCard.uuid === cardInHand.card.uuid : false}
-                  id={cardInHand.card.id}
-                  label={cardInHand.ref.name}
-                  cost={cardInHand.ref.cost}
-                  actions={cardInHand.ref.actions}
-                  description={cardInHand.ref.description}
-                />
-              );
-            })}
-        </Hand>
-        <button onClick={() => this.props.addToBattleTurn(1)}>End Turn</button>
-      </div>
+          <Hand>
+            {this.props.handCards
+              .map(handCard => {
+                return {
+                  ref: this.props.cardRefs.find(
+                    card => card.id === handCard.id
+                  ),
+                  card: handCard
+                };
+              })
+              .map(cardInHand => {
+                return (
+                  <Card
+                    key={cardInHand.card.uuid}
+                    uuid={cardInHand.card.uuid}
+                    isActive={
+                      this.props.activeCard
+                        ? this.props.activeCard.uuid === cardInHand.card.uuid
+                        : false
+                    }
+                    id={cardInHand.card.id}
+                    label={cardInHand.ref.name}
+                    cost={cardInHand.ref.cost}
+                    actions={cardInHand.ref.actions}
+                    description={cardInHand.ref.description}
+                  />
+                );
+              })}
+          </Hand>
+          <button onClick={() => this.endTurn()}>End Turn</button>
+        </div>
+      </GlobalHotKeys>
     );
   }
 }
 
 const mapStateToProps = state => {
   const allState = selectors.getAllState(state);
-  const cards = selectors.getCards(state);
-  const monsters = selectors.getMonsters(state);
+  const cardRefs = selectors.getCardRefs(state);
+  const monsterRefs = selectors.getMonsterRefs(state);
+  const monsters = selectors.getMonstersAlive(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
-  return { allState, monsters, cards, isSelectingTarget, activeCard };
+  const deckCards = selectors.getCardsByDeck(state, 'deck');
+  const handCards = selectors.getCardsByDeck(state, 'hand');
+  const discardCards = selectors.getCardsByDeck(state, 'discard');
+
+  return {
+    allState,
+    monsterRefs,
+    cardRefs,
+    isSelectingTarget,
+    activeCard,
+    deckCards,
+    handCards,
+    discardCards,
+    monsters
+  };
 };
 
 const mapDispatchToProps = dispatch => {

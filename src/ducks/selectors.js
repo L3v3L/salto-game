@@ -27,8 +27,11 @@ export const getMonsterList = store =>
 export const getMonsterById = (store, id) =>
   getMonsterState(store) ? { ...getMonsterState(store).byIds[id], id } : {};
 
-export const getMonsters = store =>
+export const getMonsterRefs = store =>
   getMonsterList(store).map(id => getMonsterById(store, id));
+
+export const getMonstersAlive = store =>
+  store.battle.monsters.filter(monster => monster.hp > 0);
 
 // Cards
 export const getCardsState = store => store.cards;
@@ -39,12 +42,19 @@ export const getCardList = store =>
 export const getCardById = (store, id) =>
   getCardsState(store) ? { ...getCardsState(store).byIds[id], id } : {};
 
-export const getCards = store =>
+export const getCardRefs = store =>
   getCardList(store).map(id => getCardById(store, id));
 
+export const getActiveCard = store => {
+  const state = getBattleState(store);
+  if (state && state.activeCard) {
+    return getCardsByDeck(store, 'hand').find(card => {
+      return card.uuid === state.activeCard;
+    });
+  }
+};
 
-export const getHandState = store => 
-  getBattleState(store) ? getBattleState(store).hand : [];
-
-export const getActiveCard = store => 
-  getHandState(store).find(card => card["isActive"])
+export const getCardsByDeck = (store, deckName) => {
+  const state = getBattleState(store);
+  return state.cards.filter(card => card.deck === deckName);
+};
