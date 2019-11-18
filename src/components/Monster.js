@@ -76,6 +76,8 @@ export class Monster extends Component {
         return 'deals ' + value + ' damage';
       case type === 'block':
         return 'blocks ' + value + ' damage';
+      default:
+        return 'does ' + value + ' ' + type;
     }
   };
 
