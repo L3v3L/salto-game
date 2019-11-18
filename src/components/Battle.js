@@ -28,22 +28,6 @@ const BattleStats = styled.div`
   font-family: monospace;
 `;
 
-const QueuedMoves = styled.div`
-  margin-top: 10px;
-  font-size: 14px;
-  min-height: 80px;
-  background-color: #495351;
-  padding: 6px;
-  border: 2px solid black;
-  border-radius: 4px;
-  min-width: 110px;
-`;
-
-const MoveItem = styled.div`
-  font-size: 12px;
-  padding: 3px 6px;
-`;
-
 class Battle extends Component {
   constructor(props) {
     super(props);
@@ -52,15 +36,6 @@ class Battle extends Component {
     props.addMonster(1);
     props.addMonster(0);
   }
-
-  getQueuedMoveText = (type, value) => {
-    switch (true) {
-      case type === 'attack':
-        return 'deals ' + value + ' damage';
-      case type === 'block':
-        return 'blocks ' + value + ' damage';
-    }
-  };
 
   render() {
     return (
@@ -77,29 +52,14 @@ class Battle extends Component {
             })
             .map(monster => {
               return (
-                <div>
-                  <Monster
-                    key={monster.monster.uuid}
-                    uuid={monster.monster.uuid}
-                    id={monster.monster.id}
-                    hp={monster.monster.hp}
-                    maxHp={monster.ref.hp}
-                  />
-                  <QueuedMoves>
-                    Next moves
-                    {this.props.allState.battle.monsterMoves[monster.monster.uuid] !== undefined
-                    ? this.props.allState.battle.monsterMoves[monster.monster.uuid]
-                      .map(move => {
-                        return (
-                          <MoveItem>
-                            {this.getQueuedMoveText(move.type, move.value)}
-                          </MoveItem>
-                        );
-                      })
-                    : <MoveItem> No moves queued </MoveItem>
-                    }
-                  </QueuedMoves>
-                </div>
+                <Monster
+                  key={monster.monster.uuid}
+                  uuid={monster.monster.uuid}
+                  id={monster.monster.id}
+                  hp={monster.monster.hp}
+                  maxHp={monster.ref.hp}
+                  monsterMoves={this.props.allState.battle.monsterMoves}
+                />
               );
             })}
         </Centered>

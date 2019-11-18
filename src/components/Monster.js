@@ -20,6 +20,22 @@ const BouncyDiv = styled.div`
   animation: 1s ${bounceAnimation};
 `;
 
+const QueuedMoves = styled.div`
+  margin-top: 10px;
+  font-size: 14px;
+  min-height: 80px;
+  background-color: #495351;
+  padding: 6px;
+  border: 2px solid black;
+  border-radius: 4px;
+  min-width: 110px;
+`;
+
+const MoveItem = styled.div`
+  font-size: 12px;
+  padding: 3px 6px;
+`;
+
 export class Monster extends Component {
   constructor(props) {
     super(props);
@@ -54,13 +70,38 @@ export class Monster extends Component {
     }
   }
 
+  getQueuedMoveText = (type, value) => {
+    switch (true) {
+      case type === 'attack':
+        return 'deals ' + value + ' damage';
+      case type === 'block':
+        return 'blocks ' + value + ' damage';
+    }
+  };
+
   render() {
     return (
-      <BouncyDiv onClick={() => this.action()}>
-        <img src={this.state.dataURI} alt='Monster' />
-        <br />
-        <code>HP: {this.props.hp}</code>
-      </BouncyDiv>
+      <div>
+        <BouncyDiv onClick={() => this.action()}>
+          <img src={this.state.dataURI} alt='Monster' />
+          <br />
+          <code>HP: {this.props.hp}</code>
+        </BouncyDiv>
+        <QueuedMoves>
+          Next moves
+          {this.props.monsterMoves[this.uuid] !== undefined
+            ? this.props.monsterMoves[this.uuid]
+              .map(move => {
+                return (
+                  <MoveItem>
+                    {this.getQueuedMoveText(move.type, move.value)}
+                  </MoveItem>
+                );
+              })
+            : <MoveItem> No moves queued </MoveItem>
+          }
+        </QueuedMoves>
+      </div>
     );
   }
 }
