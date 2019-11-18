@@ -14,6 +14,8 @@ import {
   playCard
 } from '../ducks/actionCreators';
 
+let nextMoveUUID = 0;
+
 const bounceAnimation = keyframes`${bounce}`;
 
 const BouncyDiv = styled.div`
@@ -95,7 +97,7 @@ export class Monster extends Component {
             ? this.props.monsterMoves[this.uuid]
               .map(move => {
                 return (
-                  <MoveItem>
+                  <MoveItem key={++nextMoveUUID}>
                     {this.getQueuedMoveText(move.type, move.value)}
                   </MoveItem>
                 );
