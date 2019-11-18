@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import { GlobalHotKeys } from 'react-hotkeys';
 import Card from './Card';
 import Monster from './Monster';
 
@@ -37,90 +37,105 @@ class Battle extends Component {
     props.addMonster(0);
   }
 
+  endTurn() {
+    this.props.addToBattleTurn(1);
+  }
+
   render() {
+    const handlers = {
+      spaceKey: event => {
+        event.preventDefault();
+        this.endTurn();
+      }
+    };
+
     return (
-      <div>
-        <Centered>
-          {this.props.monsters
-            .map(monster => {
-              return {
-                ref: this.props.monsterRefs.find(
-                  monsterLib => monsterLib.id === monster.id
-                ),
-                monster: monster
-              };
-            })
-            .map(monster => {
-              return (
-                <Monster
-                  key={monster.monster.uuid}
-                  uuid={monster.monster.uuid}
-                  id={monster.monster.id}
-                  hp={monster.monster.hp}
-                  maxHp={monster.ref.hp}
-                />
-              );
-            })}
-        </Centered>
+      <GlobalHotKeys handlers={handlers}>
+        <div>
+          <Centered>
+            {this.props.monsters
+              .map(monster => {
+                return {
+                  ref: this.props.monsterRefs.find(
+                    monsterLib => monsterLib.id === monster.id
+                  ),
+                  monster: monster
+                };
+              })
+              .map(monster => {
+                return (
+                  <Monster
+                    key={monster.monster.uuid}
+                    uuid={monster.monster.uuid}
+                    id={monster.monster.id}
+                    hp={monster.monster.hp}
+                    maxHp={monster.ref.hp}
+                  />
+                );
+              })}
+          </Centered>
 
-        <Centered
-          style={
-            this.props.isSelectingTarget
-              ? { visibility: 'visible' }
-              : { visibility: 'hidden' }
-          }
-        >
-          Select Target
-        </Centered>
+          <Centered
+            style={
+              this.props.isSelectingTarget
+                ? { visibility: 'visible' }
+                : { visibility: 'hidden' }
+            }
+          >
+            Select Target
+          </Centered>
 
-        <br />
-        <BattleStats>
-          Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.hp}
           <br />
-          Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.deckCards.length}
+          <BattleStats>
+            Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.allState.battle.hp}
+            <br />
+            Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.deckCards.length}
+            <br />
+            Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
+            <br />
+            Discard Pile:&nbsp;&nbsp;&nbsp;
+            {this.props.discardCards.length}
+            <br />
+            Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.allState.battle.currentAP}/
+            {this.props.allState.battle.maxAP}
+            <br />
+          </BattleStats>
           <br />
-          Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
-          <br />
-          Discard Pile:&nbsp;&nbsp;&nbsp;
-          {this.props.discardCards.length}
-          <br />
-          Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {this.props.allState.battle.currentAP}/
-          {this.props.allState.battle.maxAP}
-          <br />
-        </BattleStats>
-        <br />
-        <Hand>
-          {this.props.handCards
-            .map(handCard => {
-              return {
-                ref: this.props.cardRefs.find(card => card.id === handCard.id),
-                card: handCard
-              };
-            })
-            .map(cardInHand => {
-              return (
-                <Card
-                  key={cardInHand.card.uuid}
-                  uuid={cardInHand.card.uuid}
-                  isActive={
-                    this.props.activeCard
-                      ? this.props.activeCard.uuid === cardInHand.card.uuid
-                      : false
-                  }
-                  id={cardInHand.card.id}
-                  label={cardInHand.ref.name}
-                  cost={cardInHand.ref.cost}
-                  actions={cardInHand.ref.actions}
-                  description={cardInHand.ref.description}
-                />
-              );
-            })}
-        </Hand>
-        <button onClick={() => this.props.addToBattleTurn(1)}>End Turn</button>
-      </div>
+          <Hand>
+            {this.props.handCards
+              .map(handCard => {
+                return {
+                  ref: this.props.cardRefs.find(
+                    card => card.id === handCard.id
+                  ),
+                  card: handCard
+                };
+              })
+              .map(cardInHand => {
+                return (
+                  <Card
+                    key={cardInHand.card.uuid}
+                    uuid={cardInHand.card.uuid}
+                    isActive={
+                      this.props.activeCard
+                        ? this.props.activeCard.uuid === cardInHand.card.uuid
+                        : false
+                    }
+                    id={cardInHand.card.id}
+                    label={cardInHand.ref.name}
+                    cost={cardInHand.ref.cost}
+                    actions={cardInHand.ref.actions}
+                    description={cardInHand.ref.description}
+                  />
+                );
+              })}
+          </Hand>
+          <button onClick={() => this.endTurn()}>End Turn</button>
+        </div>
+      </GlobalHotKeys>
     );
   }
 }
