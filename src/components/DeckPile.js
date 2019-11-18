@@ -57,15 +57,25 @@ class DeckPile extends Component {
   render() {
     return (
       <Pile>
-        <Card className="left">
-          <Circle />
-        </Card>
-        <Card className="middle">
-          <span>{this.props.size}</span>
-        </Card>
-        <Card className="right">
-          <Square />
-        </Card>
+        {
+          this.props.size > 0
+          ? <>
+            <Card className="left">
+              <Circle />
+            </Card>
+            <Card className="middle">
+              <span>{this.props.size}</span>
+            </Card>
+            <Card className="right">
+              <Square />
+            </Card>
+          </>
+          : <>
+            <Card className="middle">
+              <span>{this.props.size}</span>
+            </Card>
+          </>
+        }
       </Pile>
     )
   }

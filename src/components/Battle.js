@@ -60,15 +60,6 @@ class Battle extends Component {
   render() {
     return (
       <div>
-        <BattleStats>
-          <DeckPile
-            size={this.props.allState.battle.deck.length}
-          />
-          <DiscardPile
-            size={this.props.allState.battle.discard.length}
-          />
-        </BattleStats>
-
         <Centered>
           {this.props.allState.battle.monsters
             .map(monster => {
@@ -104,6 +95,9 @@ class Battle extends Component {
 
         <br />
         <BattleStats>
+          <DeckPile
+            size={this.props.allState.battle.deck.length}
+          />
           Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {this.props.allState.battle.hp}
           <br />
@@ -112,6 +106,9 @@ class Battle extends Component {
           Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {this.props.allState.battle.currentAP}/
           {this.props.allState.battle.maxAP}
+          <DiscardPile
+            size={this.props.allState.battle.discard.length}
+          />
           <br />
         </BattleStats>
         <br />
