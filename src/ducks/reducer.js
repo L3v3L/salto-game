@@ -301,7 +301,8 @@ export default function reducer(state = initialState, action = {}) {
         description,
         cost,
         actions,
-        needsTarget
+        needsTarget,
+        image
       } = action.payload;
       return {
         ...state,
@@ -314,7 +315,8 @@ export default function reducer(state = initialState, action = {}) {
               cost,
               description,
               actions,
-              needsTarget
+              needsTarget,
+              image
             }
           }
         }

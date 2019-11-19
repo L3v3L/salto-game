@@ -35,7 +35,8 @@ export const createCard = ({
   cost,
   actions,
   needsTarget,
-  target
+  target,
+  image
 }) => ({
   type: types.CREATE_CARD,
   payload: {
@@ -45,7 +46,8 @@ export const createCard = ({
     cost,
     actions,
     needsTarget,
-    target
+    target,
+    image
   }
 });
 
@@ -166,5 +168,5 @@ export const setGameState = targetState => ({
 });
 
 export const resetBattle = () => ({
-    type: types.RESET_BATTLE
+  type: types.RESET_BATTLE
 });

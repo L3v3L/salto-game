@@ -54,16 +54,25 @@ const CardButton = styled.div`
         border-bottom: 2px solid #4b6c60;
       }
     }
-
-    .image {
+    .imageContainer {
+      position: relative;
+      padding: 5px;
       background-color: whitesmoke;
-      width: 100%;
-      height: 80px;
-      img {
+      .status {
+        position: absolute;
         width: 100%;
-        height: 100%;
+        padding-left: 10px;
+      }
+      .image {
+        width: 100%;
+        height: 80px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
+
     .body {
       padding: 10px;
       text-align: center;
@@ -86,6 +95,7 @@ export class Card extends Component {
     this.cost = props.cost;
     this.uuid = props.uuid;
     this.id = props.id;
+    this.image = props.image;
 
     this.description = props.description
       ? props.description.replace('%value', props.value)
@@ -120,10 +130,13 @@ export class Card extends Component {
             <div className='title'>{this.label}</div>
             {this.cost && <div className='cost'>{this.cost}</div>}
           </div>
-          <div className='image'>
-            <image></image>
-            <div>{this.props.isActive ? 'ACTIVE' : ''}</div>
+          <div className='imageContainer'>
+            <div className='status'>{this.props.isActive ? 'ACTIVE' : ''}</div>
+            <div className='image'>
+              <img src={'images/' + this.props.image} alt=''></img>
+            </div>
           </div>
+
           <div className='body'>
             <div>{this.description}</div>
           </div>
