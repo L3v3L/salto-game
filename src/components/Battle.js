@@ -95,7 +95,7 @@ class Battle extends Component {
           <br />
           <BattleStats>
             <DeckPile
-              size={this.props.allState.battle.deck.length}
+              size={this.props.deckCards.length}
             />
             Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {this.props.allState.battle.hp}
@@ -107,7 +107,7 @@ class Battle extends Component {
             {this.props.allState.battle.maxAP}
             <br />
             <DiscardPile
-              size={this.props.allState.battle.discard.length}
+              size={this.props.discardCards.length}
             />
           </BattleStats>
           <br />
