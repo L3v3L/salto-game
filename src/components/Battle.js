@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { GlobalHotKeys } from 'react-hotkeys';
-import Card from './Card';
-import Monster from './Monster';
+
+import Card from "./Card";
+import Monster from "./Monster";
+import DeckPile from './DeckPile';
+import DiscardPile from './DiscardPile';
 
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
+
 
 import styled from 'styled-components';
 
@@ -25,8 +29,11 @@ const Hand = styled.div`
 `;
 
 const BattleStats = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-family: monospace;
 `;
+
 
 class Battle extends Component {
   constructor(props) {
@@ -88,21 +95,21 @@ class Battle extends Component {
 
           <br />
           <BattleStats>
+            <DeckPile
+              size={this.props.deckCards.length}
+            />
             Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {this.props.allState.battle.hp}
             <br />
-            Deck Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.deckCards.length}
-            <br />
             Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
-            <br />
-            Discard Pile:&nbsp;&nbsp;&nbsp;
-            {this.props.discardCards.length}
             <br />
             Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {this.props.allState.battle.currentAP}/
             {this.props.allState.battle.maxAP}
             <br />
+            <DiscardPile
+              size={this.props.discardCards.length}
+            />
           </BattleStats>
           <br />
           <Hand>
