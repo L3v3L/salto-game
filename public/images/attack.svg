@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="98.967mm" height="125.94mm" version="1.1" viewBox="0 0 98.967 125.94" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-56.878 -49.331)">
+  <path d="m56.878 158.62 6.9533-4.5015-6.9533-5.8129v-12.09l17.984 9.2252 80.983-69.338-12.879 44.983-55.194 36.603 10.173 17.586h-16.528l-7.0637-10.248-17.476 10.248z" fill-rule="evenodd"/>
+ </g>
+ <g transform="translate(-5.0329)">
+  <path d="m74.348 64.294-46.357 39.3 52.972-35.86 10.583-24.077z" fill="#fff" fill-rule="evenodd" style="paint-order:normal"/>
+ </g>
+ <g transform="translate(-56.878 -49.331)" fill="#e16730" fill-rule="evenodd">
+  <path d="m128.22 92.25-8.169-14.378-63.178-28.542 30.104 25.313z"/>
+  <path d="m119.94 100.98-17.232-14.704-33.486-9.0856 10.502 11.431 26.245 12.596z"/>
+  <path d="m56.878 89.716 10.529 12.178 15.665 9.1986 27.186-0.71839z"/>
+ </g>
+</svg>
