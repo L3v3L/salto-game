@@ -70,6 +70,7 @@ class Battle extends Component {
                     id={monster.monster.id}
                     hp={monster.monster.hp}
                     maxHp={monster.ref.hp}
+                    monsterMoves={this.props.allState.battle.monsterMoves[monster.monster.uuid]}
                   />
                 );
               })}

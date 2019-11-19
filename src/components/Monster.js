@@ -14,10 +14,28 @@ import {
   playCard
 } from '../ducks/actionCreators';
 
+let nextMoveUUID = 0;
+
 const bounceAnimation = keyframes`${bounce}`;
 
 const BouncyDiv = styled.div`
   animation: 1s ${bounceAnimation};
+`;
+
+const QueuedMoves = styled.div`
+  margin-top: 10px;
+  font-size: 14px;
+  min-height: 80px;
+  background-color: #495351;
+  padding: 6px;
+  border: 2px solid black;
+  border-radius: 4px;
+  min-width: 110px;
+`;
+
+const MoveItem = styled.div`
+  font-size: 12px;
+  padding: 3px 6px;
 `;
 
 export class Monster extends Component {
@@ -54,13 +72,40 @@ export class Monster extends Component {
     }
   }
 
+  getQueuedMoveText = (type, value) => {
+    switch (true) {
+      case type === 'attack':
+        return 'deals ' + value + ' damage';
+      case type === 'block':
+        return 'blocks ' + value + ' damage';
+      default:
+        return 'does ' + value + ' ' + type;
+    }
+  };
+
   render() {
     return (
-      <BouncyDiv onClick={() => this.action()}>
-        <img src={this.state.dataURI} alt='Monster' />
-        <br />
-        <code>HP: {this.props.hp}</code>
-      </BouncyDiv>
+      <div>
+        <BouncyDiv onClick={() => this.action()}>
+          <img src={this.state.dataURI} alt='Monster' />
+          <br />
+          <code>HP: {this.props.hp}</code>
+        </BouncyDiv>
+        {this.props.monsterMoves !== undefined &&
+          <QueuedMoves>
+            Next moves
+            {this.props.monsterMoves
+              .map(move => {
+                return (
+                  <MoveItem key={++nextMoveUUID}>
+                    {this.getQueuedMoveText(move.type, move.value)}
+                  </MoveItem>
+                );
+              })
+            }
+          </QueuedMoves>
+        }
+      </div>
     );
   }
 }
