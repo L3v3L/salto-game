@@ -318,7 +318,12 @@ export default function reducer(state = initialState, action = {}) {
     case types.TICK_EFFECTS: {
       const changedEffects = state.battle.effects.map((effect) => {
         if (effect.duration) {
+          if (effect.duration === -1) {
+            return effect
+          }
+
           effect.duration -= 1;
+
           if (effect.duration > 0) {
             return effect;
           }

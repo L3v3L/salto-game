@@ -107,6 +107,7 @@ class Battle extends Component {
             {this.props.allState.battle.currentAP}/
             {this.props.allState.battle.maxAP}
             <br />
+            Shield:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.shield}
             <DiscardPile
               size={this.props.discardCards.length}
             />
@@ -161,6 +162,8 @@ const mapStateToProps = state => {
   const handCards = selectors.getCardsByDeck(state, 'hand');
   const discardCards = selectors.getCardsByDeck(state, 'discard');
 
+  const shield = selectors.getEffectSum(state, 'shield');
+
   return {
     allState,
     monsterRefs,
@@ -170,7 +173,8 @@ const mapStateToProps = state => {
     deckCards,
     handCards,
     discardCards,
-    monsters
+    monsters,
+    shield
   };
 };
 

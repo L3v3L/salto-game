@@ -3,6 +3,21 @@ import * as types from './actionTypes';
 import * as actions from './actionCreators';
 import * as selectors from './selectors';
 
+export const applyShield = store => next => action => {
+  if (action.type === types.ADD_TO_BATTLE_HP) {
+    const { value } = action.payload;
+    let state = store.getState();
+
+    const absorbed = selectors.getEffectSum(state, 'shield');
+
+    const diff = value < 0 ? Math.min(0, value+absorbed) : value;
+
+    action.payload.value = diff;
+  }
+
+  next(action);
+}
+
 export const endTurn = store => next => action => {
   if (action.type === types.ADD_BATTLE_TURN) {
     let state = store.getState();
@@ -59,13 +74,13 @@ export const endTurn = store => next => action => {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
             case 'attack':
-              const effectSum = selectors.getEffectSum(state, monster.uuid);
+              const weakness = selectors.getEffectSum(state, 'weaken', monster.uuid);
 
               console.log('Monsters attacked a total of ' + move.value + 'dmg ');
-              console.log('You blocked a total of '+effectSum+ 'dmg');
-              console.log('Received ' + Math.min(0-move.value+effectSum, effectSum, 0) + 'dmg');
+              console.log('You blocked a total of ' + weakness + 'dmg');
+              console.log('Received ' + Math.min(0 - move.value + weakness, 0) + 'dmg');
 
-              store.dispatch(actions.addToBattleHP(Math.min(0 - move.value + effectSum, 0)));
+              store.dispatch(actions.addToBattleHP(Math.min(0 - move.value + weakness, 0)));
               break;
             case 'block':
               console.log('block ' + move.value);

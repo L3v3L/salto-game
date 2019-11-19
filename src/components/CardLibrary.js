@@ -21,20 +21,20 @@ export const CardLibrary = [
   },
   {
     id: 3,
-    name: 'Block Single',
+    name: 'Weaken',
     cost: 3,
-    description: 'Blocks 6 dmg from attacks of a single enemy',
+    description: 'Decreases target\'s attack by 1 dmg',
     needsTarget: true,
-    actions: [creators.addEffect({type: 'block', value: 1, duration: 1})],
+    actions: [creators.addEffect({type: 'weaken', value: 1, duration: 1})],
     image: 'block.svg'
   },
   {
     id: 4,
-    name: 'Block All',
+    name: 'Shield',
     cost: 3,
-    description: 'Blocks a total of 6 dmg from any attack',
+    description: 'Absorbs 2 dmg',
     needsTarget: false,
-    actions: [creators.addEffect({type: 'block', value: 1, duration: 1})],
+    actions: [creators.addEffect({type: 'shield', value: 2, duration: 1})],
     image: 'block.svg'
   }
 ];
