@@ -93,8 +93,8 @@ export class Monster extends Component {
         </BouncyDiv>
         <QueuedMoves>
           Next moves
-          {this.props.monsterMoves[this.uuid] !== undefined
-            ? this.props.monsterMoves[this.uuid]
+          {this.props.monsterMoves !== undefined
+            ? this.props.monsterMoves
               .map(move => {
                 return (
                   <MoveItem key={++nextMoveUUID}>
