@@ -76,10 +76,6 @@ export const endTurn = store => next => action => {
             case 'attack':
               const weakness = selectors.getEffectSum(state, 'weaken', monster.uuid);
 
-              console.log('Monsters attacked a total of ' + move.value + 'dmg ');
-              console.log('You blocked a total of ' + weakness + 'dmg');
-              console.log('Received ' + Math.min(0 - move.value + weakness, 0) + 'dmg');
-
               store.dispatch(actions.addToBattleHP(Math.min(0 - move.value + weakness, 0)));
               break;
             case 'block':
