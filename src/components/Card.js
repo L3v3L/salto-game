@@ -58,6 +58,7 @@ const CardButton = styled.div`
       position: relative;
       padding: 5px;
       background-color: whitesmoke;
+      box-shadow: inset 0px 0px 12.9px 2px rgba(0, 0, 0, 0.6);
       .status {
         position: absolute;
         width: 100%;
