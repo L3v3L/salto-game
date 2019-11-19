@@ -125,6 +125,7 @@ class Battle extends Component {
                         ? this.props.activeCard.uuid === cardInHand.card.uuid
                         : false
                     }
+                    image={cardInHand.ref.image}
                     id={cardInHand.card.id}
                     label={cardInHand.ref.name}
                     cost={cardInHand.ref.cost}

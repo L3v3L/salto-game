@@ -7,7 +7,8 @@ export const CardLibrary = [
     cost: 3,
     description: 'Deals 10 dmg to a single target',
     needsTarget: true,
-    actions: [creators.attackMonster({ dmg: 10 })]
+    actions: [creators.attackMonster({ dmg: 10 })],
+    image: 'attack.svg'
   },
   {
     id: 2,
@@ -15,6 +16,7 @@ export const CardLibrary = [
     cost: 2,
     description: 'Deals 6 dmg to all targets',
     needsTarget: false,
-    actions: [creators.attackAllMonsters({ dmg: 6 })]
+    actions: [creators.attackAllMonsters({ dmg: 6 })],
+    image: 'block.svg'
   }
 ];
