@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { MonsterSprite } from './Sprites';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
 
-import { getIsSelectingTarget } from '../ducks/selectors';
+import { getIsSelectingTarget, getEffectSum } from '../ducks/selectors';
 
 import {
   disableTargetSelection,
@@ -75,7 +75,7 @@ export class Monster extends Component {
   getQueuedMoveText = (type, value) => {
     switch (true) {
       case type === 'attack':
-        return 'deals ' + value + ' damage';
+        return 'deals ' + Math.max(value-this.props.effectSum, 0) + ' damage';
       case type === 'block':
         return 'blocks ' + value + ' damage';
       default:
@@ -110,9 +110,10 @@ export class Monster extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   const isSelectingTarget = getIsSelectingTarget(state);
-  return { isSelectingTarget };
+  const effectSum = getEffectSum(state, ownProps.uuid);
+  return { isSelectingTarget, effectSum };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -121,7 +122,7 @@ const mapDispatchToProps = dispatch => {
       {
         setSelectedTarget,
         disableTargetSelection,
-        playCard
+        playCard,
       },
       dispatch
     ),

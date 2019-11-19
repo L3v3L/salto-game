@@ -58,3 +58,20 @@ export const getCardsByDeck = (store, deckName) => {
   const state = getBattleState(store);
   return state.cards.filter(card => card.deck === deckName);
 };
+
+export const getEffectSum = (store, uuid) => {
+  const state = getBattleState(store);
+
+  const effectSum = state.effects.map((effect) => {
+    if (effect['uuid'] === uuid || effect['uuid'] === undefined) {
+      if (Number.isNaN(effect['value'])) {
+        return 0;
+      } else {
+        return effect['value'];
+      }
+    }
+    return 0;
+  }).reduce((a,b) => a+b, 0);
+
+  return effectSum;
+}

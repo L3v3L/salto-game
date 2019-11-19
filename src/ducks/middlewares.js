@@ -52,13 +52,20 @@ export const endTurn = store => next => action => {
 
     store.dispatch(actions.setBattleCurrentAP(state.battle.maxAP));
 
+
     //run monster queue attacks
     state.battle.monsters.map(monster => {
       if (state.battle.monsterMoves[monster.uuid]) {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
             case 'attack':
-              store.dispatch(actions.addToBattleHP(0 - move.value));
+              const effectSum = selectors.getEffectSum(state, monster.uuid);
+
+              console.log('Monsters attacked a total of ' + move.value + 'dmg ');
+              console.log('You blocked a total of '+effectSum+ 'dmg');
+              console.log('Received ' + Math.min(0-move.value+effectSum, effectSum, 0) + 'dmg');
+
+              store.dispatch(actions.addToBattleHP(Math.min(0 - move.value + effectSum, 0)));
               break;
             case 'block':
               console.log('block ' + move.value);
@@ -86,6 +93,8 @@ export const endTurn = store => next => action => {
       );
       return null;
     });
+
+    store.dispatch(actions.tickEffects());
   }
 
   next(action);
@@ -139,7 +148,7 @@ export const playCardExecute = store => next => action => {
 
       card.actions.map(action => {
         if (
-          action.type === types.ATTACK_MONSTER &&
+          (action.type === types.ADD_EFFECT || action.type === types.ATTACK_MONSTER) &&
           cardNeedsTargetAndHasTarget
         ) {
           action.payload.uuid = target;

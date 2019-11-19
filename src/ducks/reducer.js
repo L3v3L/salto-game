@@ -34,10 +34,10 @@ export const initialState = {
     hp: 0,
     currentAP: 0,
     maxAP: 0,
-    queuedActions: [],
     monsters: [],
     monsterMoves: {},
-    turn: 0
+    turn: 0,
+    effects: []
   }
 };
 
@@ -292,6 +292,49 @@ export default function reducer(state = initialState, action = {}) {
       }
 
       return returnState;
+    }
+
+    case types.ADD_EFFECT: {
+      const { type, value, duration, uuid } = action.payload;
+      const newEffect = {
+        type: type,
+        value: value,
+        duration: duration,
+        uuid: uuid
+      };
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          effects: [
+            ...state.battle.effects,
+            Object.assign({}, newEffect)
+          ]
+        }
+      };
+    }
+
+    case types.TICK_EFFECTS: {
+      const changedEffects = state.battle.effects.map((effect) => {
+        if (effect.duration) {
+          effect.duration -= 1;
+          if (effect.duration > 0) {
+            return effect;
+          }
+        }
+        return false;
+      }).filter(effect => effect);
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          effects: [
+            ...changedEffects 
+          ]
+        }
+      };
     }
 
     case types.CREATE_CARD: {
