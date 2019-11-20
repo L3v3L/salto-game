@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="88.798mm" height="105.12mm" version="1.1" viewBox="0 0 88.798 105.12" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-3.106 -13.8)" fill="#fff" fill-rule="evenodd" opacity=".997" stroke-linecap="square">
-  <path d="m89.297 37.725-28.381-21.057-55.228 21.738 8.6918 47.462 30.238 29.754 38.212-24.974z" opacity=".998" stroke="#6aaa6a" stroke-width="4.293" style="paint-order:stroke fill markers"/>
-  <path d="m87.814 38.551-27.095-20.086-53.267 21.011 8.4333 45.58 28.867 28.439 36.616-23.713z" opacity=".998" stroke="#b4d8b4" stroke-width="4.1106" style="paint-order:stroke fill markers"/>
+<svg width="98.117mm" height="114.54mm" version="1.1" viewBox="0 0 98.117 114.54" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(1.8737 -9.3261)" fill="#fff" fill-rule="evenodd" opacity=".997" stroke-linecap="square">
+  <path d="m89.297 37.725-28.381-21.057-55.228 21.738 8.6918 47.462 30.238 29.754 38.212-24.974z" opacity=".998" stroke="#6aaa6a" stroke-width="11.622" style="paint-order:stroke fill markers"/>
  </g>
- <g transform="translate(-8.1389 -13.8)" fill-rule="evenodd" stroke="#000" stroke-width=".26458px">
+ <g transform="translate(-3.1592 -9.3261)" fill-rule="evenodd" stroke="#000" stroke-width=".26458px">
   <path d="m89.435 39.423-24.077-17.462-48.683 18.785 7.4083 42.333 26.723 24.077 32.279-19.315z" opacity=".998"/>
   <path d="m53.981 100.28 19.05-11.377 8.7312-16.404-21.96-20.902-34.131 16.404 2.6458 12.965z" fill="#fff"/>
   <path d="m69.062 65.352-8.7312 28.046-5.2917 3.7042 5.5562-32.808-15.081-0.79375 14.288-8.2021z"/>
