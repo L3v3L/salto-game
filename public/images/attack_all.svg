@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="77.069mm" height="77.577mm" version="1.1" viewBox="0 0 77.069 77.577" xmlns="http://www.w3.org/2000/svg">
+ <g transform="matrix(-.35038 .027369 .02002 .47899 34.14 15.796)">
+  <g transform="translate(-56.878,-49.331)">
+   <path d="m56.878 158.62 6.9533-4.5015-6.9533-5.8129v-12.09l17.984 9.2252 80.983-69.338-12.879 44.983-55.194 36.603 10.173 17.586h-16.528l-7.0637-10.248-17.476 10.248z" fill-rule="evenodd"/>
+  </g>
+  <g transform="translate(-5.0329)">
+   <path d="m74.348 64.294-46.357 39.3 52.972-35.86 10.583-24.077z" fill="#fff" fill-rule="evenodd" style="paint-order:normal"/>
+  </g>
+ </g>
+ <g transform="matrix(.35038 .027369 -.02002 .47899 42.929 16.127)">
+  <g transform="translate(-56.878,-49.331)">
+   <path d="m56.878 158.62 6.9533-4.5015-6.9533-5.8129v-12.09l17.984 9.2252 80.983-69.338-12.879 44.983-55.194 36.603 10.173 17.586h-16.528l-7.0637-10.248-17.476 10.248z" fill-rule="evenodd"/>
+  </g>
+  <g transform="translate(-5.0329)">
+   <path d="m74.348 64.294-46.357 39.3 52.972-35.86 10.583-24.077z" fill="#fff" fill-rule="evenodd" style="paint-order:normal"/>
+  </g>
+ </g>
+ <g transform="matrix(-.27248 -.22196 -.31602 .3605 77.656 12.315)">
+  <g transform="translate(-56.878,-49.331)">
+   <path d="m56.878 158.62 6.9533-4.5015-6.9533-5.8129v-12.09l17.984 9.2252 80.983-69.338-12.879 44.983-55.194 36.603 10.173 17.586h-16.528l-7.0637-10.248-17.476 10.248z" fill-rule="evenodd"/>
+  </g>
+  <g transform="translate(-5.0329)">
+   <path d="m74.348 64.294-46.357 39.3 52.972-35.86 10.583-24.077z" fill="#fff" fill-rule="evenodd" style="paint-order:normal"/>
+  </g>
+ </g>
+ <g transform="translate(-61.779 -71.87)" fill="#e16730" fill-rule="evenodd">
+  <path d="m110.21 125.63 11.15-6.4655 15.722-37.31-18.883 22.718z" stroke-width=".83493"/>
+  <path d="m68.552 75.337-1.6949 16.009 3.9901 17.722 19.103 19.356z"/>
+ </g>
+</svg>
