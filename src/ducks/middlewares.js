@@ -54,18 +54,50 @@ export const endTurn = store => next => action => {
 
 
     //run monster queue attacks
+    let shield = selectors.getEffectValue(state, 'shield');
+
     state.battle.monsters.map(monster => {
       if (state.battle.monsterMoves[monster.uuid]) {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
             case 'attack':
-              const weakness = selectors.getEffectSum(state, 'weaken', monster.uuid);
+              const effect = selectors.getEffect(state, 'weaken', monster.uuid);
 
-              store.dispatch(actions.addToBattleHP(Math.min(0 - move.value + weakness, 0)));
+              const baseAttack = Math.min(0 - move.value);
+              let finalAttack = baseAttack;
+              
+              if (effect) { 
+                finalAttack = effect.percentileValue ? 
+                  Math.round(baseAttack + (baseAttack * effect.modifier)) :
+                  baseAttack + effect.modifier;
+              }
+
+              if (shield) {
+                if (finalAttack < 0) {
+                  const diff = Math.abs(finalAttack) - shield;
+                  
+                  if (diff >= 0) {
+                    finalAttack = Math.min(finalAttack + shield, 0);
+                    //Shield exhausted
+                    shield = 0;
+                  } else {
+                    finalAttack = 0;
+                    //Remaining shield
+                    shield = Math.abs(diff);
+                  }
+                }
+              } else {
+                finalAttack = Math.min(0, finalAttack);
+              }
+
+              store.dispatch(actions.addToBattleHP(finalAttack));
+
               break;
+
             case 'block':
               console.log('block ' + move.value);
               break;
+
             default:
               break;
           }
@@ -74,6 +106,10 @@ export const endTurn = store => next => action => {
       }
       return null;
     });
+
+    if (shield !== selectors.getEffectValue(state, 'shield')) {
+      store.dispatch(actions.updateEffectValue(state, 'shield', shield));
+    }
 
     store.dispatch(actions.resetMonsterMoves());
 
