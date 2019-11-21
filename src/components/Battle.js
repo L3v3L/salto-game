@@ -162,7 +162,7 @@ const mapStateToProps = state => {
   const handCards = selectors.getCardsByDeck(state, 'hand');
   const discardCards = selectors.getCardsByDeck(state, 'discard');
 
-  const shield = selectors.getEffectSum(state, 'shield');
+  const shield = selectors.getEffectValue(state, 'shield');
 
   return {
     allState,

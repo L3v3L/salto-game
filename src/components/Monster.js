@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { MonsterSprite } from './Sprites';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
 
-import { getIsSelectingTarget, getEffectSum } from '../ducks/selectors';
+import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
 
 import {
   disableTargetSelection,

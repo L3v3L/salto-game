@@ -59,15 +59,14 @@ export const getCardsByDeck = (store, deckName) => {
   return state.cards.filter(card => card.deck === deckName);
 };
 
-export const getEffectSum = (store, type, uuid) => {
-  const state = getBattleState(store);
+export const getEffectState = (store) =>
+  getBattleState(store) ? getBattleState(store).effects : [];
 
-  return state.effects.map((effect) => {
-    if (effect['uuid'] === uuid || effect['uuid'] === undefined) {
-      if (effect['type'] !== undefined && effect['type'] === type) {
-        return parseInt(effect['value']);
-      }
-    }
-    return 0;
-  }).reduce((a,b) => a+b, 0);
-}
+export const getEffect = (store, type, uuid) =>
+  getEffectState(store) ? getEffectState(store).find((effect) => {
+    return (effect.uuid === uuid || effect.uuid === undefined) && 
+      (effect.type !== undefined && effect.type === type)
+  }) : {};
+
+export const getEffectValue = (store, type, uuid) => 
+  getEffect(store, type, uuid) ? getEffect(store, type, uuid).value : 0;
