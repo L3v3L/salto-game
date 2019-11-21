@@ -50,7 +50,7 @@ export const CardLibrary = [
                name: "shield",
                type: "shield",
                value: 2,
-               percentileValue: true,
+               percentileValue: false,
                stackValue: true,
                duration: 0,
                stackDuration: false,
