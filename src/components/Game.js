@@ -32,6 +32,9 @@ const GameStateIndicator = styled.span`
   left:0;
   top:0;
   z-index: 999;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
 `;
 
 export class Game extends Component {
