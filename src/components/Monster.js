@@ -19,6 +19,8 @@ let nextMoveUUID = 0;
 const bounceAnimation = keyframes`${bounce}`;
 
 const BouncyDiv = styled.div`
+  z-index: 2;
+  margin-top: 55px;
   animation: 1s ${bounceAnimation};
 `;
 
@@ -93,27 +95,25 @@ export class Monster extends Component {
 
   render() {
     return (
-      <div>
-        <BouncyDiv onClick={() => this.action()}>
-          <img src={this.state.dataURI} alt='Monster' />
-          <br />
-          <code>HP: {this.props.hp}</code>
-        </BouncyDiv>
+      <BouncyDiv onClick={() => this.action()}>
+        <img src={this.state.dataURI} alt='Monster' />
+        <br />
+        <code>HP: {this.props.hp}</code>
         {this.props.monsterMoves !== undefined &&
-          <QueuedMoves>
-            Next moves
-            {this.props.monsterMoves
-              .map(move => {
-                return (
-                  <MoveItem key={++nextMoveUUID}>
-                    {this.getQueuedMoveText(move.type, move.value)}
-                  </MoveItem>
-                );
-              })
-            }
-          </QueuedMoves>
+        <QueuedMoves>
+          Next moves
+          {this.props.monsterMoves
+            .map(move => {
+              return (
+                <MoveItem key={++nextMoveUUID}>
+                  {this.getQueuedMoveText(move.type, move.value)}
+                </MoveItem>
+              );
+            })
+          }
+        </QueuedMoves>
         }
-      </div>
+      </BouncyDiv>
     );
   }
 }

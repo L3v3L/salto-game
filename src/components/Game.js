@@ -7,6 +7,30 @@ import Battle from './Battle';
 
 import { getAllState } from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
+import styled from 'styled-components';
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7em;
+  margin:0;
+  padding:0;
+  min-width: 900px
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+`;
+
+const GameStateIndicator = styled.span`
+  position: fixed;
+  left:0;
+  top:0;
+  z-index: 999;
+`;
 
 export class Game extends Component {
   constructor(props) {
@@ -39,10 +63,10 @@ export class Game extends Component {
 
   render() {
     return (
-      <div>
-        {this.props.allState.gameState}
+      <MainWrapper>
+        <GameStateIndicator>{this.props.allState.gameState}</GameStateIndicator>
         {this.props.allState.gameState === 'battle' ? <Battle /> : ''}
-      </div>
+      </MainWrapper>
     );
   }
 }

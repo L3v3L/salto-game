@@ -15,7 +15,8 @@ import {
   BattleScreen,
   Centered,
   Hand,
-  BattleStats
+  BattleStats,
+  EndTurnButton
 } from './styles/BattleStyle';
 
 class Battle extends Component {
@@ -94,7 +95,6 @@ class Battle extends Component {
               </svg>
             </div>
           </div>
-
           <Centered
             style={
               this.props.isSelectingTarget
@@ -104,31 +104,28 @@ class Battle extends Component {
           >
             Select Target
           </Centered>
-
-          <br />
           <BattleStats>
             <DeckPile
               size={this.props.deckCards.length}
             />
-            {/* Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.allState.battle.hp} */}
+            <pre>
+            <br />
+            Turn:    {this.props.allState.battle.turn}
+            <br/>
+            Actions: {this.props.allState.battle.currentAP}/{this.props.allState.battle.maxAP}
+            <br/>
+            Hand:    {this.props.handCards.length}
+            <br/>
+            Shield:  {this.props.shield}
+            </pre>
+            <DiscardPile size={this.props.discardCards.length} />
+          </BattleStats>
+          <Centered>
             <PlayerHP
               playerHP={this.props.allState.player.hp}
               battleHP={this.props.allState.battle.hp}
             />
-            <br />
-            Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
-            <br />
-            Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.allState.battle.currentAP}/
-            {this.props.allState.battle.maxAP}
-            <br />
-            Shield:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.shield}
-            Turn:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.allState.battle.turn}
-            <DiscardPile size={this.props.discardCards.length} />
-          </BattleStats>
-          <br />
+          </Centered>
           <Hand>
             {this.props.handCards
               .map(handCard => {
@@ -159,7 +156,7 @@ class Battle extends Component {
                 );
               })}
           </Hand>
-          <button onClick={() => this.endTurn()}>End Turn</button>
+          <EndTurnButton onClick={() => this.endTurn()}>End Turn</EndTurnButton>
         </BattleScreen>
       </GlobalHotKeys>
     );

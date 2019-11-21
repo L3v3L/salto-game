@@ -4,12 +4,12 @@ import styled from 'styled-components';
 const Bar = styled.div`
   position: relative;
   background-color: #420f0e;
+  margin: 0.4rem;
   border-radius: 0.2rem;
-  margin: 1rem;
   border: 2px solid black;
-  width: 100%;
   height: 2rem;
   text-align: center;
+  flex-basis: 900px;
 `;
 
 const Health = styled.div`

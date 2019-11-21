@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const Pile = styled.div`
   display: flex;
+  flex-basis: 150px;
+  align-self: center;
 `;
 
 const Card = styled.div`
