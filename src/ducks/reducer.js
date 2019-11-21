@@ -325,7 +325,11 @@ export default function reducer(state = initialState, action = {}) {
         uuid
       } = action.payload;
 
-      let existingEffect = state.battle.effects.find((effect) => effect.type === type);
+      let existingEffect = state.battle.effects.find(effect =>
+        (effect.uuid === undefined && effect.type === type) || 
+          (effect.uuid !== undefined && effect.type === type && effect.uuid === uuid)
+      );
+
       let newEffects = [];
 
       if  (existingEffect) {
@@ -339,7 +343,7 @@ export default function reducer(state = initialState, action = {}) {
 
         newEffects = [
           ...state.battle.effects.map((effect) => { 
-            if (effect.type === type) {
+            if (effect.type === type && effect.uuid === uuid) {
               return Object.assign({}, existingEffect);
             } else {
               return effect;
