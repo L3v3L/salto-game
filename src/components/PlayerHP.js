@@ -30,8 +30,8 @@ class PlayerHP extends Component {
   render() {
     return (
       <Bar>
-        <Health width={this.props.hp}></Health>
-        <HealthPoints>{this.props.hp}</HealthPoints>
+        <Health width={this.props.battleHP/this.props.playerHP*100}></Health>
+        <HealthPoints>{this.props.battleHP}</HealthPoints>
       </Bar>
     )
   }
