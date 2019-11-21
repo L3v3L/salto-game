@@ -73,14 +73,21 @@ export class Monster extends Component {
   }
 
   getQueuedMoveText = (type, value) => {
+    let finalAttack = value;
+
+    if (this.props.weakness) { 
+      finalAttack = Math.round(value + (value * this.props.weakness));
+    }
+
     switch (true) {
+      case type === 'attack' && this.props.weakness !== 0:
+        return `deals ${finalAttack} damage (weakened ${this.props.weakness*-100}%)`;
       case type === 'attack':
-        return 'deals ' + Math.max(value-this.props.weakness, 0) + ' damage' + 
-          (this.props.weakness > 0 ? ' (weakened)' : '');
+        return `deals ${finalAttack} damage`;
       case type === 'block':
-        return 'blocks ' + value + ' damage';
+        return `blocks ${value} damage`;
       default:
-        return 'does ' + value + ' ' + type;
+        return `does ${value} ${type}`;
     }
   };
 
@@ -113,7 +120,7 @@ export class Monster extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const isSelectingTarget = getIsSelectingTarget(state);
-  const weakness = getEffectSum(state, 'weaken', ownProps.uuid);
+  const weakness = getEffectValue(state, 'weaken', ownProps.uuid);
   return { isSelectingTarget, weakness };
 };
 
