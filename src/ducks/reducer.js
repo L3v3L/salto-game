@@ -366,37 +366,35 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         battle: {
           ...state.battle,
-          effects: [
-            ...state.battle.effects,
-            Object.assign({}, newEffect)
-          ]
+          effects: newEffects
         }
       };
     }
 
     case types.TICK_EFFECTS: {
-      const changedEffects = state.battle.effects.map((effect) => {
-        if (effect.duration) {
-          if (effect.duration === -1) {
-            return effect
+      const changedEffects = state.battle.effects
+        .map(effect => {
+          if (effect.duration === 0) {
+            return null;
           }
 
-          effect.duration -= 1;
-
-          if (effect.duration > 0) {
+          if (effect.duration === -1) {
             return effect;
           }
-        }
-        return false;
-      }).filter(effect => effect);
+
+          if ((effect.duration -= 1) > 0) {
+            return effect;
+          }
+
+          return null;
+        })
+        .filter(effect => effect);
 
       return {
         ...state,
         battle: {
           ...state.battle,
-          effects: [
-            ...changedEffects 
-          ]
+          effects: [...changedEffects]
         }
       };
     }
