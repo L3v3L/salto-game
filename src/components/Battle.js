@@ -117,6 +117,8 @@ class Battle extends Component {
             {this.props.allState.battle.maxAP}
             <br />
             Shield:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.shield}
+            Turn:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.allState.battle.turn}
             <DiscardPile size={this.props.discardCards.length} />
           </BattleStats>
           <br />
