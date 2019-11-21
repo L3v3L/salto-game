@@ -65,11 +65,11 @@ export const endTurn = store => next => action => {
 
               const baseAttack = Math.min(0 - move.value);
               let finalAttack = baseAttack;
-              
+
               if (effect) { 
                 finalAttack = effect.percentileValue ? 
-                  Math.round(baseAttack + (baseAttack * effect.modifier)) :
-                  baseAttack + effect.modifier;
+                  Math.round(baseAttack + (baseAttack * effect.value)) :
+                  baseAttack + effect.value;
               }
 
               if (shield) {
