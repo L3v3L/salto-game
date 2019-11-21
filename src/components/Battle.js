@@ -17,7 +17,8 @@ import {
   Hand,
   BattleStats,
   EndTurnButton,
-  TextStats
+  TextStats,
+  SelectTarget
 } from './styles/BattleStyle';
 
 class Battle extends Component {
@@ -97,7 +98,7 @@ class Battle extends Component {
             </div>
           </div>
 
-          <Centered
+          <SelectTarget
             style={
               this.props.isSelectingTarget
                 ? { visibility: 'visible' }
@@ -105,7 +106,7 @@ class Battle extends Component {
             }
           >
             Select Target
-          </Centered>
+          </SelectTarget>
 
           <BattleStats>
             <DeckPile

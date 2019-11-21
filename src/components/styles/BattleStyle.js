@@ -22,7 +22,7 @@ const waveColor = '#1b9892';
 export const BattleScreen = styled.div`
   flex: none;
   width: 100%;
-  margin-top: 500px;
+  margin-top: 550px;
   height: 100%;
   z-index: 1;
   .header-waves {
@@ -79,6 +79,19 @@ export const Centered = styled.div`
   justify-content: space-around;
 `;
 
+export const SelectTarget = styled.div`
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 200px;
+  text-align: center;
+  margin-left: -100px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
 export const Hand = styled.div`
   display: flex;
   justify-content: center;
@@ -111,7 +124,7 @@ export const EndTurnButton = styled.button`
   position: absolute;
   width: 5rem;
   margin-left:-2.5rem;
-  margin-top: 170px;
+  margin-top: 250px;
   padding: 0.4rem;
   top: 0;
   left: 50%;
