@@ -7,6 +7,7 @@ import Card from './Card';
 import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
+import PlayerHP from './PlayerHP';
 
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
@@ -106,9 +107,15 @@ class Battle extends Component {
 
           <br />
           <BattleStats>
-            <DeckPile size={this.props.deckCards.length} />
-            Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.allState.battle.hp}
+            <DeckPile
+              size={this.props.deckCards.length}
+            />
+            {/* Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {this.props.allState.battle.hp} */}
+            <PlayerHP
+              playerHP={this.props.allState.player.hp}
+              battleHP={this.props.allState.battle.hp}
+            />
             <br />
             Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
             <br />
