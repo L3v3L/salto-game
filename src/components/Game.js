@@ -10,6 +10,7 @@ import * as actionCreators from '../ducks/actionCreators';
 import styled from 'styled-components';
 
 const MainWrapper = styled.div`
+  background-color: #27d9d0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,7 +19,8 @@ const MainWrapper = styled.div`
   margin:0;
   padding:0;
   min-width: 900px
-  height: 100%;
+  height: 100vh;
+  min-height: 770px;
   max-height: 100%;
   max-width: 100%;
   position: relative;

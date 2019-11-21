@@ -22,7 +22,7 @@ const waveColor = '#1b9892';
 export const BattleScreen = styled.div`
   flex: none;
   width: 100%;
-  margin-top: 250px;
+  margin-top: 500px;
   height: 100%;
   z-index: 1;
   .header-waves {
