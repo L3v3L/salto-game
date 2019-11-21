@@ -3,21 +3,6 @@ import * as types from './actionTypes';
 import * as actions from './actionCreators';
 import * as selectors from './selectors';
 
-export const applyShield = store => next => action => {
-  if (action.type === types.ADD_TO_BATTLE_HP) {
-    const { value } = action.payload;
-    let state = store.getState();
-
-    const absorbed = selectors.getEffectSum(state, 'shield');
-
-    const diff = value < 0 ? Math.min(0, value+absorbed) : value;
-
-    action.payload.value = diff;
-  }
-
-  next(action);
-}
-
 export const endTurn = store => next => action => {
   if (action.type === types.ADD_BATTLE_TURN) {
     let state = store.getState();
