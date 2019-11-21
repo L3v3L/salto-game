@@ -302,6 +302,54 @@ export default function reducer(state = initialState, action = {}) {
         duration: duration,
         uuid: uuid
       };
+    case types.ADD_EFFECT: {
+      const {
+        name,
+        type,
+        value,
+        stackValue,
+        percentileValue,
+        duration,
+        stackDuration,
+        uuid
+      } = action.payload;
+
+      let existingEffect = state.battle.effects.find((effect) => effect.type === type);
+      let newEffects = [];
+
+      if  (existingEffect) {
+        if (stackValue) {
+          existingEffect.value += value;
+        }
+
+        if (stackDuration) {
+          existingEffect.duration += duration;
+        }
+
+        newEffects = [
+          ...state.battle.effects.map((effect) => { 
+            if (effect.type === type) {
+              return Object.assign({}, existingEffect);
+            } else {
+              return effect;
+            }
+          }),
+        ]
+      } else {
+        newEffects = [
+          ...state.battle.effects,
+          {
+            name: name,
+            type: type,
+            value: value,
+            stackValue: stackValue,
+            percentileValue: percentileValue,
+            duration: duration,
+            stackDuration: stackDuration,
+            uuid: uuid
+          }
+        ];
+      }
 
       return {
         ...state,

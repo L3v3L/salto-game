@@ -83,12 +83,25 @@ export const attackAllMonsters = ({ dmg }) => ({
   }
 });
 
-export const addEffect = ({ type, value, duration, uuid }) => ({
+export const addEffect = ({
+  name,
+  type,
+  value = 0,
+  stackValue = false,
+  percentileValue = false,
+  duration = 0,
+  stackDuration = false,
+  uuid
+}) => ({
   type: types.ADD_EFFECT,
   payload: {
+    name,
     type,
     value,
+    stackValue,
+    percentileValue,
     duration,
+    stackDuration,
     uuid
   }
 });
