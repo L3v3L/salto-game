@@ -3,37 +3,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { GlobalHotKeys } from 'react-hotkeys';
 
-import Card from "./Card";
-import Monster from "./Monster";
+import Card from './Card';
+import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
 
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
-
-
-import styled from 'styled-components';
-
-const Centered = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-`;
-
-const Hand = styled.div`
-  display: flex;
-  & > div {
-    margin: 2px;
-  }
-`;
-
-const BattleStats = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-family: monospace;
-`;
-
+import {
+  BattleScreen,
+  Centered,
+  Hand,
+  BattleStats
+} from './styles/BattleStyle';
 
 class Battle extends Component {
   constructor(props) {
@@ -58,30 +40,59 @@ class Battle extends Component {
 
     return (
       <GlobalHotKeys handlers={handlers}>
-        <div>
-          <Centered>
-            {this.props.monsters
-              .map(monster => {
-                return {
-                  ref: this.props.monsterRefs.find(
-                    monsterLib => monsterLib.id === monster.id
-                  ),
-                  monster: monster
-                };
-              })
-              .map(monster => {
-                return (
-                  <Monster
-                    key={monster.monster.uuid}
-                    uuid={monster.monster.uuid}
-                    id={monster.monster.id}
-                    hp={monster.monster.hp}
-                    maxHp={monster.ref.hp}
-                    monsterMoves={this.props.allState.battle.monsterMoves[monster.monster.uuid]}
+        <BattleScreen>
+          <div className='header-waves'>
+            <Centered>
+              {this.props.monsters
+                .map(monster => {
+                  return {
+                    ref: this.props.monsterRefs.find(
+                      monsterLib => monsterLib.id === monster.id
+                    ),
+                    monster: monster
+                  };
+                })
+                .map(monster => {
+                  return (
+                    <Monster
+                      key={monster.monster.uuid}
+                      uuid={monster.monster.uuid}
+                      id={monster.monster.id}
+                      hp={monster.monster.hp}
+                      maxHp={monster.ref.hp}
+                      monsterMoves={
+                        this.props.allState.battle.monsterMoves[
+                          monster.monster.uuid
+                        ]
+                      }
+                    />
+                  );
+                })}
+            </Centered>
+            <div>
+              <svg
+                className='waves'
+                xmlns='http://www.w3.org/2000/svg'
+                xmlnsXlink='http://www.w3.org/1999/xlink'
+                viewBox='0 24 150 28'
+                preserveAspectRatio='none'
+                shapeRendering='auto'
+              >
+                <defs>
+                  <path
+                    id='gentle-wave'
+                    d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z'
                   />
-                );
-              })}
-          </Centered>
+                </defs>
+                <g className='parallax'>
+                  <use xlinkHref='#gentle-wave' x='48' y='0' />
+                  <use xlinkHref='#gentle-wave' x='48' y='3' />
+                  <use xlinkHref='#gentle-wave' x='48' y='5' />
+                  <use xlinkHref='#gentle-wave' x='48' y='7' />
+                </g>
+              </svg>
+            </div>
+          </div>
 
           <Centered
             style={
@@ -95,9 +106,7 @@ class Battle extends Component {
 
           <br />
           <BattleStats>
-            <DeckPile
-              size={this.props.deckCards.length}
-            />
+            <DeckPile size={this.props.deckCards.length} />
             Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {this.props.allState.battle.hp}
             <br />
@@ -108,9 +117,7 @@ class Battle extends Component {
             {this.props.allState.battle.maxAP}
             <br />
             Shield:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.shield}
-            <DiscardPile
-              size={this.props.discardCards.length}
-            />
+            <DiscardPile size={this.props.discardCards.length} />
           </BattleStats>
           <br />
           <Hand>
@@ -144,7 +151,7 @@ class Battle extends Component {
               })}
           </Hand>
           <button onClick={() => this.endTurn()}>End Turn</button>
-        </div>
+        </BattleScreen>
       </GlobalHotKeys>
     );
   }
