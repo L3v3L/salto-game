@@ -101,7 +101,7 @@ class Battle extends Component {
             />
             {/* Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {this.props.allState.battle.hp} */}
-            <PlayerHP hp={this.props.allState.battle.hp} />
+            <PlayerHP hp={this.props.allState.player.hp} />
             <br />
             Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
             <br />
