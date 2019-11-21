@@ -106,6 +106,14 @@ export const addEffect = ({
   }
 });
 
+export const updateEffectValue = ({type, value}) => ({
+  type: types.UPDATE_EFFECT_VALUE,
+  payload: {
+    type,
+    value
+  }
+});
+
 export const tickEffects = () => ({
   type: types.TICK_EFFECTS,
   payload: {}

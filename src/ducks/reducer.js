@@ -294,14 +294,25 @@ export default function reducer(state = initialState, action = {}) {
       return returnState;
     }
 
-    case types.ADD_EFFECT: {
-      const { type, value, duration, uuid } = action.payload;
-      const newEffect = {
-        type: type,
-        value: value,
-        duration: duration,
-        uuid: uuid
+    case types.UPDATE_EFFECT_VALUE: {
+      const { type, value } = action.payload;
+
+      const newEffects = state.battle.effects.map(effect => {
+        if (effect.type === type) {
+          effect.value = value;
+        }
+        return Object.assign({}, effect);
+      });
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          effects: newEffects
+        }
       };
+    }
+
     case types.ADD_EFFECT: {
       const {
         name,
