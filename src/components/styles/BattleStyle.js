@@ -89,12 +89,22 @@ export const Hand = styled.div`
 
 export const BattleStats = styled.div`
   align-self: center;
-  height:200px;
+  height: 200px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   font-family: monospace;
   max-width: 100%;
   margin: 0;
+`;
+
+export const TextStats = styled.pre`
+  display: flex;
+  align-self: center;
+  flex-basis: 600px;
+  justify-content: center;
+  & > div {
+    align-self: center;
+  }
 `;
 
 export const EndTurnButton = styled.button`

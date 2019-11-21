@@ -16,7 +16,8 @@ import {
   Centered,
   Hand,
   BattleStats,
-  EndTurnButton
+  EndTurnButton,
+  TextStats
 } from './styles/BattleStyle';
 
 class Battle extends Component {
@@ -95,6 +96,7 @@ class Battle extends Component {
               </svg>
             </div>
           </div>
+
           <Centered
             style={
               this.props.isSelectingTarget
@@ -104,11 +106,13 @@ class Battle extends Component {
           >
             Select Target
           </Centered>
+
           <BattleStats>
             <DeckPile
               size={this.props.deckCards.length}
             />
-            <pre>
+            <TextStats>
+            <div>
             <br />
             Turn:    {this.props.allState.battle.turn}
             <br/>
@@ -117,15 +121,19 @@ class Battle extends Component {
             Hand:    {this.props.handCards.length}
             <br/>
             Shield:  {this.props.shield}
-            </pre>
+            </div>
+            </TextStats>
+
             <DiscardPile size={this.props.discardCards.length} />
           </BattleStats>
+
           <Centered>
             <PlayerHP
               playerHP={this.props.allState.player.hp}
               battleHP={this.props.allState.battle.hp}
             />
           </Centered>
+
           <Hand>
             {this.props.handCards
               .map(handCard => {
@@ -156,6 +164,7 @@ class Battle extends Component {
                 );
               })}
           </Hand>
+
           <EndTurnButton onClick={() => this.endTurn()}>End Turn</EndTurnButton>
         </BattleScreen>
       </GlobalHotKeys>
