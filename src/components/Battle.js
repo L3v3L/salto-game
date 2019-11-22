@@ -55,6 +55,7 @@ class Battle extends Component {
                     <Monster
                       key={monster.uuid}
                       uuid={monster.uuid}
+                      name={monster.ref.name}
                       id={monster.id}
                       hp={monster.hp}
                       maxHp={monster.ref.hp}

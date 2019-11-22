@@ -20,7 +20,7 @@ export const MonsterLibrary = [
   },
   {
     id: 0,
-    name: 'Dito',
+    name: 'Ditto',
     hp: 100,
     moves: [
       [

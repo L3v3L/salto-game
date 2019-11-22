@@ -29,6 +29,7 @@ const BouncyDiv = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-wrap:wrap;
 
   & > img {
     flex-basis: 96px;
@@ -49,6 +50,11 @@ const QueuedMoves = styled.div`
 const MoveItem = styled.div`
   font-size: 12px;
   padding: 3px 6px;
+`;
+
+const MonsterName = styled.div`
+  font-size: 0.8em;
+  flex: 0 0 100%;
 `;
 
 const MonsterAvatar = styled.div`
@@ -118,6 +124,7 @@ export class Monster extends Component {
       <BouncyDiv onClick={() => this.action()} selecting={this.props.selecting}>
         <MonsterAvatar>
           <img src={this.state.dataURI} alt='Monster' />
+          <MonsterName>{this.props.name}</MonsterName>
           <PercentileBar max={100} value={this.props.hp} fontSize="0.6em" height="20px"/>
         </MonsterAvatar>
         {this.props.monsterMoves !== undefined &&
