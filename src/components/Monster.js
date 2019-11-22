@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { MonsterSprite } from './Sprites';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
+import PercentileBar from './PercentileBar';
 
 import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
 
@@ -22,15 +23,21 @@ const BouncyDiv = styled.div`
   z-index: 2;
   margin-top: 55px;
   animation: 1s ${bounceAnimation};
+  user-select: none;
+  user-drag: none;
+  cursor: ${props => props.selecting ? 'pointer' : 'default'};
+  align-items: center;
+  justify-content: center;
+  display: flex;
 `;
 
 const QueuedMoves = styled.div`
-  margin-top: 10px;
+  margin-left: 20px;
   font-size: 14px;
-  min-height: 80px;
-  background-color: #495351;
+  background-color: #762b34;
   padding: 6px;
-  border: 2px solid black;
+  border: 2px solid #ffffff;
+  color: #ffffff;
   border-radius: 4px;
   min-width: 110px;
 `;
@@ -38,6 +45,16 @@ const QueuedMoves = styled.div`
 const MoveItem = styled.div`
   font-size: 12px;
   padding: 3px 6px;
+`;
+
+const MonsterAvatar = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 96px;
+  height: 136px;
+  & > img {
+    user-drag: none;
+  }
 `;
 
 export class Monster extends Component {
@@ -95,10 +112,11 @@ export class Monster extends Component {
 
   render() {
     return (
-      <BouncyDiv onClick={() => this.action()}>
-        <img src={this.state.dataURI} alt='Monster' />
-        <br />
-        <code>HP: {this.props.hp}</code>
+      <BouncyDiv onClick={() => this.action()} selecting={this.props.selecting}>
+        <MonsterAvatar>
+          <img src={this.state.dataURI} alt='Monster' />
+          <PercentileBar max={100} value={this.props.hp}/>
+        </MonsterAvatar>
         {this.props.monsterMoves !== undefined &&
         <QueuedMoves>
           Next moves
