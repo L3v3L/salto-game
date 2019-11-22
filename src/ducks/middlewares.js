@@ -52,17 +52,52 @@ export const endTurn = store => next => action => {
 
     store.dispatch(actions.setBattleCurrentAP(state.battle.maxAP));
 
+
     //run monster queue attacks
+    let shield = selectors.getEffectValue(state, 'shield');
+
     state.battle.monsters.map(monster => {
       if (state.battle.monsterMoves[monster.uuid]) {
         state.battle.monsterMoves[monster.uuid].map(move => {
           switch (move.type) {
             case 'attack':
-              store.dispatch(actions.addToBattleHP(0 - move.value));
+              const effect = selectors.getEffect(state, 'weaken', monster.uuid);
+
+              const baseAttack = Math.min(0 - move.value);
+              let finalAttack = baseAttack;
+
+              if (effect) { 
+                finalAttack = effect.percentileValue ? 
+                  Math.round(baseAttack + (baseAttack * effect.value)) :
+                  baseAttack + effect.value;
+              }
+
+              if (shield) {
+                if (finalAttack < 0) {
+                  const diff = Math.abs(finalAttack) - shield;
+                  
+                  if (diff >= 0) {
+                    finalAttack = Math.min(finalAttack + shield, 0);
+                    //Shield exhausted
+                    shield = 0;
+                  } else {
+                    finalAttack = 0;
+                    //Remaining shield
+                    shield = Math.abs(diff);
+                  }
+                }
+              } else {
+                finalAttack = Math.min(0, finalAttack);
+              }
+
+              store.dispatch(actions.addToBattleHP(finalAttack));
+
               break;
+
             case 'block':
               console.log('block ' + move.value);
               break;
+
             default:
               break;
           }
@@ -71,6 +106,10 @@ export const endTurn = store => next => action => {
       }
       return null;
     });
+
+    if (shield !== selectors.getEffectValue(state, 'shield')) {
+      store.dispatch(actions.updateEffectValue(state, 'shield', shield));
+    }
 
     store.dispatch(actions.resetMonsterMoves());
 
@@ -86,6 +125,8 @@ export const endTurn = store => next => action => {
       );
       return null;
     });
+
+    store.dispatch(actions.tickEffects());
   }
 
   next(action);
@@ -139,7 +180,7 @@ export const playCardExecute = store => next => action => {
 
       card.actions.map(action => {
         if (
-          action.type === types.ATTACK_MONSTER &&
+          (action.type === types.ADD_EFFECT || action.type === types.ATTACK_MONSTER) &&
           cardNeedsTargetAndHasTarget
         ) {
           action.payload.uuid = target;

@@ -33,6 +33,23 @@ export const getMonsterRefs = store =>
 export const getMonstersAlive = store =>
   store.battle.monsters.filter(monster => monster.hp > 0);
 
+export const getMonstersAliveWithRefs = store => {
+  let monstersAlive = getMonstersAlive(store);
+  let monsterRefs = getMonsterRefs(store);
+
+  if (monstersAlive && monsterRefs) {
+    return monstersAlive.map((monster) => { return {
+        ref: monsterRefs.find(
+          monsterLib => monsterLib.id === monster.id
+        ),
+        ...monster
+      };
+    });
+  } else {
+    return [];
+  }
+}
+
 // Cards
 export const getCardsState = store => store.cards;
 
@@ -58,3 +75,15 @@ export const getCardsByDeck = (store, deckName) => {
   const state = getBattleState(store);
   return state.cards.filter(card => card.deck === deckName);
 };
+
+export const getEffectState = (store) =>
+  getBattleState(store) ? getBattleState(store).effects : [];
+
+export const getEffect = (store, type, uuid) =>
+  getEffectState(store) ? getEffectState(store).find((effect) => {
+    return (effect.uuid === uuid || effect.uuid === undefined) && 
+      (effect.type !== undefined && effect.type === type)
+  }) : {};
+
+export const getEffectValue = (store, type, uuid) => 
+  getEffect(store, type, uuid) ? getEffect(store, type, uuid).value : 0;

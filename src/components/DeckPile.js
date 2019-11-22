@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const Pile = styled.div`
   display: flex;
+  flex-basis: 150px;
+  align-self: center;
 `;
 
 const Card = styled.div`
@@ -12,6 +14,7 @@ const Card = styled.div`
   border-radius: 4px;
   color: black;
   position: relative;
+  user-select: none;
 
   &.left {
     background-color: #268bd2;

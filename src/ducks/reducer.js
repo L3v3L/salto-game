@@ -34,10 +34,10 @@ export const initialState = {
     hp: 0,
     currentAP: 0,
     maxAP: 0,
-    queuedActions: [],
     monsters: [],
     monsterMoves: {},
-    turn: 0
+    turn: 0,
+    effects: []
   }
 };
 
@@ -292,6 +292,121 @@ export default function reducer(state = initialState, action = {}) {
       }
 
       return returnState;
+    }
+
+    case types.UPDATE_EFFECT_VALUE: {
+      const { type, value } = action.payload;
+
+      const newEffects = state.battle.effects.map(effect => {
+        if (effect.type === type) {
+          effect.value = value;
+        }
+        return Object.assign({}, effect);
+      });
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          effects: newEffects
+        }
+      };
+    }
+
+    case types.ADD_EFFECT: {
+      const {
+        name,
+        type,
+        value,
+        stackValue,
+        percentileValue,
+        duration,
+        stackDuration,
+        uuid
+      } = action.payload;
+
+      let validatedValue = value;
+      if (percentileValue) {
+        validatedValue = _.clamp(value, -1, 1); 
+      }
+
+      let existingEffect = state.battle.effects.find(effect =>
+        (effect.uuid === undefined && effect.type === type) || 
+          (effect.uuid !== undefined && effect.type === type && effect.uuid === uuid)
+      );
+
+      let newEffects = [];
+
+      if  (existingEffect) {
+        if (stackValue) {
+          let newValue = existingEffect.value + validatedValue;
+          existingEffect.value = percentileValue ? _.clamp(newValue, -1, 1) : newValue;
+        }
+
+        if (stackDuration) {
+          existingEffect.duration += duration;
+        }
+
+        newEffects = [
+          ...state.battle.effects.map((effect) => { 
+            if (effect.type === type && effect.uuid === uuid) {
+              return Object.assign({}, existingEffect);
+            } else {
+              return effect;
+            }
+          }),
+        ]
+      } else {
+        newEffects = [
+          ...state.battle.effects,
+          {
+            name: name,
+            type: type,
+            value: validatedValue,
+            stackValue: stackValue,
+            percentileValue: percentileValue,
+            duration: duration,
+            stackDuration: stackDuration,
+            uuid: uuid
+          }
+        ];
+      }
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          effects: newEffects
+        }
+      };
+    }
+
+    case types.TICK_EFFECTS: {
+      const changedEffects = state.battle.effects
+        .map(effect => {
+          if (effect.duration === 0) {
+            return null;
+          }
+
+          if (effect.duration === -1) {
+            return effect;
+          }
+
+          if ((effect.duration -= 1) > 0) {
+            return effect;
+          }
+
+          return null;
+        })
+        .filter(effect => effect);
+
+      return {
+        ...state,
+        battle: {
+          ...state.battle,
+          effects: [...changedEffects]
+        }
+      };
     }
 
     case types.CREATE_CARD: {

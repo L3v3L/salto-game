@@ -3,37 +3,25 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { GlobalHotKeys } from 'react-hotkeys';
 
-import Card from "./Card";
-import Monster from "./Monster";
+import Card from './Card';
+import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
 
+import PercentileBar from './PercentileBar';
+
+
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
-
-
-import styled from 'styled-components';
-
-const Centered = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-`;
-
-const Hand = styled.div`
-  display: flex;
-  & > div {
-    margin: 2px;
-  }
-`;
-
-const BattleStats = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-family: monospace;
-`;
-
+import {
+  BattleScreen,
+  Centered,
+  Hand,
+  BattleStats,
+  EndTurnButton,
+  TextStats,
+  SelectTarget
+} from './styles/BattleStyle';
 
 class Battle extends Component {
   constructor(props) {
@@ -58,32 +46,57 @@ class Battle extends Component {
 
     return (
       <GlobalHotKeys handlers={handlers}>
-        <div>
-          <Centered>
-            {this.props.monsters
-              .map(monster => {
-                return {
-                  ref: this.props.monsterRefs.find(
-                    monsterLib => monsterLib.id === monster.id
-                  ),
-                  monster: monster
-                };
-              })
-              .map(monster => {
-                return (
-                  <Monster
-                    key={monster.monster.uuid}
-                    uuid={monster.monster.uuid}
-                    id={monster.monster.id}
-                    hp={monster.monster.hp}
-                    maxHp={monster.ref.hp}
-                    monsterMoves={this.props.allState.battle.monsterMoves[monster.monster.uuid]}
-                  />
-                );
-              })}
-          </Centered>
+        <BattleScreen>
+          <div className='header-waves'>
+            <Centered>
+              {this.props.monsters
+                .map(monster => {
+                  return (
+                    <Monster
+                      key={monster.uuid}
+                      uuid={monster.uuid}
+                      name={monster.ref.name}
+                      id={monster.id}
+                      hp={monster.hp}
+                      maxHp={monster.ref.hp}
 
-          <Centered
+                      monsterMoves={
+                        this.props.allState.battle.monsterMoves[
+                          monster.uuid
+                        ]
+                      }
+
+                      selecting={this.props.isSelectingTarget}
+                    />
+                  );
+                })}
+            </Centered>
+            <div>
+              <svg
+                className='waves'
+                xmlns='http://www.w3.org/2000/svg'
+                xmlnsXlink='http://www.w3.org/1999/xlink'
+                viewBox='0 24 150 28'
+                preserveAspectRatio='none'
+                shapeRendering='auto'
+              >
+                <defs>
+                  <path
+                    id='gentle-wave'
+                    d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z'
+                  />
+                </defs>
+                <g className='parallax'>
+                  <use xlinkHref='#gentle-wave' x='48' y='0' />
+                  <use xlinkHref='#gentle-wave' x='48' y='3' />
+                  <use xlinkHref='#gentle-wave' x='48' y='5' />
+                  <use xlinkHref='#gentle-wave' x='48' y='7' />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <SelectTarget
             style={
               this.props.isSelectingTarget
                 ? { visibility: 'visible' }
@@ -91,27 +104,31 @@ class Battle extends Component {
             }
           >
             Select Target
-          </Centered>
+          </SelectTarget>
 
-          <br />
           <BattleStats>
             <DeckPile
               size={this.props.deckCards.length}
             />
-            Player HP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.allState.battle.hp}
-            <br />
-            Cards in Hand:&nbsp;&nbsp;{this.props.handCards.length}
-            <br />
-            Actions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {this.props.allState.battle.currentAP}/
-            {this.props.allState.battle.maxAP}
-            <br />
-            <DiscardPile
-              size={this.props.discardCards.length}
-            />
+            <TextStats>
+            Turn:    {this.props.allState.battle.turn}
+            <br/>
+            Actions: {this.props.allState.battle.currentAP}/{this.props.allState.battle.maxAP}
+            <br/>
+            Shield:  {this.props.shield}
+            </TextStats>
+            <DiscardPile size={this.props.discardCards.length} />
           </BattleStats>
-          <br />
+
+          <Centered>
+            <PercentileBar
+              max={this.props.allState.player.hp}
+              value={this.props.allState.battle.hp}
+              height="30px"
+              flexBasis="900px"
+            />
+          </Centered>
+
           <Hand>
             {this.props.handCards
               .map(handCard => {
@@ -127,6 +144,7 @@ class Battle extends Component {
                   <Card
                     key={cardInHand.card.uuid}
                     uuid={cardInHand.card.uuid}
+                    selecting={this.props.isSelectingCard}
                     isActive={
                       this.props.activeCard
                         ? this.props.activeCard.uuid === cardInHand.card.uuid
@@ -142,8 +160,9 @@ class Battle extends Component {
                 );
               })}
           </Hand>
-          <button onClick={() => this.endTurn()}>End Turn</button>
-        </div>
+
+          <EndTurnButton onClick={() => this.endTurn()}>End Turn</EndTurnButton>
+        </BattleScreen>
       </GlobalHotKeys>
     );
   }
@@ -152,25 +171,28 @@ class Battle extends Component {
 const mapStateToProps = state => {
   const allState = selectors.getAllState(state);
   const cardRefs = selectors.getCardRefs(state);
-  const monsterRefs = selectors.getMonsterRefs(state);
-  const monsters = selectors.getMonstersAlive(state);
+  const monsters = selectors.getMonstersAliveWithRefs(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
+  const isSelectingCard = selectors.getIsSelectingCard(state);
   const activeCard = selectors.getActiveCard(state);
 
   const deckCards = selectors.getCardsByDeck(state, 'deck');
   const handCards = selectors.getCardsByDeck(state, 'hand');
   const discardCards = selectors.getCardsByDeck(state, 'discard');
 
+  const shield = selectors.getEffectValue(state, 'shield');
+
   return {
     allState,
-    monsterRefs,
     cardRefs,
     isSelectingTarget,
+    isSelectingCard,
     activeCard,
     deckCards,
     handCards,
     discardCards,
-    monsters
+    monsters,
+    shield
   };
 };
 

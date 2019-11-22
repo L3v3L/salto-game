@@ -6,7 +6,7 @@ import {
   endTurn,
   playCardActivate,
   playCardExecute,
-  targetSelectionDisable
+  targetSelectionDisable,
 } from './ducks/middlewares';
 
 const loggerMiddleware = createLogger({
@@ -25,7 +25,7 @@ const configureStore = initialState =>
         playCardActivate,
         playCardExecute,
         endTurn,
-        loggerMiddleware
+        loggerMiddleware,
       )
     )
   );

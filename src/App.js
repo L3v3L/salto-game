@@ -10,9 +10,7 @@ const keyMap = {
 function App() {
   return (
     <GlobalHotKeys keyMap={keyMap}>
-      <div className='salto__wrapper'>
-        <Game />
-      </div>
+      <Game />
     </GlobalHotKeys>
   );
 }
