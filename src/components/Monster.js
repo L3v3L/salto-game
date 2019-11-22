@@ -29,6 +29,10 @@ const BouncyDiv = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+
+  & > img {
+    flex-basis: 96px;
+  }
 `;
 
 const QueuedMoves = styled.div`
@@ -51,7 +55,6 @@ const MonsterAvatar = styled.div`
   display: flex;
   flex-direction: column;
   width: 96px;
-  height: 136px;
   & > img {
     user-drag: none;
   }
