@@ -83,6 +83,42 @@ export const attackAllMonsters = ({ dmg }) => ({
   }
 });
 
+export const addEffect = ({
+  name,
+  type,
+  value = 0,
+  stackValue = false,
+  percentileValue = false,
+  duration = 0,
+  stackDuration = false,
+  uuid
+}) => ({
+  type: types.ADD_EFFECT,
+  payload: {
+    name,
+    type,
+    value,
+    stackValue,
+    percentileValue,
+    duration,
+    stackDuration,
+    uuid
+  }
+});
+
+export const updateEffectValue = ({type, value}) => ({
+  type: types.UPDATE_EFFECT_VALUE,
+  payload: {
+    type,
+    value
+  }
+});
+
+export const tickEffects = () => ({
+  type: types.TICK_EFFECTS,
+  payload: {}
+});
+
 export const addToBattleTurn = value => ({
   type: types.ADD_BATTLE_TURN,
   payload: {

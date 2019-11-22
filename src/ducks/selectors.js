@@ -58,3 +58,15 @@ export const getCardsByDeck = (store, deckName) => {
   const state = getBattleState(store);
   return state.cards.filter(card => card.deck === deckName);
 };
+
+export const getEffectState = (store) =>
+  getBattleState(store) ? getBattleState(store).effects : [];
+
+export const getEffect = (store, type, uuid) =>
+  getEffectState(store) ? getEffectState(store).find((effect) => {
+    return (effect.uuid === uuid || effect.uuid === undefined) && 
+      (effect.type !== undefined && effect.type === type)
+  }) : {};
+
+export const getEffectValue = (store, type, uuid) => 
+  getEffect(store, type, uuid) ? getEffect(store, type, uuid).value : 0;

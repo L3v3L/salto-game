@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { MonsterSprite } from './Sprites';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
 
-import { getIsSelectingTarget } from '../ducks/selectors';
+import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
 
 import {
   disableTargetSelection,
@@ -73,13 +73,21 @@ export class Monster extends Component {
   }
 
   getQueuedMoveText = (type, value) => {
+    let finalAttack = value;
+
+    if (this.props.weakness) { 
+      finalAttack = Math.round(value + (value * this.props.weakness));
+    }
+
     switch (true) {
+      case type === 'attack' && this.props.weakness !== 0:
+        return `deals ${finalAttack} damage (weakened ${this.props.weakness*-100}%)`;
       case type === 'attack':
-        return 'deals ' + value + ' damage';
+        return `deals ${finalAttack} damage`;
       case type === 'block':
-        return 'blocks ' + value + ' damage';
+        return `blocks ${value} damage`;
       default:
-        return 'does ' + value + ' ' + type;
+        return `does ${value} ${type}`;
     }
   };
 
@@ -110,9 +118,10 @@ export class Monster extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   const isSelectingTarget = getIsSelectingTarget(state);
-  return { isSelectingTarget };
+  const weakness = getEffectValue(state, 'weaken', ownProps.uuid);
+  return { isSelectingTarget, weakness };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -121,7 +130,7 @@ const mapDispatchToProps = dispatch => {
       {
         setSelectedTarget,
         disableTargetSelection,
-        playCard
+        playCard,
       },
       dispatch
     ),
