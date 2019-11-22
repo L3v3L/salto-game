@@ -112,35 +112,54 @@ export const BattleStats = styled.div`
 
 export const TextStats = styled.pre`
   display: flex;
-  align-self: center;
   flex-basis: 600px;
+  align-self: center;
   justify-content: center;
-  & > div {
-    align-self: center;
-  }
 `;
 
 export const EndTurnButton = styled.button`
   position: absolute;
-  width: 5rem;
-  margin-left:-2.5rem;
+  width: 8rem;
+  padding: 0.6rem;
+  margin-left: -2.5rem;
   margin-top: 250px;
-  padding: 0.4rem;
   top: 0;
   left: 50%;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
 
-  color: #20bf6b !important;
+  color: #26aeab;
   text-transform: uppercase;
   background: #ffffff;
-  border: 4px solid #20bf6b !important;
+  border: 4px solid #26aeab;
   border-radius: 6px;
   display: inline-block;
-  transition: all 0.3s ease 0s;
+  transition-property: background, color, border;
+  transition-duration: 0.3s
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+
+  &:active {
+    box-shadow: 0px 0px 20px #fff;
+    transition-property: box-shadow;
+    transition-duration: 0.3s
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+  }
+
+  &:focus {
+    outline: none;
+  }
 
   &:hover {
-    color: #494949 !important;
-    border-radius: 50px;
-    border-color: #494949 !important;
-    transition: all 0.3s ease 0s;
+    background: #27d9d0;
+    color: #ffffff;
+    border-color: #ffffff;
+    font-style: bold;
+    transition-property: background, color, border;
+    transition-duration: 0.3s
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
   }
 `;

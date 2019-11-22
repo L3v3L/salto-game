@@ -108,8 +108,6 @@ class Battle extends Component {
               size={this.props.deckCards.length}
             />
             <TextStats>
-            <div>
-            <br />
             Turn:    {this.props.allState.battle.turn}
             <br/>
             Actions: {this.props.allState.battle.currentAP}/{this.props.allState.battle.maxAP}
@@ -117,7 +115,6 @@ class Battle extends Component {
             Hand:    {this.props.handCards.length}
             <br/>
             Shield:  {this.props.shield}
-            </div>
             </TextStats>
 
             <DiscardPile size={this.props.discardCards.length} />
