@@ -122,7 +122,7 @@ export const EndTurnButton = styled.button`
   position: absolute;
   width: 8rem;
   padding: 0.6rem;
-  margin-left: -2.5rem;
+  margin-left: -4rem;
   margin-top: 250px;
   top: 0;
   left: 50%;
