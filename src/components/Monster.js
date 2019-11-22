@@ -115,7 +115,7 @@ export class Monster extends Component {
       <BouncyDiv onClick={() => this.action()} selecting={this.props.selecting}>
         <MonsterAvatar>
           <img src={this.state.dataURI} alt='Monster' />
-          <PercentileBar max={100} value={this.props.hp}/>
+          <PercentileBar max={100} value={this.props.hp} fontSize="0.6em" height="20px"/>
         </MonsterAvatar>
         {this.props.monsterMoves !== undefined &&
         <QueuedMoves>
