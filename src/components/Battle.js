@@ -144,6 +144,7 @@ class Battle extends Component {
                   <Card
                     key={cardInHand.card.uuid}
                     uuid={cardInHand.card.uuid}
+                    selecting={this.props.isSelectingCard}
                     isActive={
                       this.props.activeCard
                         ? this.props.activeCard.uuid === cardInHand.card.uuid
@@ -172,6 +173,7 @@ const mapStateToProps = state => {
   const cardRefs = selectors.getCardRefs(state);
   const monsters = selectors.getMonstersAliveWithRefs(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
+  const isSelectingCard = selectors.getIsSelectingCard(state);
   const activeCard = selectors.getActiveCard(state);
 
   const deckCards = selectors.getCardsByDeck(state, 'deck');
@@ -184,6 +186,7 @@ const mapStateToProps = state => {
     allState,
     cardRefs,
     isSelectingTarget,
+    isSelectingCard,
     activeCard,
     deckCards,
     handCards,
