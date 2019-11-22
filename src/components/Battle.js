@@ -7,7 +7,9 @@ import Card from './Card';
 import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
+
 import PercentileBar from './PercentileBar';
+
 
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
@@ -116,7 +118,6 @@ class Battle extends Component {
             <br/>
             Shield:  {this.props.shield}
             </TextStats>
-
             <DiscardPile size={this.props.discardCards.length} />
           </BattleStats>
 
