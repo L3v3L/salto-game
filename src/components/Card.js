@@ -23,6 +23,7 @@ const CardValues = {
 };
 
 const CardButton = styled.div`
+  cursor: ${props => props.active ? 'pointer' : 'default'};
   font-weight: bold;
   background-color: #495351;
   width: ${props => props.cardValues.width}px;
@@ -74,6 +75,7 @@ const CardButton = styled.div`
         img {
           width: 100%;
           height: 100%;
+          user-drag: none;
         }
       }
     }
@@ -110,7 +112,7 @@ export class Card extends Component {
   }
 
   action() {
-    if (this.props.isSelectingCard) {
+    if (this.props.selecting) {
       if (this.cost <= this.props.currentAP) {
         this.props.playCard({
           id: this.id,
@@ -126,6 +128,7 @@ export class Card extends Component {
   render() {
     return (
       <CardButton
+        active={this.props.selecting || this.props.isActive}
         cardValues={CardValues}
         key={this.key}
         onClick={() => this.action()}
@@ -154,15 +157,11 @@ export class Card extends Component {
 const mapStateToProps = state => {
   const currentAP = selectors.getCurrentAP(state);
   const monsterRefs = selectors.getMonsterRefs(state);
-  const isSelectingCard = selectors.getIsSelectingCard(state);
-  const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
   return {
     currentAP,
     monsterRefs,
-    isSelectingCard,
-    isSelectingTarget,
     activeCard
   };
 };

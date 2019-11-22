@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { MonsterSprite } from './Sprites';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
+import PercentileBar from './PercentileBar';
 
 import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
 
@@ -19,16 +20,29 @@ let nextMoveUUID = 0;
 const bounceAnimation = keyframes`${bounce}`;
 
 const BouncyDiv = styled.div`
+  z-index: 2;
+  margin-top: 55px;
   animation: 1s ${bounceAnimation};
+  user-select: none;
+  user-drag: none;
+  cursor: ${props => props.selecting ? 'pointer' : 'default'};
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-wrap:wrap;
+
+  & > img {
+    flex-basis: 96px;
+  }
 `;
 
 const QueuedMoves = styled.div`
-  margin-top: 10px;
+  margin-left: 20px;
   font-size: 14px;
-  min-height: 80px;
-  background-color: #495351;
+  background-color: #762b34;
   padding: 6px;
-  border: 2px solid black;
+  border: 2px solid #ffffff;
+  color: #ffffff;
   border-radius: 4px;
   min-width: 110px;
 `;
@@ -36,6 +50,20 @@ const QueuedMoves = styled.div`
 const MoveItem = styled.div`
   font-size: 12px;
   padding: 3px 6px;
+`;
+
+const MonsterName = styled.div`
+  font-size: 0.8em;
+  flex: 0 0 100%;
+`;
+
+const MonsterAvatar = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 96px;
+  & > img {
+    user-drag: none;
+  }
 `;
 
 export class Monster extends Component {
@@ -93,27 +121,27 @@ export class Monster extends Component {
 
   render() {
     return (
-      <div>
-        <BouncyDiv onClick={() => this.action()}>
+      <BouncyDiv onClick={() => this.action()} selecting={this.props.selecting}>
+        <MonsterAvatar>
           <img src={this.state.dataURI} alt='Monster' />
-          <br />
-          <code>HP: {this.props.hp}</code>
-        </BouncyDiv>
+          <MonsterName>{this.props.name}</MonsterName>
+          <PercentileBar max={100} value={this.props.hp} fontSize="0.6em" height="20px"/>
+        </MonsterAvatar>
         {this.props.monsterMoves !== undefined &&
-          <QueuedMoves>
-            Next moves
-            {this.props.monsterMoves
-              .map(move => {
-                return (
-                  <MoveItem key={++nextMoveUUID}>
-                    {this.getQueuedMoveText(move.type, move.value)}
-                  </MoveItem>
-                );
-              })
-            }
-          </QueuedMoves>
+        <QueuedMoves>
+          Next moves
+          {this.props.monsterMoves
+            .map(move => {
+              return (
+                <MoveItem key={++nextMoveUUID}>
+                  {this.getQueuedMoveText(move.type, move.value)}
+                </MoveItem>
+              );
+            })
+          }
+        </QueuedMoves>
         }
-      </div>
+      </BouncyDiv>
     );
   }
 }
