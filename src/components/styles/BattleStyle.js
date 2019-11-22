@@ -20,6 +20,7 @@ const mixinParalax = function(
 
 const waveColor = '#1b9892';
 export const BattleScreen = styled.div`
+  user-drag: none;
   flex: none;
   width: 100%;
   margin-top: 550px;
