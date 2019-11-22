@@ -20,6 +20,9 @@ const mixinParalax = function(
 
 const waveColor = '#1b9892';
 export const BattleScreen = styled.div`
+  background-color: rgb(0,0,0,0.25);
+  border-top: 10px solid #26aeab;
+  box-shadow:  100px 100px 200px rgb(0,0,0,0.5) inset;
   user-drag: none;
   flex: none;
   width: 100%;
@@ -136,17 +139,14 @@ export const EndTurnButton = styled.button`
   border: 4px solid #26aeab;
   border-radius: 6px;
   display: inline-block;
-  transition-property: background, color, border;
+  transition-property: color, border;
   transition-duration: 0.3s
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
 
   &:active {
-    box-shadow: 0px 0px 20px #fff;
-    transition-property: box-shadow;
-    transition-duration: 0.3s
-    transition-timing-function: ease-in-out;
-    transition-delay: 0s;
+    background: #eff;
+    transition-property: none;
   }
 
   &:focus {
@@ -154,11 +154,9 @@ export const EndTurnButton = styled.button`
   }
 
   &:hover {
-    background: #27d9d0;
-    color: #ffffff;
-    border-color: #ffffff;
     font-style: bold;
-    transition-property: background, color, border;
+    box-shadow: 0px 6px 1px rgb(0,0,0,0.1);
+    transition-property: color, border;
     transition-duration: 0.3s
     transition-timing-function: ease-in-out;
     transition-delay: 0s;
