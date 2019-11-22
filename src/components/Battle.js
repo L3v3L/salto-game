@@ -7,7 +7,7 @@ import Card from './Card';
 import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
-import PlayerHP from './PlayerHP';
+import PercentileBar from './PercentileBar';
 
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
@@ -129,9 +129,9 @@ class Battle extends Component {
           </BattleStats>
 
           <Centered>
-            <PlayerHP
-              playerHP={this.props.allState.player.hp}
-              battleHP={this.props.allState.battle.hp}
+            <PercentileBar
+              max={this.props.allState.player.hp}
+              value={this.props.allState.battle.hp}
             />
           </Centered>
 
