@@ -74,6 +74,7 @@ const CardButton = styled.div`
         img {
           width: 100%;
           height: 100%;
+          user-drag: none;
         }
       }
     }

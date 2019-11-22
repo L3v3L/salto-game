@@ -14,6 +14,7 @@ const Card = styled.div`
   border-radius: 4px;
   color: black;
   position: relative;
+  user-select: none;
 
   &.left {
     background-color: #268bd2;

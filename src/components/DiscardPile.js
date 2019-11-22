@@ -5,6 +5,7 @@ const Pile = styled.div`
   display: flex;
   flex-basis: 150px;
   align-self: center;
+  user-select: none;
 `;
 
 const Card = styled.div`
