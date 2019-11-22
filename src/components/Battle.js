@@ -49,26 +49,21 @@ class Battle extends Component {
             <Centered>
               {this.props.monsters
                 .map(monster => {
-                  return {
-                    ref: this.props.monsterRefs.find(
-                      monsterLib => monsterLib.id === monster.id
-                    ),
-                    monster: monster
-                  };
-                })
-                .map(monster => {
                   return (
                     <Monster
-                      key={monster.monster.uuid}
-                      uuid={monster.monster.uuid}
-                      id={monster.monster.id}
-                      hp={monster.monster.hp}
+                      key={monster.uuid}
+                      uuid={monster.uuid}
+                      id={monster.id}
+                      hp={monster.hp}
                       maxHp={monster.ref.hp}
+
                       monsterMoves={
                         this.props.allState.battle.monsterMoves[
-                          monster.monster.uuid
+                          monster.uuid
                         ]
                       }
+
+                      selecting={this.props.isSelectingTarget}
                     />
                   );
                 })}
@@ -176,8 +171,7 @@ class Battle extends Component {
 const mapStateToProps = state => {
   const allState = selectors.getAllState(state);
   const cardRefs = selectors.getCardRefs(state);
-  const monsterRefs = selectors.getMonsterRefs(state);
-  const monsters = selectors.getMonstersAlive(state);
+  const monsters = selectors.getMonstersAliveWithRefs(state);
   const isSelectingTarget = selectors.getIsSelectingTarget(state);
   const activeCard = selectors.getActiveCard(state);
 
@@ -189,7 +183,6 @@ const mapStateToProps = state => {
 
   return {
     allState,
-    monsterRefs,
     cardRefs,
     isSelectingTarget,
     activeCard,

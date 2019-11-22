@@ -33,6 +33,23 @@ export const getMonsterRefs = store =>
 export const getMonstersAlive = store =>
   store.battle.monsters.filter(monster => monster.hp > 0);
 
+export const getMonstersAliveWithRefs = store => {
+  let monstersAlive = getMonstersAlive(store);
+  let monsterRefs = getMonsterRefs(store);
+
+  if (monstersAlive && monsterRefs) {
+    return monstersAlive.map((monster) => { return {
+        ref: monsterRefs.find(
+          monsterLib => monsterLib.id === monster.id
+        ),
+        ...monster
+      };
+    });
+  } else {
+    return [];
+  }
+}
+
 // Cards
 export const getCardsState = store => store.cards;
 
