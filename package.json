@@ -42,6 +42,10 @@
     ]
   },
   "devDependencies": {
-    "redux-devtools": "^3.5.0"
+    "redux-devtools": "^3.5.0",
+    "aws-sdk": "^2.508.0",
+    "dotenv": "^8.0.0",
+    "glob": "^7.1.4",
+    "mime-types": "^2.1.24"
   }
 }
