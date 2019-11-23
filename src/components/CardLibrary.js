@@ -110,7 +110,7 @@ export const CardLibrary = [
     id: 37,
     name: 'Weaken All',
     cost: 0,
-    description: 'Decreases all monsters\'s attack by 25%',
+    description: 'Decreases all monsters\' attack by 25%',
     needsTarget: false,
     rarity: 2,
     type: 'effect',
