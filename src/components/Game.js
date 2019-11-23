@@ -29,8 +29,8 @@ const MainWrapper = styled.div`
 
 const GameStateIndicator = styled.span`
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   z-index: 999;
   text-transform: uppercase;
   font-size: 1rem;
@@ -52,10 +52,10 @@ export class Game extends Component {
     });
 
     let starterDeck = [
-      { id: 1, quantity: 5 },
       { id: 2, quantity: 5 },
       { id: 3, quantity: 5 },
-      { id: 4, quantity: 5 },
+      { id: 8, quantity: 5 },
+      { id: 9, quantity: 5 }
     ];
 
     starterDeck.map(function(item) {
