@@ -7,6 +7,8 @@ export const CardLibrary = [
     cost: 1,
     description: 'Absorbs 5 dmg',
     needsTarget: false,
+    rarity: 0,
+    type: 'effect',
     actions: [
       creators.addEffect({
         name: 'shield',
@@ -26,6 +28,8 @@ export const CardLibrary = [
     cost: 1,
     description: 'Deals 6 dmg to a single target',
     needsTarget: true,
+    rarity: 0,
+    type: 'attack',
     actions: [creators.attackMonster({ dmg: 6 })],
     image: 'attack.svg'
   },
@@ -35,6 +39,8 @@ export const CardLibrary = [
     cost: 2,
     description: 'Deals 8 dmg to all targets',
     needsTarget: false,
+    rarity: 1,
+    type: 'attack',
     actions: [creators.attackAllMonsters({ dmg: 8 })],
     image: 'attack_all.svg'
   },
@@ -44,6 +50,8 @@ export const CardLibrary = [
     cost: 2,
     description: 'Deals 12 dmg and 2 Weaken',
     needsTarget: true,
+    rarity: 1,
+    type: 'attack',
     actions: [
       creators.attackMonster({ dmg: 12 }),
       creators.addEffect({
