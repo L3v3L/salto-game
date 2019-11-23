@@ -63,31 +63,51 @@ class RewardScreen extends Component {
   render() {
     return (
       <RewardWrapper>
-        <CardContainer onClick={() => {this.props.addCardToDeck(this.props.cards[0].id); this.props.setGameState('battle');}}>
-          <Card 
+        <CardContainer
+          onClick={() => {
+            this.props.addCardToDeck(this.props.cards[0].id);
+            this.props.setGameState("battle");
+          }}
+        >
+          <Card
             image={this.props.cards[0].image}
             id={this.props.cards[0].id}
             label={this.props.cards[0].name}
             cost={this.props.cards[0].cost}
-            description={this.props.cards[0].description} />
+            description={this.props.cards[0].description}
+          />
         </CardContainer>
-        <CardContainer onClick={() => {this.props.addCardToDeck(this.props.cards[1].id); this.props.setGameState('battle');}}>
-          <Card 
+        <CardContainer
+          onClick={() => {
+            this.props.addCardToDeck(this.props.cards[1].id);
+            this.props.setGameState("battle");
+          }}
+        >
+          <Card
             image={this.props.cards[1].image}
             id={this.props.cards[1].id}
             label={this.props.cards[1].name}
             cost={this.props.cards[1].cost}
-            description={this.props.cards[1].description} />
+            description={this.props.cards[1].description}
+          />
         </CardContainer>
-        <CardContainer onClick={() => {this.props.addCardToDeck(this.props.cards[2].id); this.props.setGameState('battle');}}>
-          <Card 
+        <CardContainer
+          onClick={() => {
+            this.props.addCardToDeck(this.props.cards[2].id);
+            this.props.setGameState("battle");
+          }}
+        >
+          <Card
             image={this.props.cards[2].image}
             id={this.props.cards[2].id}
             label={this.props.cards[2].name}
             cost={this.props.cards[2].cost}
-            description={this.props.cards[2].description} />
+            description={this.props.cards[2].description}
+          />
         </CardContainer>
-        <SkipButton onClick={() => this.props.setGameState('battle')}>Skip</SkipButton>
+        <SkipButton onClick={() => this.props.setGameState("battle")}>
+          Skip
+        </SkipButton>
       </RewardWrapper>
     );
   }
