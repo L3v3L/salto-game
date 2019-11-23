@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="111.45mm" height="113.73mm" version="1.1" viewBox="0 0 111.45 113.73" xmlns="http://www.w3.org/2000/svg">
+ <g transform="matrix(.62717 -.32867 .2038 .68106 42.833 20.916)">
+  <g transform="translate(-56.878,-49.331)">
+   <path d="m56.878 158.62 6.9533-4.5015-6.9533-5.8129v-12.09l17.984 9.2252 80.983-69.338-12.879 44.983-55.194 36.603 10.173 17.586h-16.528l-7.0637-10.248-17.476 10.248z" fill-rule="evenodd"/>
+  </g>
+  <g transform="translate(-5.0329)">
+   <path d="m74.348 64.294-46.357 39.3 52.972-35.86 10.583-24.077z" fill="#fff" fill-rule="evenodd" style="paint-order:normal"/>
+  </g>
+ </g>
+ <g transform="translate(-111.49 -59.247)" fill="#e16730" fill-rule="evenodd" stroke-width="1.3983">
+  <path d="m184.36 132.42 33.683-66.841-59.508-6.3286 33.724 20.899z"/>
+  <path d="m148.46 144.53 6.6101-80.414-43.578 7.3141 27.929 16.922z" fill="#e16730" fill-rule="evenodd"/>
+ </g>
+ <g transform="matrix(.45597 -.54172 .44656 .55314 -9.8614 44.067)">
+  <g transform="translate(-56.878,-49.331)">
+   <path d="m56.878 158.62 6.9533-4.5015-6.9533-5.8129v-12.09l17.984 9.2252 80.983-69.338-12.879 44.983-55.194 36.603 10.173 17.586h-16.528l-7.0637-10.248-17.476 10.248z" fill-rule="evenodd"/>
+  </g>
+  <g transform="translate(-5.0329)">
+   <path d="m74.348 64.294-46.357 39.3 52.972-35.86 10.583-24.077z" fill="#fff" fill-rule="evenodd" style="paint-order:normal"/>
+  </g>
+ </g>
+</svg>
