@@ -83,10 +83,46 @@ export const CardLibrary = [
         stackValue: true,
         duration: 0,
         stackDuration: false,
-        needsTarget: false,
+        needsTarget: false
       }),
       creators.attackMonster({ dmg: 5 })
     ],
     image: '14.svg'
+  },
+  {
+    id: 21,
+    name: 'Doubletack',
+    cost: 1,
+    description: 'Deals 5 dmg, twice',
+    needsTarget: true,
+    rarity: 1,
+    type: 'attack',
+    actions: [
+      creators.attackMonster({ dmg: 5 }),
+      creators.attackMonster({ dmg: 5 })
+    ],
+    image: '21.svg'
+  },
+  {
+    id: 37,
+    name: 'Weaken All',
+    cost: 0,
+    description: 'weaken all',
+    needsTarget: false,
+    rarity: 2,
+    type: 'effect',
+    actions: [
+      creators.addEffect({
+        name: 'weaken',
+        type: 'weaken',
+        value: -0.25,
+        percentileValue: true,
+        stackValue: false,
+        duration: 1,
+        stackDuration: true,
+        needsTarget: false
+      })
+    ],
+    image: '37.svg'
   }
 ];
