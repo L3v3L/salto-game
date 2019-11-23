@@ -107,7 +107,7 @@ export const CardLibrary = [
     id: 37,
     name: 'Weaken All',
     cost: 0,
-    description: 'weaken all',
+    description: 'Weaken all',
     needsTarget: false,
     rarity: 2,
     type: 'effect',
