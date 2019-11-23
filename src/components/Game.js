@@ -16,9 +16,9 @@ const MainWrapper = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1.7em;
-  margin:0;
-  padding:0;
-  min-width: 900px
+  margin: 0;
+  padding: 0;
+  min-width: 900px;
   height: 100vh;
   min-height: 770px;
   max-height: 100%;
@@ -29,8 +29,8 @@ const MainWrapper = styled.div`
 
 const GameStateIndicator = styled.span`
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   z-index: 999;
   text-transform: uppercase;
   font-size: 1rem;
@@ -52,10 +52,10 @@ export class Game extends Component {
     });
 
     let starterDeck = [
-      { id: 1, quantity: 5 },
       { id: 2, quantity: 5 },
       { id: 3, quantity: 5 },
-      { id: 4, quantity: 5 },
+      { id: 8, quantity: 5 },
+      { id: 9, quantity: 5 }
     ];
 
     starterDeck.map(function(item) {
