@@ -16,9 +16,9 @@ const MainWrapper = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1.7em;
-  margin:0;
-  padding:0;
-  min-width: 900px
+  margin: 0;
+  padding: 0;
+  min-width: 900px;
   height: 100vh;
   min-height: 770px;
   max-height: 100%;
