@@ -194,7 +194,7 @@ export const playCardExecute = store => next => action => {
       store.dispatch(
         actions.moveCardByUUID({
           uuidArray: [cardUuid],
-          targetDeck: 'discard'
+          targetDeck: card.destination
         })
       );
 
