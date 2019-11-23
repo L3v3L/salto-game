@@ -35,6 +35,7 @@ export const createCard = ({
   cost,
   actions,
   needsTarget,
+  destination,
   target,
   image
 }) => ({
@@ -46,6 +47,7 @@ export const createCard = ({
     cost,
     actions,
     needsTarget,
+    destination,
     target,
     image
   }
