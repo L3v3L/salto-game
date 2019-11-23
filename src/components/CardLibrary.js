@@ -52,7 +52,7 @@ export const CardLibrary = [
         value: -0.25,
         percentileValue: true,
         stackValue: false,
-        duration: 1,
+        duration: 2,
         stackDuration: true
       })
     ],
