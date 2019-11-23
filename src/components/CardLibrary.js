@@ -82,7 +82,8 @@ export const CardLibrary = [
         percentileValue: false,
         stackValue: true,
         duration: 0,
-        stackDuration: false
+        stackDuration: false,
+        needsTarget: false,
       }),
       creators.attackMonster({ dmg: 5 })
     ],

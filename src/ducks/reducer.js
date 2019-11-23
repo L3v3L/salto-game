@@ -322,6 +322,7 @@ export default function reducer(state = initialState, action = {}) {
         percentileValue,
         duration,
         stackDuration,
+        needsTarget,
         uuid
       } = action.payload;
 
@@ -367,6 +368,7 @@ export default function reducer(state = initialState, action = {}) {
             percentileValue: percentileValue,
             duration: duration,
             stackDuration: stackDuration,
+            needsTarget: needsTarget,
             uuid: uuid
           }
         ];
