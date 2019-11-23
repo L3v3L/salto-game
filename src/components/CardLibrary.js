@@ -18,7 +18,8 @@ export const CardLibrary = [
         stackDuration: false
       })
     ],
-    image: 'block.svg'
+    image: 'block.svg',
+    rarity: 2
   },
   {
     id: 3,
@@ -27,7 +28,8 @@ export const CardLibrary = [
     description: 'Deals 6 dmg to a single target',
     needsTarget: true,
     actions: [creators.attackMonster({ dmg: 6 })],
-    image: 'attack.svg'
+    image: 'attack.svg',
+    rarity: 1
   },
   {
     id: 8,
@@ -36,7 +38,8 @@ export const CardLibrary = [
     description: 'Deals 8 dmg to all targets',
     needsTarget: false,
     actions: [creators.attackAllMonsters({ dmg: 8 })],
-    image: 'attack_all.svg'
+    image: 'attack_all.svg',
+    rarity: 1
   },
   {
     id: 9,
@@ -56,6 +59,7 @@ export const CardLibrary = [
         stackDuration: true
       })
     ],
-    image: 'weaken.svg'
+    image: 'weaken.svg',
+    rarity: 3
   }
 ];

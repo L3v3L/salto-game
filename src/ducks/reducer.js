@@ -48,6 +48,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         battle: {
           ...state.battle,
+          monsters: [],
           amountCardToDraw: state.player.amountCardToDraw,
           hp: state.player.hp,
           maxAP: state.player.maxAP,
@@ -418,6 +419,7 @@ export default function reducer(state = initialState, action = {}) {
         actions,
         needsTarget,
         destination,
+        rarity,
         image
       } = action.payload;
       return {
@@ -433,6 +435,7 @@ export default function reducer(state = initialState, action = {}) {
               actions,
               needsTarget,
               destination: destination ? destination : 'discard',
+              rarity,
               image
             }
           }

@@ -8,6 +8,7 @@ import Battle from './Battle';
 import { getAllState } from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
 import styled from 'styled-components';
+import RewardScreen from './RewardScreen';
 
 const MainWrapper = styled.div`
   background-color: #27d9d0;
@@ -70,7 +71,8 @@ export class Game extends Component {
     return (
       <MainWrapper>
         <GameStateIndicator>{this.props.allState.gameState}</GameStateIndicator>
-        {this.props.allState.gameState === 'battle' ? <Battle /> : ''}
+        { this.props.allState.gameState === 'battle' ? <Battle /> : '' }
+        { this.props.allState.gameState === 'reward' ? <RewardScreen /> : '' }
       </MainWrapper>
     );
   }
