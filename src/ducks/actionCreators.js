@@ -76,7 +76,8 @@ export const attackMonster = ({ uuid, dmg }) => ({
   type: types.ATTACK_MONSTER,
   payload: {
     uuid,
-    dmg
+    dmg,
+    needsTarget: true
   }
 });
 
@@ -95,6 +96,7 @@ export const addEffect = ({
   percentileValue = false,
   duration = 0,
   stackDuration = false,
+  needsTarget = false,
   uuid
 }) => ({
   type: types.ADD_EFFECT,
@@ -106,6 +108,7 @@ export const addEffect = ({
     percentileValue,
     duration,
     stackDuration,
+    needsTarget,
     uuid
   }
 });

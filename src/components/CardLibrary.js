@@ -7,6 +7,8 @@ export const CardLibrary = [
     cost: 1,
     description: 'Absorbs 5 dmg',
     needsTarget: false,
+    rarity: 0,
+    type: 'effect',
     actions: [
       creators.addEffect({
         name: 'shield',
@@ -27,6 +29,8 @@ export const CardLibrary = [
     cost: 1,
     description: 'Deals 6 dmg to a single target',
     needsTarget: true,
+    rarity: 0,
+    type: 'attack',
     actions: [creators.attackMonster({ dmg: 6 })],
     image: 'attack.svg',
     rarity: 0
@@ -37,6 +41,8 @@ export const CardLibrary = [
     cost: 2,
     description: 'Deals 8 dmg to all targets',
     needsTarget: false,
+    rarity: 1,
+    type: 'attack',
     actions: [creators.attackAllMonsters({ dmg: 8 })],
     image: 'attack_all.svg',
     rarity: 0
@@ -47,6 +53,8 @@ export const CardLibrary = [
     cost: 2,
     description: 'Deals 12 dmg and 2 Weaken',
     needsTarget: true,
+    rarity: 1,
+    type: 'attack',
     actions: [
       creators.attackMonster({ dmg: 12 }),
       creators.addEffect({
@@ -59,7 +67,65 @@ export const CardLibrary = [
         stackDuration: true
       })
     ],
-    image: 'weaken.svg',
-    rarity: 2
+    image: 'weaken.svg'
+  },
+  {
+    id: 14,
+    name: 'Shield Bash',
+    cost: 1,
+    description: 'Deals 5 dmg, absorbs 5 dmg',
+    needsTarget: true,
+    rarity: 1,
+    type: 'attack',
+    actions: [
+      creators.addEffect({
+        name: 'shield',
+        type: 'shield',
+        value: 5,
+        percentileValue: false,
+        stackValue: true,
+        duration: 0,
+        stackDuration: false,
+        needsTarget: false
+      }),
+      creators.attackMonster({ dmg: 5 })
+    ],
+    image: '14.svg'
+  },
+  {
+    id: 21,
+    name: 'Doubletack',
+    cost: 1,
+    description: 'Deals 5 dmg, twice',
+    needsTarget: true,
+    rarity: 1,
+    type: 'attack',
+    actions: [
+      creators.attackMonster({ dmg: 5 }),
+      creators.attackMonster({ dmg: 5 })
+    ],
+    image: '21.svg'
+  },
+  {
+    id: 37,
+    name: 'Weaken All',
+    cost: 0,
+    description: 'Decreases all monsters\'s attack by 25% until the end of the turn',
+    needsTarget: false,
+    rarity: 2,
+    type: 'effect',
+    actions: [
+      creators.addEffect({
+        name: 'weaken',
+        type: 'weaken',
+        value: -0.25,
+        percentileValue: true,
+        stackValue: false,
+        duration: 1,
+        stackDuration: true,
+        needsTarget: false
+      })
+    ],
+    image: '37.svg'
   }
 ];
