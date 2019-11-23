@@ -21,7 +21,6 @@ export const CardLibrary = [
       })
     ],
     image: 'block.svg',
-    rarity: 1
   },
   {
     id: 3,
@@ -33,7 +32,6 @@ export const CardLibrary = [
     type: 'attack',
     actions: [creators.attackMonster({ dmg: 6 })],
     image: 'attack.svg',
-    rarity: 0
   },
   {
     id: 8,
@@ -45,7 +43,6 @@ export const CardLibrary = [
     type: 'attack',
     actions: [creators.attackAllMonsters({ dmg: 8 })],
     image: 'attack_all.svg',
-    rarity: 0
   },
   {
     id: 9,
