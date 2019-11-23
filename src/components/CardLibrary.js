@@ -65,5 +65,27 @@ export const CardLibrary = [
       })
     ],
     image: 'weaken.svg'
+  },
+  {
+    id: 14,
+    name: 'Shield Bash',
+    cost: 1,
+    description: 'Deals 5 dmg, absorbs 5 dmg',
+    needsTarget: true,
+    rarity: 1,
+    type: 'attack',
+    actions: [
+      creators.addEffect({
+        name: 'shield',
+        type: 'shield',
+        value: 5,
+        percentileValue: false,
+        stackValue: true,
+        duration: 0,
+        stackDuration: false
+      }),
+      creators.attackMonster({ dmg: 5 })
+    ],
+    image: '14.svg'
   }
 ];

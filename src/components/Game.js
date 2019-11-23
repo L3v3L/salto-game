@@ -55,7 +55,8 @@ export class Game extends Component {
       { id: 2, quantity: 5 },
       { id: 3, quantity: 5 },
       { id: 8, quantity: 5 },
-      { id: 9, quantity: 5 }
+      { id: 9, quantity: 5 },
+      { id: 14, quantity: 5 }
     ];
 
     starterDeck.map(function(item) {
