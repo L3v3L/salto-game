@@ -12,8 +12,9 @@ const RewardWrapper = styled.div`
 
 const CardContainer = styled.div`
   margin: 2rem;
-  &:hover {
+  &>:hover {
     cursor: pointer;
+    box-shadow: 0px 0px 20px 20px #fff;
   }
 `;
 
