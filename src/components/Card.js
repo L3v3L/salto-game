@@ -23,7 +23,7 @@ const CardValues = {
 };
 
 const CardButton = styled.div`
-  cursor: ${props => props.active ? 'pointer' : 'default'};
+  cursor: ${props => (props.active ? 'pointer' : 'default')};
   font-weight: bold;
   background-color: #495351;
   width: ${props => props.cardValues.width}px;
@@ -136,7 +136,7 @@ export class Card extends Component {
         <div className='interiorContainer'>
           <div className='header'>
             <div className='title'>{this.label}</div>
-            {this.cost && <div className='cost'>{this.cost}</div>}
+            {this.cost ? <div className='cost'>{this.cost}</div> : ''}
           </div>
           <div className='imageContainer'>
             <div className='status'>{this.props.isActive ? 'ACTIVE' : ''}</div>
