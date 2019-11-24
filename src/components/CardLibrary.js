@@ -20,7 +20,7 @@ export const CardLibrary = [
         stackDuration: false
       })
     ],
-    image: 'block.svg'
+    image: 'block.svg',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ export const CardLibrary = [
     rarity: 0,
     type: 'attack',
     actions: [creators.attackMonster({ dmg: 6 })],
-    image: 'attack.svg'
+    image: 'attack.svg',
   },
   {
     id: 8,
@@ -42,7 +42,7 @@ export const CardLibrary = [
     rarity: 1,
     type: 'attack',
     actions: [creators.attackAllMonsters({ dmg: 8 })],
-    image: 'attack_all.svg'
+    image: 'attack_all.svg',
   },
   {
     id: 9,
@@ -107,7 +107,7 @@ export const CardLibrary = [
     id: 37,
     name: 'Weaken All',
     cost: 0,
-    description: 'Decreases all monsters\'s attack by 25% until the end of the turn',
+    description: 'Decreases all monsters\' attack by 25%',
     needsTarget: false,
     rarity: 2,
     type: 'effect',

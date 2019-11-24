@@ -37,6 +37,7 @@ export const createCard = ({
   needsTarget,
   destination,
   target,
+  rarity,
   image
 }) => ({
   type: types.CREATE_CARD,
@@ -49,6 +50,7 @@ export const createCard = ({
     needsTarget,
     destination,
     target,
+    rarity,
     image
   }
 });

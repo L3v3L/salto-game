@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import { weightedRand } from './utils.js'
+
 export const getAllState = store => store;
 
 // Battle
@@ -87,3 +90,14 @@ export const getEffect = (store, type, uuid) =>
 
 export const getEffectValue = (store, type, uuid) => 
   getEffect(store, type, uuid) ? getEffect(store, type, uuid).value : 0;
+
+export const getRandomCard = (store) => {
+  let shuffledCardRefs = getCardRefs(store) ? _.shuffle(getCardRefs(store)) : [];
+  const getRandRarity = weightedRand({0:0.7, 1:0.2, 2:0.1});
+  const rarity = getRandRarity();
+  return shuffledCardRefs.find(card => parseInt(card.rarity) === parseInt(rarity));
+}
+
+export const getRandomCards = (store) => {
+  return [getRandomCard(store), getRandomCard(store), getRandomCard(store)];
+}
