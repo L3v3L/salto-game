@@ -331,20 +331,25 @@ export default function reducer(state = initialState, action = {}) {
 
       let validatedValue = value;
       if (percentileValue) {
-        validatedValue = _.clamp(value, -1, 1); 
+        validatedValue = _.clamp(value, -1, 1);
       }
 
-      let existingEffect = state.battle.effects.find(effect =>
-        (effect.uuid === undefined && effect.type === type) || 
-          (effect.uuid !== undefined && effect.type === type && effect.uuid === uuid)
+      let existingEffect = state.battle.effects.find(
+        effect =>
+          (effect.uuid === undefined && effect.type === type) ||
+          (effect.uuid !== undefined &&
+            effect.type === type &&
+            effect.uuid === uuid)
       );
 
       let newEffects = [];
 
-      if  (existingEffect) {
+      if (existingEffect) {
         if (stackValue) {
           let newValue = existingEffect.value + validatedValue;
-          existingEffect.value = percentileValue ? _.clamp(newValue, -1, 1) : newValue;
+          existingEffect.value = percentileValue
+            ? _.clamp(newValue, -1, 1)
+            : newValue;
         }
 
         if (stackDuration) {
@@ -352,14 +357,14 @@ export default function reducer(state = initialState, action = {}) {
         }
 
         newEffects = [
-          ...state.battle.effects.map((effect) => { 
+          ...state.battle.effects.map(effect => {
             if (effect.type === type && effect.uuid === uuid) {
               return Object.assign({}, existingEffect);
             } else {
               return effect;
             }
-          }),
-        ]
+          })
+        ];
       } else {
         newEffects = [
           ...state.battle.effects,

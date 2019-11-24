@@ -3,13 +3,15 @@ export function isMonstersAlive(state) {
 }
 
 export function weightedRand(spec) {
-  var i, j, table=[];
+  var i,
+    j,
+    table = [];
   for (i in spec) {
-    for (j=0; j<spec[i]*10; j++) {
+    for (j = 0; j < spec[i] * 10; j++) {
       table.push(i);
     }
   }
   return function() {
     return table[Math.floor(Math.random() * table.length)];
-  }
+  };
 }
