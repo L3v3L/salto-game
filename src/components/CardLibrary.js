@@ -141,5 +141,16 @@ export const CardLibrary = [
       creators.attackMonster({ dmg: 2 })
     ],
     image: '39.svg'
+  },
+  {
+    id: 52,
+    name: 'Axe',
+    cost: 3,
+    description: 'Deals 32 dmg',
+    needsTarget: true,
+    rarity: 3,
+    type: 'attack',
+    actions: [creators.attackMonster({ dmg: 32 })],
+    image: '52.svg'
   }
 ];
