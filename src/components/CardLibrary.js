@@ -111,6 +111,7 @@ export const CardLibrary = [
     needsTarget: false,
     rarity: 2,
     type: 'effect',
+    destination: 'burned',
     actions: [
       creators.addEffect({
         name: 'weaken',
