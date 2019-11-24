@@ -13,7 +13,7 @@ const gameStates = {
 export const initialState = {
   gameState: gameStates.BATTLE,
   player: {
-    hp: 100,
+    maxHp: 100,
     deck: [],
     maxAP: 100,
     amountCardToDraw: 5
@@ -31,9 +31,10 @@ export const initialState = {
     cards: [],
     selectingCard: true,
     selectingTarget: false,
-    hp: 0,
-    currentAP: 0,
-    maxAP: 0,
+    maxHp: 1,
+    hp: 1,
+    currentAP: 1,
+    maxAP: 1,
     monsters: [],
     monsterMoves: {},
     turn: 0,
@@ -50,7 +51,8 @@ export default function reducer(state = initialState, action = {}) {
           ...state.battle,
           monsters: [],
           amountCardToDraw: state.player.amountCardToDraw,
-          hp: state.player.hp,
+          maxHp: state.player.maxHp,
+          hp: state.player.maxHp,
           maxAP: state.player.maxAP,
           currentAP: state.player.maxAP,
           turn: 1,

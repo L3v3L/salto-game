@@ -122,7 +122,7 @@ class Battle extends Component {
 
           <Centered>
             <PercentileBar
-              max={this.props.allState.player.hp}
+              max={this.props.allState.battle.maxHp}
               value={this.props.allState.battle.hp}
               height="30px"
               flexBasis="900px"
