@@ -10,7 +10,6 @@ import DiscardPile from './DiscardPile';
 
 import PercentileBar from './PercentileBar';
 
-
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
 import {
@@ -49,27 +48,22 @@ class Battle extends Component {
         <BattleScreen>
           <div className='header-waves'>
             <Centered>
-              {this.props.monsters
-                .map(monster => {
-                  return (
-                    <Monster
-                      key={monster.uuid}
-                      uuid={monster.uuid}
-                      name={monster.ref.name}
-                      id={monster.id}
-                      hp={monster.hp}
-                      maxHp={monster.ref.hp}
-
-                      monsterMoves={
-                        this.props.allState.battle.monsterMoves[
-                          monster.uuid
-                        ]
-                      }
-
-                      selecting={this.props.isSelectingTarget}
-                    />
-                  );
-                })}
+              {this.props.monsters.map(monster => {
+                return (
+                  <Monster
+                    key={monster.uuid}
+                    uuid={monster.uuid}
+                    name={monster.ref.name}
+                    id={monster.id}
+                    hp={monster.hp}
+                    maxHp={monster.ref.hp}
+                    monsterMoves={
+                      this.props.allState.battle.monsterMoves[monster.uuid]
+                    }
+                    selecting={this.props.isSelectingTarget}
+                  />
+                );
+              })}
             </Centered>
             <div>
               <svg
@@ -107,25 +101,24 @@ class Battle extends Component {
           </SelectTarget>
 
           <BattleStats>
-            <DeckPile
-              size={this.props.deckCards.length}
-            />
+            <DeckPile size={this.props.deckCards.length} />
             <TextStats>
-            Turn:    {this.props.allState.battle.turn}
-            <br/>
-            Actions: {this.props.allState.battle.currentAP}/{this.props.allState.battle.maxAP}
-            <br/>
-            Shield:  {this.props.shield}
+              Turn: {this.props.allState.battle.turn}
+              <br />
+              Actions: {this.props.allState.battle.currentAP}/
+              {this.props.allState.battle.maxAP}
+              <br />
+              Shield: {this.props.shield}
             </TextStats>
             <DiscardPile size={this.props.discardCards.length} />
           </BattleStats>
 
           <Centered>
             <PercentileBar
-              max={this.props.allState.player.hp}
+              max={this.props.allState.battle.maxHp}
               value={this.props.allState.battle.hp}
-              height="30px"
-              flexBasis="900px"
+              height='30px'
+              flexBasis='900px'
             />
           </Centered>
 
