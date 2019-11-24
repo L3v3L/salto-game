@@ -124,5 +124,22 @@ export const CardLibrary = [
       })
     ],
     image: '37.svg'
+  },
+  {
+    id: 39,
+    name: 'Meteor',
+    cost: 1,
+    description: 'Deals 2 dmg, four times, burned',
+    needsTarget: true,
+    rarity: 2,
+    type: 'attack',
+    destination: 'burned',
+    actions: [
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 })
+    ],
+    image: '39.svg'
   }
 ];
