@@ -125,5 +125,55 @@ export const CardLibrary = [
       })
     ],
     image: '37.svg'
+  },
+  {
+    id: 39,
+    name: 'Meteor',
+    cost: 1,
+    description: 'Deals 2 dmg, four times, burned',
+    needsTarget: true,
+    rarity: 2,
+    type: 'attack',
+    destination: 'burned',
+    actions: [
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 })
+    ],
+    image: '39.svg'
+  },
+  {
+    id: 52,
+    name: 'Axe',
+    cost: 3,
+    description: 'Deals 32 dmg',
+    needsTarget: true,
+    rarity: 3,
+    type: 'attack',
+    actions: [creators.attackMonster({ dmg: 32 })],
+    image: '52.svg'
+  },
+  {
+    id: 58,
+    name: 'Fotress Shield',
+    cost: 2,
+    description: 'Absorbs 30 dmg, burned',
+    destination: 'burned',
+    needsTarget: false,
+    rarity: 3,
+    type: 'effect',
+    actions: [
+      creators.addEffect({
+        name: 'shield',
+        type: 'shield',
+        value: 30,
+        percentileValue: false,
+        stackValue: true,
+        duration: 0,
+        stackDuration: false
+      })
+    ],
+    image: '58.svg'
   }
 ];

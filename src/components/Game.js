@@ -59,7 +59,10 @@ export class Game extends Component {
       { id: 9, quantity: 5 },
       { id: 14, quantity: 5 },
       { id: 21, quantity: 5 },
-      { id: 37, quantity: 5 }
+      { id: 37, quantity: 5 },
+      { id: 39, quantity: 5 },
+      { id: 52, quantity: 5 },
+      { id: 58, quantity: 5 }
     ];
 
     starterDeck.map(function(item) {
@@ -74,8 +77,8 @@ export class Game extends Component {
     return (
       <MainWrapper>
         <GameStateIndicator>{this.props.allState.gameState}</GameStateIndicator>
-        { this.props.allState.gameState === 'battle' ? <Battle /> : '' }
-        { this.props.allState.gameState === 'reward' ? <RewardScreen /> : '' }
+        {this.props.allState.gameState === 'battle' ? <Battle /> : ''}
+        {this.props.allState.gameState === 'reward' ? <RewardScreen /> : ''}
       </MainWrapper>
     );
   }
