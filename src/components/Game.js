@@ -75,6 +75,7 @@ class Game extends Component {
         <GameStateIndicator>{ this.props.allState.gameState }</GameStateIndicator>
         { this.props.allState.gameState === 'battle' ? <Battle /> : '' }
         { this.props.allState.gameState === 'reward' ? <RewardScreen /> : '' }
+      </MainWrapper>
     );
   }
 }
