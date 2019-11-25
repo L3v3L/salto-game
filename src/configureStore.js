@@ -10,24 +10,24 @@ import {
 } from './ducks/middlewares';
 
 const loggerMiddleware = createLogger({
-  collapsed: (getState, action, logEntry) => !logEntry.error
+  collapsed: (getState, action, logEntry) => !logEntry.error,
 });
 
+// eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const configureStore = initialState =>
-  createStore(
-    reducer,
-    initialState,
-    composeEnhancers(
-      applyMiddleware(
-        targetSelectionDisable,
-        playCardActivate,
-        playCardExecute,
-        endTurn,
-        loggerMiddleware,
-      )
-    )
-  );
+const configureStore = (initialState) => createStore(
+  reducer,
+  initialState,
+  composeEnhancers(
+    applyMiddleware(
+      targetSelectionDisable,
+      playCardActivate,
+      playCardExecute,
+      endTurn,
+      loggerMiddleware,
+    ),
+  ),
+);
 
 export default configureStore;

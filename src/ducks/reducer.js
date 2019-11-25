@@ -1,13 +1,13 @@
+import _ from 'lodash';
 import * as types from './actionTypes';
 import * as utils from './utils';
-import _ from 'lodash';
 
 let nextMonsterUUID = 0;
 let nextCardUUID = 0;
 
 const gameStates = {
   BATTLE: 'battle',
-  REWARD: 'reward'
+  REWARD: 'reward',
 };
 
 export const initialState = {
@@ -16,15 +16,15 @@ export const initialState = {
     maxHp: 100,
     deck: [],
     maxAP: 100,
-    amountCardToDraw: 5
+    amountCardToDraw: 5,
   },
   cards: {
     allIds: [],
-    byIds: {}
+    byIds: {},
   },
   monsters: {
     allIds: [],
-    byIds: {}
+    byIds: {},
   },
   battle: {
     amountCardToDraw: 0,
@@ -38,501 +38,505 @@ export const initialState = {
     monsters: [],
     monsterMoves: {},
     turn: 0,
-    effects: []
-  }
+    effects: [],
+  },
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case types.RESET_BATTLE: {
-      let returnState = {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsters: [],
-          amountCardToDraw: state.player.amountCardToDraw,
-          maxHp: state.player.maxHp,
-          hp: state.player.maxHp,
-          maxAP: state.player.maxAP,
-          currentAP: state.player.maxAP,
-          turn: 1,
-          cards: _.cloneDeep(_.shuffle(state.player.deck))
-        }
-      };
+  case types.RESET_BATTLE: {
+    const returnState = {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: [],
+        amountCardToDraw: state.player.amountCardToDraw,
+        maxHp: state.player.maxHp,
+        hp: state.player.maxHp,
+        maxAP: state.player.maxAP,
+        currentAP: state.player.maxAP,
+        turn: 1,
+        cards: _.cloneDeep(_.shuffle(state.player.deck)),
+      },
+    };
 
-      for (let i = 0; i < returnState.battle.cards.length; i++) {
-        if (i < returnState.battle.amountCardToDraw) {
-          returnState.battle.cards[i].deck = 'hand';
-        } else {
-          returnState.battle.cards[i].deck = 'deck';
-        }
+    for (let i = 0; i < returnState.battle.cards.length; i++) {
+      if (i < returnState.battle.amountCardToDraw) {
+        returnState.battle.cards[i].deck = 'hand';
+      } else {
+        returnState.battle.cards[i].deck = 'deck';
       }
-
-      return returnState;
     }
 
-    case types.SET_GAME_STATE: {
-      const { targetState } = action.payload;
-      return {
-        ...state,
-        gameState: targetState
-      };
-    }
+    return returnState;
+  }
 
-    case types.SET_BATTLE_CARDS: {
-      const { cards } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          cards: cards
-        }
-      };
-    }
+  case types.SET_GAME_STATE: {
+    const { targetState } = action.payload;
+    return {
+      ...state,
+      gameState: targetState,
+    };
+  }
 
-    case types.ADD_BATTLE_TURN: {
-      const { value } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          turn: state.battle.turn + value
-        }
-      };
-    }
-    case types.ADD_CARD_TO_DECK: {
-      const { id } = action.payload;
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          deck: [...state.player.deck, { id: id, uuid: ++nextCardUUID }]
-        }
-      };
-    }
+  case types.SET_BATTLE_CARDS: {
+    const { cards } = action.payload;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        cards,
+      },
+    };
+  }
 
-    case types.REMOVE_CARD_FROM_DECK: {
-      const { uuid } = action.payload;
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          deck: state.player.deck.filter(card => card.uuid !== uuid)
-        }
-      };
-    }
+  case types.ADD_BATTLE_TURN: {
+    const { value } = action.payload;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        turn: state.battle.turn + value,
+      },
+    };
+  }
+  case types.ADD_CARD_TO_DECK: {
+    const { id } = action.payload;
+    nextCardUUID += 1;
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        deck: [...state.player.deck, { id, uuid: nextCardUUID }],
+      },
+    };
+  }
 
-    case types.DECREMENT_ACTIONS: {
-      const { amount } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          currentAP:
+  case types.REMOVE_CARD_FROM_DECK: {
+    const { uuid } = action.payload;
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        deck: state.player.deck.filter((card) => card.uuid !== uuid),
+      },
+    };
+  }
+
+  case types.DECREMENT_ACTIONS: {
+    const { amount } = action.payload;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        currentAP:
             state.battle.currentAP >= amount
               ? state.battle.currentAP - amount
-              : 0
-        }
-      };
+              : 0,
+      },
+    };
+  }
+
+  case types.CREATE_MONSTER: {
+    const {
+      id, name, hp, moves,
+    } = action.payload;
+    return {
+      ...state,
+      monsters: {
+        allIds: [...state.monsters.allIds, id],
+        byIds: {
+          ...state.monsters.byIds,
+          [id]: {
+            name,
+            hp,
+            moves,
+          },
+        },
+      },
+    };
+  }
+
+  case types.ADD_MONSTER: {
+    const { id } = action.payload;
+    nextMonsterUUID += 1;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: [
+          ...state.battle.monsters,
+          { id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp },
+        ],
+      },
+    };
+  }
+
+  case types.SET_MONSTER_MOVES: {
+    const { uuid, move } = action.payload;
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsterMoves: {
+          ...state.battle.monsterMoves,
+          [uuid]: move,
+        },
+      },
+    };
+  }
+
+  case types.RESET_ALL_MONSTER_MOVES: {
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsterMoves: {},
+      },
+    };
+  }
+
+  case types.ADD_TO_BATTLE_HP: {
+    const { value } = action.payload;
+
+    const returnState = {
+      ...state,
+      battle: {
+        ...state.battle,
+        hp: Math.max(0, state.battle.hp + value),
+      },
+    };
+
+    if (
+      returnState.gameState === gameStates.BATTLE
+        && returnState.battle.hp <= 0
+    ) {
+      returnState.gameState = gameStates.REWARD;
     }
 
-    case types.CREATE_MONSTER: {
-      const { id, name, hp, moves } = action.payload;
-      return {
-        ...state,
-        monsters: {
-          allIds: [...state.monsters.allIds, id],
-          byIds: {
-            ...state.monsters.byIds,
-            [id]: {
-              name,
-              hp,
-              moves
-            }
-          }
-        }
-      };
-    }
+    return returnState;
+  }
 
-    case types.ADD_MONSTER: {
-      const { id } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsters: [
-            ...state.battle.monsters,
-            { id: id, uuid: ++nextMonsterUUID, hp: state.monsters.byIds[id].hp }
-          ]
-        }
-      };
-    }
+  case types.SET_QUEUED_ACTIONS: {
+    const { actions } = action.payload;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        queuedActions: actions,
+      },
+    };
+  }
 
-    case types.SET_MONSTER_MOVES: {
-      const { uuid, move } = action.payload;
+  case types.SET_BATTLE_CURRENT_AP: {
+    const { ap } = action.payload;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        currentAP: ap,
+      },
+    };
+  }
 
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsterMoves: {
-            ...state.battle.monsterMoves,
-            [uuid]: move
-          }
-        }
-      };
-    }
+  case types.SET_BATTLE_MAX_AP: {
+    const { ap } = action.payload;
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        maxAP: ap,
+      },
+    };
+  }
 
-    case types.RESET_ALL_MONSTER_MOVES: {
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsterMoves: {}
-        }
-      };
-    }
+  case types.ATTACK_MONSTER: {
+    const { uuid, dmg } = action.payload;
 
-    case types.ADD_TO_BATTLE_HP: {
-      const { value } = action.payload;
-
-      let returnState = {
-        ...state,
-        battle: {
-          ...state.battle,
-          hp: Math.max(0, state.battle.hp + value)
-        }
-      };
-
-      if (
-        returnState.gameState === gameStates.BATTLE &&
-        returnState.battle.hp <= 0
-      ) {
-        returnState.gameState = gameStates.REWARD;
-      }
-
-      return returnState;
-    }
-
-    case types.SET_QUEUED_ACTIONS: {
-      const { actions } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          queuedActions: actions
-        }
-      };
-    }
-
-    case types.SET_BATTLE_CURRENT_AP: {
-      const { ap } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          currentAP: ap
-        }
-      };
-    }
-
-    case types.SET_BATTLE_MAX_AP: {
-      const { ap } = action.payload;
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          maxAP: ap
-        }
-      };
-    }
-
-    case types.ATTACK_MONSTER: {
-      const { uuid, dmg } = action.payload;
-
-      let returnState = {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsters: state.battle.monsters.map(monster => {
-            if (monster.uuid === uuid) {
-              monster.hp = Math.max(0, monster.hp - dmg);
-            }
-            return monster;
-          })
-        }
-      };
-
-      if (
-        returnState.gameState === gameStates.BATTLE &&
-        !utils.isMonstersAlive(returnState)
-      ) {
-        returnState.gameState = gameStates.REWARD;
-      }
-
-      return returnState;
-    }
-
-    case types.ATTACK_ALL_MONSTERS: {
-      const { dmg } = action.payload;
-
-      let returnState = {
-        ...state,
-        battle: {
-          ...state.battle,
-          monsters: state.battle.monsters.map(monster => {
+    const returnState = {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: state.battle.monsters.map((monster) => {
+          if (monster.uuid === uuid) {
             monster.hp = Math.max(0, monster.hp - dmg);
-            return monster;
-          })
-        }
-      };
+          }
+          return monster;
+        }),
+      },
+    };
 
-      if (
-        returnState.gameState === gameStates.BATTLE &&
-        !utils.isMonstersAlive(returnState)
-      ) {
-        returnState.gameState = gameStates.REWARD;
-      }
-
-      return returnState;
+    if (
+      returnState.gameState === gameStates.BATTLE
+        && !utils.isMonstersAlive(returnState)
+    ) {
+      returnState.gameState = gameStates.REWARD;
     }
 
-    case types.UPDATE_EFFECT_VALUE: {
-      const { type, value } = action.payload;
+    return returnState;
+  }
 
-      const newEffects = state.battle.effects.map(effect => {
-        if (effect.type === type) {
-          effect.value = value;
-        }
-        return Object.assign({}, effect);
-      });
+  case types.ATTACK_ALL_MONSTERS: {
+    const { dmg } = action.payload;
 
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          effects: newEffects
-        }
-      };
+    const returnState = {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: state.battle.monsters.map((monster) => {
+          monster.hp = Math.max(0, monster.hp - dmg);
+          return monster;
+        }),
+      },
+    };
+
+    if (
+      returnState.gameState === gameStates.BATTLE
+        && !utils.isMonstersAlive(returnState)
+    ) {
+      returnState.gameState = gameStates.REWARD;
     }
 
-    case types.ADD_EFFECT: {
-      const {
-        name,
-        type,
-        value,
-        stackValue,
-        percentileValue,
-        duration,
-        stackDuration,
-        needsTarget,
-        uuid
-      } = action.payload;
+    return returnState;
+  }
 
-      let validatedValue = value;
-      if (percentileValue) {
-        validatedValue = _.clamp(value, -1, 1);
+  case types.UPDATE_EFFECT_VALUE: {
+    const { type, value } = action.payload;
+
+    const newEffects = state.battle.effects.map((effect) => {
+      if (effect.type === type) {
+        effect.value = value;
       }
+      return { ...effect };
+    });
 
-      let existingEffect = state.battle.effects.find(
-        effect =>
-          (effect.uuid === undefined && effect.type === type) ||
-          (effect.uuid !== undefined &&
-            effect.type === type &&
-            effect.uuid === uuid)
-      );
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        effects: newEffects,
+      },
+    };
+  }
 
-      let newEffects = [];
+  case types.ADD_EFFECT: {
+    const {
+      name,
+      type,
+      value,
+      stackValue,
+      percentileValue,
+      duration,
+      stackDuration,
+      needsTarget,
+      uuid,
+    } = action.payload;
 
-      if (existingEffect) {
-        if (stackValue) {
-          let newValue = existingEffect.value + validatedValue;
-          existingEffect.value = percentileValue
-            ? _.clamp(newValue, -1, 1)
-            : newValue;
-        }
-
-        if (stackDuration) {
-          existingEffect.duration += duration;
-        }
-
-        newEffects = [
-          ...state.battle.effects.map(effect => {
-            if (effect.type === type && effect.uuid === uuid) {
-              return Object.assign({}, existingEffect);
-            } else {
-              return effect;
-            }
-          })
-        ];
-      } else {
-        newEffects = [
-          ...state.battle.effects,
-          {
-            name: name,
-            type: type,
-            value: validatedValue,
-            stackValue: stackValue,
-            percentileValue: percentileValue,
-            duration: duration,
-            stackDuration: stackDuration,
-            needsTarget: needsTarget,
-            uuid: uuid
-          }
-        ];
-      }
-
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          effects: newEffects
-        }
-      };
+    let validatedValue = value;
+    if (percentileValue) {
+      validatedValue = _.clamp(value, -1, 1);
     }
 
-    case types.TICK_EFFECTS: {
-      const changedEffects = state.battle.effects
-        .map(effect => {
-          if (effect.duration === 0) {
-            return null;
-          }
+    const existingEffect = state.battle.effects.find(
+      (effect) => (effect.uuid === undefined && effect.type === type)
+          || (effect.uuid !== undefined
+            && effect.type === type
+            && effect.uuid === uuid),
+    );
 
-          if (effect.duration === -1) {
-            return effect;
-          }
+    let newEffects = [];
 
-          if ((effect.duration -= 1) > 0) {
-            return effect;
-          }
+    if (existingEffect) {
+      if (stackValue) {
+        const newValue = existingEffect.value + validatedValue;
+        existingEffect.value = percentileValue
+          ? _.clamp(newValue, -1, 1)
+          : newValue;
+      }
 
+      if (stackDuration) {
+        existingEffect.duration += duration;
+      }
+
+      newEffects = [
+        ...state.battle.effects.map((effect) => {
+          if (effect.type === type && effect.uuid === uuid) {
+            return { ...existingEffect };
+          }
+          return effect;
+        }),
+      ];
+    } else {
+      newEffects = [
+        ...state.battle.effects,
+        {
+          name,
+          type,
+          value: validatedValue,
+          stackValue,
+          percentileValue,
+          duration,
+          stackDuration,
+          needsTarget,
+          uuid,
+        },
+      ];
+    }
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        effects: newEffects,
+      },
+    };
+  }
+
+  case types.TICK_EFFECTS: {
+    const changedEffects = state.battle.effects
+      .map((effect) => {
+        if (effect.duration === 0) {
           return null;
-        })
-        .filter(effect => effect);
-
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          effects: [...changedEffects]
         }
-      };
-    }
 
-    case types.CREATE_CARD: {
-      const {
-        id,
-        name,
-        description,
-        cost,
-        actions,
-        needsTarget,
-        destination,
-        rarity,
-        image
-      } = action.payload;
-      return {
-        ...state,
-        cards: {
-          allIds: [...state.cards.allIds, id],
-          byIds: {
-            ...state.cards.byIds,
-            [id]: {
-              name,
-              cost,
-              description,
-              actions,
-              needsTarget,
-              destination: destination ? destination : 'discard',
-              rarity,
-              image
-            }
+        if (effect.duration === -1) {
+          return effect;
+        }
+
+        effect.duration -= 1;
+
+        if (effect.duration > 0) {
+          return effect;
+        }
+
+        return null;
+      })
+      .filter((effect) => effect);
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        effects: [...changedEffects],
+      },
+    };
+  }
+
+  case types.CREATE_CARD: {
+    const {
+      id,
+      name,
+      description,
+      cost,
+      actions,
+      needsTarget,
+      destination,
+      rarity,
+      image,
+    } = action.payload;
+    return {
+      ...state,
+      cards: {
+        allIds: [...state.cards.allIds, id],
+        byIds: {
+          ...state.cards.byIds,
+          [id]: {
+            name,
+            cost,
+            description,
+            actions,
+            needsTarget,
+            destination: destination || 'discard',
+            rarity,
+            image,
+          },
+        },
+      },
+    };
+  }
+
+  case types.ENABLE_TARGET_SELECTION: {
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        selectingCard: false,
+        selectingTarget: true,
+      },
+    };
+  }
+
+  case types.DISABLE_TARGET_SELECTION: {
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        selectingCard: true,
+        selectingTarget: false,
+      },
+    };
+  }
+
+  case types.ACTIVATE_CARD: {
+    const { uuid } = action.payload;
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        activeCard: uuid,
+      },
+    };
+  }
+
+  case types.DEACTIVATE_CARD: {
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        activeCard: null,
+      },
+    };
+  }
+
+  case types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD: {
+    const { cardArray, targetDeck } = action.payload;
+
+    const uuidArray = cardArray.map((card) => card.uuid);
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        cards: state.battle.cards.map((card) => {
+          if (uuidArray.includes(card.uuid)) {
+            card.deck = targetDeck;
           }
-        }
-      };
-    }
+          return card;
+        }),
+      },
+    };
+  }
 
-    case types.ENABLE_TARGET_SELECTION: {
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          selectingCard: false,
-          selectingTarget: true
-        }
-      };
-    }
+  case types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID: {
+    const { uuidArray, targetDeck } = action.payload;
 
-    case types.DISABLE_TARGET_SELECTION: {
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          selectingCard: true,
-          selectingTarget: false
-        }
-      };
-    }
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        cards: state.battle.cards.map((card) => {
+          if (uuidArray.includes(card.uuid)) {
+            card.deck = targetDeck;
+          }
+          return card;
+        }),
+      },
+    };
+  }
 
-    case types.ACTIVATE_CARD: {
-      const { uuid } = action.payload;
-
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          activeCard: uuid
-        }
-      };
-    }
-
-    case types.DEACTIVATE_CARD: {
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          activeCard: null
-        }
-      };
-    }
-
-    case types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD: {
-      const { cardArray, targetDeck } = action.payload;
-
-      let uuidArray = cardArray.map(card => card.uuid);
-
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          cards: state.battle.cards.map(card => {
-            if (uuidArray.includes(card.uuid)) {
-              card.deck = targetDeck;
-            }
-            return card;
-          })
-        }
-      };
-    }
-
-    case types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID: {
-      const { uuidArray, targetDeck } = action.payload;
-
-      return {
-        ...state,
-        battle: {
-          ...state.battle,
-          cards: state.battle.cards.map(card => {
-            if (uuidArray.includes(card.uuid)) {
-              card.deck = targetDeck;
-            }
-            return card;
-          })
-        }
-      };
-    }
-
-    default:
-      return state;
+  default:
+    return state;
   }
 }

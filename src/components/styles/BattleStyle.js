@@ -1,22 +1,20 @@
 import styled from 'styled-components';
 import { rgba, lighten } from 'polished';
 
-const mixinParalax = function(
+const mixinParalax = (
   nth,
   alpha,
   color,
   delay,
   duration,
-  lightenAmount
-) {
-  return `
+  lightenAmount,
+) => `
     .parallax > use:nth-child(${nth}) {
         animation-delay: ${delay}s;
         animation-duration: ${duration}s;
         fill: ${rgba(lighten(lightenAmount, color), alpha)};
       }
     `;
-};
 
 const waveColor = '#1b9892';
 export const BattleScreen = styled.div`

@@ -12,10 +12,10 @@ import { initialState } from './ducks/reducer';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <Provider store={configureStore(initialState)}>
+  <Provider store={ configureStore(initialState) }>
     <App />
   </Provider>,
-  rootElement
+  rootElement,
 );
 
 // If you want your app to work offline and load faster, you can change

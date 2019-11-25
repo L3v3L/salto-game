@@ -3,8 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import { bounce } from 'react-animations';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { MonsterSprite } from './Sprites';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
+import { MonsterSprite } from './Sprites';
 import PercentileBar from './PercentileBar';
 
 import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
@@ -12,7 +12,7 @@ import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
 import {
   disableTargetSelection,
   setSelectedTarget,
-  playCard
+  playCard,
 } from '../ducks/actionCreators';
 
 let nextMoveUUID = 0;
@@ -25,7 +25,7 @@ const BouncyDiv = styled.div`
   animation: 1s ${bounceAnimation};
   user-select: none;
   user-drag: none;
-  cursor: ${props => props.selecting ? 'pointer' : 'default'};
+  cursor: ${(props) => (props.selecting ? 'pointer' : 'default')};
   align-items: center;
   justify-content: center;
   display: flex;
@@ -66,7 +66,7 @@ const MonsterAvatar = styled.div`
   }
 `;
 
-export class Monster extends Component {
+class Monster extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -75,7 +75,7 @@ export class Monster extends Component {
   }
 
   componentDidMount() {
-    let sprite = new Sprite(MonsterSprite, {
+    const sprite = new Sprite(MonsterSprite, {
       colored: true,
       colorVariations: 1,
       edgeBrightness: 0.1,
@@ -85,8 +85,8 @@ export class Monster extends Component {
         r: 0.2,
         g: 0.5,
         b: 0,
-        a: 1
-      }
+        a: 1,
+      },
     });
 
     let canvas = SpriteCanvasHelper.createCanvas(sprite);
@@ -103,41 +103,41 @@ export class Monster extends Component {
   getQueuedMoveText = (type, value) => {
     let finalAttack = value;
 
-    if (this.props.weakness) { 
+    if (this.props.weakness) {
       finalAttack = Math.round(value + (value * this.props.weakness));
     }
 
     switch (true) {
-      case type === 'attack' && this.props.weakness !== 0:
-        return `deals ${finalAttack} damage (weakened ${this.props.weakness*-100}%)`;
-      case type === 'attack':
-        return `deals ${finalAttack} damage`;
-      case type === 'block':
-        return `blocks ${value} damage`;
-      default:
-        return `does ${value} ${type}`;
+    case type === 'attack' && this.props.weakness !== 0:
+      return `deals ${finalAttack} damage (weakened ${this.props.weakness * -100}%)`;
+    case type === 'attack':
+      return `deals ${finalAttack} damage`;
+    case type === 'block':
+      return `blocks ${value} damage`;
+    default:
+      return `does ${value} ${type}`;
     }
   };
 
   render() {
     return (
-      <BouncyDiv onClick={() => this.action()} selecting={this.props.selecting}>
+      <BouncyDiv onClick={ () => this.action() } selecting={ this.props.selecting }>
         <MonsterAvatar>
-          <img src={this.state.dataURI} alt='Monster' />
-          <MonsterName>{this.props.name}</MonsterName>
-          <PercentileBar max={100} value={this.props.hp} fontSize="0.6em" height="20px"/>
+          <img src={ this.state.dataURI } alt='Monster' />
+          <MonsterName>{ this.props.name }</MonsterName>
+          <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px"/>
         </MonsterAvatar>
-        {this.props.monsterMoves !== undefined &&
-        <QueuedMoves>
+        { this.props.monsterMoves !== undefined
+        && <QueuedMoves>
           Next moves
-          {this.props.monsterMoves
-            .map(move => {
-              return (
-                <MoveItem key={++nextMoveUUID}>
-                  {this.getQueuedMoveText(move.type, move.value)}
-                </MoveItem>
-              );
-            })
+          {
+            this.props.monsterMoves
+              .map((move) => {
+                nextMoveUUID += 1;
+                return <MoveItem key={ nextMoveUUID }>
+                  { this.getQueuedMoveText(move.type, move.value) }
+                </MoveItem>;
+              })
           }
         </QueuedMoves>
         }
@@ -152,18 +152,16 @@ const mapStateToProps = (state, ownProps) => {
   return { isSelectingTarget, weakness };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    ...bindActionCreators(
-      {
-        setSelectedTarget,
-        disableTargetSelection,
-        playCard,
-      },
-      dispatch
-    ),
-    dispatch
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators(
+    {
+      setSelectedTarget,
+      disableTargetSelection,
+      playCard,
+    },
+    dispatch,
+  ),
+  dispatch,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Monster);

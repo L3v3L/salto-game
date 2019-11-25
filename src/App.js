@@ -1,15 +1,15 @@
 import React from 'react';
 import './App.css';
-import Game from './components/Game';
 import { GlobalHotKeys } from 'react-hotkeys';
+import Game from './components/Game';
 
 const keyMap = {
-  spaceKey: 'space'
+  spaceKey: 'space',
 };
 
 function App() {
   return (
-    <GlobalHotKeys keyMap={keyMap}>
+    <GlobalHotKeys keyMap={ keyMap }>
       <Game />
     </GlobalHotKeys>
   );

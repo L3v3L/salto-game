@@ -3,9 +3,9 @@ import * as types from './actionTypes';
 import * as actions from './actionCreators';
 import * as selectors from './selectors';
 
-export const endTurn = store => next => action => {
+export const endTurn = (store) => (next) => (action) => {
   if (action.type === types.ADD_BATTLE_TURN) {
-    let state = store.getState();
+    const state = store.getState();
 
     const activeCard = selectors.getActiveCard(state);
 
@@ -21,7 +21,7 @@ export const endTurn = store => next => action => {
 
     let amountCardsToDraw = Math.min(
       newDiscardArray.length + newdeckArray.length,
-      state.battle.amountCardToDraw
+      state.battle.amountCardToDraw,
     );
 
     newDiscardArray = newDiscardArray.concat(newHandArray);
@@ -34,72 +34,71 @@ export const endTurn = store => next => action => {
         newdeckArray = _.shuffle(newdeckArray);
       }
       newHandArray.push(newdeckArray.pop());
-      amountCardsToDraw--;
+      amountCardsToDraw -= 1;
     }
 
     store.dispatch(
-      actions.moveCardByCard({ cardArray: newdeckArray, targetDeck: 'deck' })
+      actions.moveCardByCard({ cardArray: newdeckArray, targetDeck: 'deck' }),
     );
     store.dispatch(
-      actions.moveCardByCard({ cardArray: newHandArray, targetDeck: 'hand' })
+      actions.moveCardByCard({ cardArray: newHandArray, targetDeck: 'hand' }),
     );
     store.dispatch(
       actions.moveCardByCard({
         cardArray: newDiscardArray,
-        targetDeck: 'discard'
-      })
+        targetDeck: 'discard',
+      }),
     );
 
     store.dispatch(actions.setBattleCurrentAP(state.battle.maxAP));
 
-
-    //run monster queue attacks
+    // run monster queue attacks
     let shield = selectors.getEffectValue(state, 'shield');
 
-    state.battle.monsters.map(monster => {
+    state.battle.monsters.map((monster) => {
       if (state.battle.monsterMoves[monster.uuid]) {
-        state.battle.monsterMoves[monster.uuid].map(move => {
+        state.battle.monsterMoves[monster.uuid].map((move) => {
           switch (move.type) {
-            case 'attack':
-              const effect = selectors.getEffect(state, 'weaken', monster.uuid);
+          case 'attack':
+            const effect = selectors.getEffect(state, 'weaken', monster.uuid);
 
-              const baseAttack = Math.min(0 - move.value);
-              let finalAttack = baseAttack;
+            const baseAttack = Math.min(0 - move.value);
+            let finalAttack = baseAttack;
 
-              if (effect) { 
-                finalAttack = effect.percentileValue ? 
-                  Math.round(baseAttack + (baseAttack * effect.value)) :
-                  baseAttack + effect.value;
-              }
+            if (effect) {
+              finalAttack = effect.percentileValue
+                ? Math.round(baseAttack + (baseAttack * effect.value))
+                : baseAttack + effect.value;
+            }
 
-              if (shield) {
-                if (finalAttack < 0) {
-                  const diff = Math.abs(finalAttack) - shield;
-                  
-                  if (diff >= 0) {
-                    finalAttack = Math.min(finalAttack + shield, 0);
-                    //Shield exhausted
-                    shield = 0;
-                  } else {
-                    finalAttack = 0;
-                    //Remaining shield
-                    shield = Math.abs(diff);
-                  }
+            if (shield) {
+              if (finalAttack < 0) {
+                const diff = Math.abs(finalAttack) - shield;
+
+                if (diff >= 0) {
+                  finalAttack = Math.min(finalAttack + shield, 0);
+                  // Shield exhausted
+                  shield = 0;
+                } else {
+                  finalAttack = 0;
+                  // Remaining shield
+                  shield = Math.abs(diff);
                 }
-              } else {
-                finalAttack = Math.min(0, finalAttack);
               }
+            } else {
+              finalAttack = Math.min(0, finalAttack);
+            }
 
-              store.dispatch(actions.addToBattleHP(finalAttack));
+            store.dispatch(actions.addToBattleHP(finalAttack));
 
-              break;
+            break;
 
-            case 'block':
-              console.log('block ' + move.value);
-              break;
+          case 'block':
+            console.log(`block ${move.value}`);
+            break;
 
-            default:
-              break;
+          default:
+            break;
           }
           return null;
         });
@@ -113,15 +112,15 @@ export const endTurn = store => next => action => {
 
     store.dispatch(actions.resetMonsterMoves());
 
-    state.battle.monsters.map(monster => {
-      let monsterRef = selectors
+    state.battle.monsters.map((monster) => {
+      const monsterRef = selectors
         .getMonsterRefs(state)
-        .find(monsterLib => monsterLib.id === monster.id);
+        .find((monsterLib) => monsterLib.id === monster.id);
       store.dispatch(
         actions.setMonsterMoves(
           monster.uuid,
-          monsterRef.moves[Math.floor(Math.random() * monsterRef.moves.length)]
-        )
+          monsterRef.moves[Math.floor(Math.random() * monsterRef.moves.length)],
+        ),
       );
       return null;
     });
@@ -132,7 +131,7 @@ export const endTurn = store => next => action => {
   next(action);
 };
 
-export const targetSelectionDisable = store => next => action => {
+export const targetSelectionDisable = (store) => (next) => (action) => {
   if (action.type === types.SET_SELECTED_TARGET) {
     store.dispatch(actions.disableTargetSelection());
   }
@@ -140,7 +139,7 @@ export const targetSelectionDisable = store => next => action => {
   next(action);
 };
 
-export const playCardActivate = store => next => action => {
+export const playCardActivate = (store) => (next) => (action) => {
   if (action.type === types.PLAY_CARD) {
     const { id, uuid } = action.payload;
     const state = store.getState();
@@ -156,7 +155,7 @@ export const playCardActivate = store => next => action => {
   next(action);
 };
 
-export const playCardExecute = store => next => action => {
+export const playCardExecute = (store) => (next) => (action) => {
   if (action.type === types.PLAY_CARD) {
     const { id, uuid, target } = action.payload;
     const state = store.getState();
@@ -166,8 +165,7 @@ export const playCardExecute = store => next => action => {
       : null;
     const playedCardRef = id ? selectors.getCardById(state, id) : null;
 
-    const cardNeedsTargetAndHasTarget =
-      activeCardRef && activeCardRef.needsTarget && target;
+    const cardNeedsTargetAndHasTarget = activeCardRef && activeCardRef.needsTarget && target;
     const cardDoesntNeedTarget = playedCardRef && !playedCardRef.needsTarget;
 
     const card = playedCardRef || activeCardRef;
@@ -178,16 +176,16 @@ export const playCardExecute = store => next => action => {
         store.dispatch(actions.disableTargetSelection());
       }
 
-      card.actions.map(action => {
-        const actionNeedsTarget = action.payload.needsTarget;
+      card.actions.map((cardAction) => {
+        const cardActionNeedsTarget = cardAction.payload.needsTarget;
         if (
-          (action.type === types.ADD_EFFECT || action.type === types.ATTACK_MONSTER) &&
-          cardNeedsTargetAndHasTarget && actionNeedsTarget
+          (cardAction.type === types.ADD_EFFECT || action.type === types.ATTACK_MONSTER)
+          && cardNeedsTargetAndHasTarget && cardActionNeedsTarget
         ) {
-          action.payload.uuid = target;
+          cardAction.payload.uuid = target;
         }
 
-        return store.dispatch(action);
+        return store.dispatch(cardAction);
       });
 
       store.dispatch(actions.decrementPlayerActions(card.cost));
@@ -195,8 +193,8 @@ export const playCardExecute = store => next => action => {
       store.dispatch(
         actions.moveCardByUUID({
           uuidArray: [cardUuid],
-          targetDeck: card.destination
-        })
+          targetDeck: card.destination,
+        }),
       );
 
       if (activeCard && activeCard.uuid) {
