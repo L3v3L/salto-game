@@ -42,10 +42,14 @@
     ]
   },
   "devDependencies": {
-    "redux-devtools": "^3.5.0",
     "aws-sdk": "^2.508.0",
     "dotenv": "^8.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-react": "^7.16.0",
     "glob": "^7.1.4",
-    "mime-types": "^2.1.24"
+    "mime-types": "^2.1.24",
+    "redux-devtools": "^3.5.0"
   }
 }
