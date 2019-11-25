@@ -12,7 +12,7 @@ const RewardWrapper = styled.div`
 
 const CardContainer = styled.div`
   margin: 2rem;
-  &>:hover {
+  & > :hover {
     cursor: pointer;
     box-shadow: 0px 0px 20px 20px #fff;
   }
@@ -106,6 +106,5 @@ const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({ ...actionCreators }, dispatch),
   dispatch,
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(RewardScreen);

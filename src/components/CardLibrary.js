@@ -222,10 +222,10 @@ const CardLibrary = [
         stackValue: true,
         duration: 0,
         stackDuration: false,
-      })
+      }),
     ],
     image: '58.svg',
-  }
+  },
 ];
 
 export default CardLibrary;
