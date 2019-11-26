@@ -56,8 +56,8 @@ export const endTurn = (store) => (next) => (action) => {
     let shield = selectors.getEffectValue(state, 'shield');
 
     state.battle.monsters.map((monster) => {
-      if (state.battle.monsterMoves[monster.uuid]) {
-        state.battle.monsterMoves[monster.uuid].map((move) => {
+      monster.moves.map((moves) => {
+        moves.map((move) => {
           switch (move.type) {
           case 'attack':
             const effect = selectors.getEffect(state, 'weaken', monster.uuid);
@@ -102,7 +102,8 @@ export const endTurn = (store) => (next) => (action) => {
           }
           return null;
         });
-      }
+        return null;
+      });
       return null;
     });
 
