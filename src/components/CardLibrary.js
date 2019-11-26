@@ -1,6 +1,6 @@
 import * as creators from '../ducks/actionCreators';
 
-export const CardLibrary = [
+const CardLibrary = [
   {
     id: 2,
     name: 'Shield',
@@ -17,10 +17,10 @@ export const CardLibrary = [
         percentileValue: false,
         stackValue: true,
         duration: 0,
-        stackDuration: false
-      })
+        stackDuration: false,
+      }),
     ],
-    image: '2.svg'
+    image: '2.svg',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ export const CardLibrary = [
     rarity: 0,
     type: 'attack',
     actions: [creators.attackMonster({ dmg: 6 })],
-    image: '3.svg'
+    image: '3.svg',
   },
   {
     id: 8,
@@ -42,7 +42,7 @@ export const CardLibrary = [
     rarity: 1,
     type: 'attack',
     actions: [creators.attackAllMonsters({ dmg: 8 })],
-    image: '8.svg'
+    image: '8.svg',
   },
   {
     id: 9,
@@ -61,10 +61,10 @@ export const CardLibrary = [
         percentileValue: true,
         stackValue: false,
         duration: 2,
-        stackDuration: true
-      })
+        stackDuration: true,
+      }),
     ],
-    image: '9.svg'
+    image: '9.svg',
   },
   {
     id: 14,
@@ -83,11 +83,11 @@ export const CardLibrary = [
         stackValue: true,
         duration: 0,
         stackDuration: false,
-        needsTarget: false
+        needsTarget: false,
       }),
-      creators.attackMonster({ dmg: 5 })
+      creators.attackMonster({ dmg: 5 }),
     ],
-    image: '14.svg'
+    image: '14.svg',
   },
   {
     id: 21,
@@ -99,9 +99,9 @@ export const CardLibrary = [
     type: 'attack',
     actions: [
       creators.attackMonster({ dmg: 5 }),
-      creators.attackMonster({ dmg: 5 })
+      creators.attackMonster({ dmg: 5 }),
     ],
-    image: '21.svg'
+    image: '21.svg',
   },
   {
     id: 37,
@@ -121,10 +121,10 @@ export const CardLibrary = [
         stackValue: false,
         duration: 1,
         stackDuration: true,
-        needsTarget: false
-      })
+        needsTarget: false,
+      }),
     ],
-    image: '37.svg'
+    image: '37.svg',
   },
   {
     id: 39,
@@ -139,9 +139,9 @@ export const CardLibrary = [
       creators.attackMonster({ dmg: 2 }),
       creators.attackMonster({ dmg: 2 }),
       creators.attackMonster({ dmg: 2 }),
-      creators.attackMonster({ dmg: 2 })
+      creators.attackMonster({ dmg: 2 }),
     ],
-    image: '39.svg'
+    image: '39.svg',
   },
   {
     id: 52,
@@ -152,7 +152,7 @@ export const CardLibrary = [
     rarity: 3,
     type: 'attack',
     actions: [creators.attackMonster({ dmg: 32 })],
-    image: '52.svg'
+    image: '52.svg',
   },
   {
     id: 58,
@@ -171,9 +171,61 @@ export const CardLibrary = [
         percentileValue: false,
         stackValue: true,
         duration: 0,
-        stackDuration: false
-      })
+        stackDuration: false,
+      }),
     ],
-    image: '58.svg'
-  }
+    image: '37.svg',
+  },
+  {
+    id: 39,
+    name: 'Meteor',
+    cost: 1,
+    description: 'Deals 2 dmg, four times, burned',
+    needsTarget: true,
+    rarity: 2,
+    type: 'attack',
+    destination: 'burned',
+    actions: [
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+      creators.attackMonster({ dmg: 2 }),
+    ],
+    image: '39.svg',
+  },
+  {
+    id: 52,
+    name: 'Axe',
+    cost: 3,
+    description: 'Deals 32 dmg',
+    needsTarget: true,
+    rarity: 3,
+    type: 'attack',
+    actions: [creators.attackMonster({ dmg: 32 })],
+    image: '52.svg',
+  },
+  {
+    id: 58,
+    name: 'Fotress Shield',
+    cost: 2,
+    description: 'Absorbs 30 dmg, burned',
+    destination: 'burned',
+    needsTarget: false,
+    rarity: 3,
+    type: 'effect',
+    actions: [
+      creators.addEffect({
+        name: 'shield',
+        type: 'shield',
+        value: 30,
+        percentileValue: false,
+        stackValue: true,
+        duration: 0,
+        stackDuration: false,
+      }),
+    ],
+    image: '58.svg',
+  },
 ];
+
+export default CardLibrary;

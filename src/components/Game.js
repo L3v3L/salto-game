@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { CardLibrary } from './CardLibrary';
+import styled from 'styled-components';
+import CardLibrary from './CardLibrary';
 import { MonsterLibrary } from './MonsterLibrary';
 import Battle from './Battle';
 
 import { getAllState } from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
-import styled from 'styled-components';
 import RewardScreen from './RewardScreen';
 
 const MainWrapper = styled.div`
@@ -38,21 +38,17 @@ const GameStateIndicator = styled.span`
   font-weight: bold;
 `;
 
-export class Game extends Component {
+class Game extends Component {
   constructor(props) {
     super(props);
 
-    //initialize player starter deck
-    CardLibrary.map(function(item) {
-      return props.createCard(item);
-    });
+    // initialize player starter deck
+    CardLibrary.map((item) => props.createCard(item));
 
-    //initialize monsters
-    MonsterLibrary.map(function(item) {
-      return props.createMonster(item);
-    });
+    // initialize monsters
+    MonsterLibrary.map((item) => props.createMonster(item));
 
-    let starterDeck = [
+    const starterDeck = [
       { id: 2, quantity: 5 },
       { id: 3, quantity: 5 },
       { id: 8, quantity: 5 },
@@ -62,10 +58,10 @@ export class Game extends Component {
       { id: 37, quantity: 5 },
       { id: 39, quantity: 5 },
       { id: 52, quantity: 5 },
-      { id: 58, quantity: 5 }
+      { id: 58, quantity: 5 },
     ];
 
-    starterDeck.map(function(item) {
+    starterDeck.map((item) => {
       for (let i = 0; i < item.quantity; i++) {
         props.addCardToDeck(item.id);
       }
@@ -76,21 +72,19 @@ export class Game extends Component {
   render() {
     return (
       <MainWrapper>
-        <GameStateIndicator>{this.props.allState.gameState}</GameStateIndicator>
-        {this.props.allState.gameState === 'battle' ? <Battle /> : ''}
-        {this.props.allState.gameState === 'reward' ? <RewardScreen /> : ''}
+        <GameStateIndicator>{ this.props.allState.gameState }</GameStateIndicator>
+        { this.props.allState.gameState === 'battle' ? <Battle /> : '' }
+        { this.props.allState.gameState === 'reward' ? <RewardScreen /> : '' }
       </MainWrapper>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const allState = getAllState(state);
   return { allState };
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ ...actionCreators }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => bindActionCreators({ ...actionCreators }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

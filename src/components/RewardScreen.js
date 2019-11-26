@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Card from './Card';
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 const RewardWrapper = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const RewardWrapper = styled.div`
 
 const CardContainer = styled.div`
   margin: 2rem;
-  &>:hover {
+  & > :hover {
     cursor: pointer;
     box-shadow: 0px 0px 20px 20px #fff;
   }
@@ -64,30 +64,29 @@ class RewardScreen extends Component {
     super(props);
     this.cards = props.cards;
   }
+
   render() {
     return (
       <RewardWrapper>
-        { this.cards.map((card, index) => {
-          return (
-            <CardContainer
-              key={`${card.id}-${index}`}
-              onClick={() => {
-                this.props.addCardToDeck(card.id);
-                this.props.setGameState("battle");
-              }}
-            >
-              <Card
-                image={card.image}
-                id={card.id}
-                label={card.name}
-                cost={card.cost}
-                description={card.description}
-              ></Card>
-            </CardContainer>
-          );
-        })}
+        { this.cards.map((card, index) => (
+          <CardContainer
+            key={ `${card.id}-${index}` }
+            onClick={ () => {
+              this.props.addCardToDeck(card.id);
+              this.props.setGameState('battle');
+            } }
+          >
+            <Card
+              image={ card.image }
+              id={ card.id }
+              label={ card.name }
+              cost={ card.cost }
+              description={ card.description }
+            ></Card>
+          </CardContainer>
+        )) }
 
-        <SkipButton onClick={() => this.props.setGameState("battle")}>
+        <SkipButton onClick={ () => this.props.setGameState('battle') }>
           Skip
         </SkipButton>
       </RewardWrapper>
@@ -95,20 +94,17 @@ class RewardScreen extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const cards = selectors.getRandomCards(state);
 
   return {
-    cards
+    cards,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    ...bindActionCreators({ ...actionCreators }, dispatch),
-    dispatch
-  };
-};
-
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({ ...actionCreators }, dispatch),
+  dispatch,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RewardScreen);

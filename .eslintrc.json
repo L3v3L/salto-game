@@ -1,0 +1,52 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": ["react"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true
+  },
+  "globals": {},
+  "rules": {
+    "linebreak-style": 0,
+    "react/prop-types": 0,
+    "react/jsx-curly-spacing": [
+      "warn",
+      {
+        "when": "always",
+        "children": {
+          "when": "always"
+        }
+      }
+    ],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "consistent-return": "error",
+    "semi": "error",
+    "indent": ["error", 2],
+    "no-shadow": [
+      "error",
+      {
+        "allow": ["state", "getters"]
+      }
+    ],
+    "no-param-reassign": 0,
+    "no-case-declarations": 0,
+    "no-console": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {}
+    }
+  ]
+}

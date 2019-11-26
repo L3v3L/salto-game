@@ -43,24 +43,24 @@ class DiscardPile extends Component {
   render() {
     return (
       <Pile>
-      {
-        this.props.size > 0
-        ? <>
-          <Card className="left"></Card>
-          <Card className="middle">
-            <span>{this.props.size}</span>
-          </Card>
-          <Card className="right"></Card>
-        </>
-        : <>
-          <Card className="middle">
-            <span>{this.props.size}</span>
-          </Card>
-        </>
-      }
-    </Pile>
-    )
+        {
+          this.props.size > 0
+            ? <>
+              <Card className="left"></Card>
+              <Card className="middle">
+                <span>{ this.props.size }</span>
+              </Card>
+              <Card className="right"></Card>
+            </>
+            : <>
+              <Card className="middle">
+                <span>{ this.props.size }</span>
+              </Card>
+            </>
+        }
+      </Pile>
+    );
   }
-};
+}
 
 export default DiscardPile;

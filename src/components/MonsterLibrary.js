@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/prefer-default-export
 export const MonsterLibrary = [
   {
     id: 1,
@@ -7,16 +8,16 @@ export const MonsterLibrary = [
       [
         {
           type: 'attack',
-          value: 3
-        }
+          value: 3,
+        },
       ],
       [
         {
           type: 'block',
-          value: 10
-        }
-      ]
-    ]
+          value: 10,
+        },
+      ],
+    ],
   },
   {
     id: 0,
@@ -26,19 +27,19 @@ export const MonsterLibrary = [
       [
         {
           type: 'attack',
-          value: 3
+          value: 3,
         },
         {
           type: 'block',
-          value: 10
-        }
+          value: 10,
+        },
       ],
       [
         {
           type: 'attack',
-          value: 3
-        }
-      ]
-    ]
-  }
+          value: 3,
+        },
+      ],
+    ],
+  },
 ];

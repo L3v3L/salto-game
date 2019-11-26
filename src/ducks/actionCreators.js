@@ -3,29 +3,29 @@ import * as types from './actionTypes';
 export const setBattleCards = ({ cards }) => ({
   type: types.SET_BATTLE_CARDS,
   payload: {
-    cards
-  }
+    cards,
+  },
 });
 
-export const addCardToDeck = id => ({
+export const addCardToDeck = (id) => ({
   type: types.ADD_CARD_TO_DECK,
   payload: {
-    id
-  }
+    id,
+  },
 });
 
-export const removeCardFromDeck = uuid => ({
+export const removeCardFromDeck = (uuid) => ({
   type: types.REMOVE_CARD_FROM_DECK,
   payload: {
-    uuid
-  }
+    uuid,
+  },
 });
 
-export const decrementPlayerActions = amount => ({
+export const decrementPlayerActions = (amount) => ({
   type: types.DECREMENT_ACTIONS,
   payload: {
-    amount
-  }
+    amount,
+  },
 });
 
 export const createCard = ({
@@ -38,7 +38,7 @@ export const createCard = ({
   destination,
   target,
   rarity,
-  image
+  image,
 }) => ({
   type: types.CREATE_CARD,
   payload: {
@@ -51,25 +51,27 @@ export const createCard = ({
     destination,
     target,
     rarity,
-    image
-  }
+    image,
+  },
 });
 
-export const createMonster = ({ id, name, hp, moves }) => ({
+export const createMonster = ({
+  id, name, hp, moves,
+}) => ({
   type: types.CREATE_MONSTER,
   payload: {
     id,
     name,
     hp,
-    moves
-  }
+    moves,
+  },
 });
 
-export const addMonster = id => ({
+export const addMonster = (id) => ({
   type: types.ADD_MONSTER,
   payload: {
-    id
-  }
+    id,
+  },
 });
 
 export const attackMonster = ({ uuid, dmg }) => ({
@@ -77,15 +79,15 @@ export const attackMonster = ({ uuid, dmg }) => ({
   payload: {
     uuid,
     dmg,
-    needsTarget: true
-  }
+    needsTarget: true,
+  },
 });
 
 export const attackAllMonsters = ({ dmg }) => ({
   type: types.ATTACK_ALL_MONSTERS,
   payload: {
-    dmg
-  }
+    dmg,
+  },
 });
 
 export const addEffect = ({
@@ -97,7 +99,7 @@ export const addEffect = ({
   duration = 0,
   stackDuration = false,
   needsTarget = false,
-  uuid
+  uuid,
 }) => ({
   type: types.ADD_EFFECT,
   payload: {
@@ -109,107 +111,107 @@ export const addEffect = ({
     duration,
     stackDuration,
     needsTarget,
-    uuid
-  }
+    uuid,
+  },
 });
 
-export const updateEffectValue = ({type, value}) => ({
+export const updateEffectValue = ({ type, value }) => ({
   type: types.UPDATE_EFFECT_VALUE,
   payload: {
     type,
-    value
-  }
+    value,
+  },
 });
 
 export const tickEffects = () => ({
   type: types.TICK_EFFECTS,
-  payload: {}
+  payload: {},
 });
 
-export const addToBattleTurn = value => ({
+export const addToBattleTurn = (value) => ({
   type: types.ADD_BATTLE_TURN,
   payload: {
-    value
-  }
+    value,
+  },
 });
 
-export const addToBattleHP = value => ({
+export const addToBattleHP = (value) => ({
   type: types.ADD_TO_BATTLE_HP,
-  payload: { value }
+  payload: { value },
 });
 
-export const setBattleCurrentAP = ap => ({
+export const setBattleCurrentAP = (ap) => ({
   type: types.SET_BATTLE_CURRENT_AP,
-  payload: { ap }
+  payload: { ap },
 });
 
-export const setBattleMaxAP = ap => ({
+export const setBattleMaxAP = (ap) => ({
   type: types.SET_BATTLE_MAX_AP,
-  payload: { ap }
+  payload: { ap },
 });
 
-export const setQueuedActions = actions => ({
+export const setQueuedActions = (actions) => ({
   type: types.SET_QUEUED_ACTIONS,
-  payload: { actions }
+  payload: { actions },
 });
 
-export const setSelectedTarget = uuid => ({
+export const setSelectedTarget = (uuid) => ({
   type: types.SET_SELECTED_TARGET,
-  payload: { uuid }
+  payload: { uuid },
 });
 
 export const enableTargetSelection = () => ({
   type: types.ENABLE_TARGET_SELECTION,
-  payload: {}
+  payload: {},
 });
 
 export const disableTargetSelection = () => ({
   type: types.DISABLE_TARGET_SELECTION,
-  payload: {}
+  payload: {},
 });
 
 export const setMonsterMoves = (uuid, move) => ({
   type: types.SET_MONSTER_MOVES,
-  payload: { uuid, move }
+  payload: { uuid, move },
 });
 
 export const resetMonsterMoves = () => ({
   type: types.RESET_ALL_MONSTER_MOVES,
-  payload: {}
+  payload: {},
 });
 
 export const playCard = ({ id, uuid, target }) => ({
   type: types.PLAY_CARD,
-  payload: { id, uuid, target }
+  payload: { id, uuid, target },
 });
 
-export const activateCardFromHand = uuid => ({
+export const activateCardFromHand = (uuid) => ({
   type: types.ACTIVATE_CARD,
-  payload: { uuid }
+  payload: { uuid },
 });
 
-export const deactivateCardFromHand = uuid => ({
+export const deactivateCardFromHand = (uuid) => ({
   type: types.DEACTIVATE_CARD,
-  payload: { uuid }
+  payload: { uuid },
 });
 
 export const moveCardByCard = ({ cardArray, targetDeck }) => ({
   type: types.MOVE_BATTLE_CARD_TO_DECK_BY_CARD,
-  payload: { cardArray, targetDeck }
+  payload: { cardArray, targetDeck },
 });
 
 export const moveCardByUUID = ({ uuidArray, targetDeck }) => ({
   type: types.MOVE_BATTLE_CARD_TO_DECK_BY_UUID,
-  payload: { uuidArray, targetDeck }
+  payload: { uuidArray, targetDeck },
 });
 
-export const setGameState = targetState => ({
+export const setGameState = (targetState) => ({
   type: types.SET_GAME_STATE,
   payload: {
-    targetState
-  }
+    targetState,
+  },
 });
 
 export const resetBattle = () => ({
-  type: types.RESET_BATTLE
+  type: types.RESET_BATTLE,
 });

@@ -62,26 +62,26 @@ class DeckPile extends Component {
       <Pile>
         {
           this.props.size > 0
-          ? <>
-            <Card className="left">
-              <Circle />
-            </Card>
-            <Card className="middle">
-              <span>{this.props.size}</span>
-            </Card>
-            <Card className="right">
-              <Square />
-            </Card>
-          </>
-          : <>
-            <Card className="middle">
-              <span>{this.props.size}</span>
-            </Card>
-          </>
+            ? <>
+              <Card className="left">
+                <Circle />
+              </Card>
+              <Card className="middle">
+                <span>{ this.props.size }</span>
+              </Card>
+              <Card className="right">
+                <Square />
+              </Card>
+            </>
+            : <>
+              <Card className="middle">
+                <span>{ this.props.size }</span>
+              </Card>
+            </>
         }
       </Pile>
-    )
+    );
   }
-};
+}
 
 export default DeckPile;

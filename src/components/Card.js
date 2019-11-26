@@ -8,7 +8,7 @@ import * as selectors from '../ducks/selectors';
 import {
   deactivateCardFromHand,
   disableTargetSelection,
-  playCard
+  playCard,
 } from '../ducks/actionCreators';
 
 const cardWidth = 150;
@@ -18,16 +18,16 @@ const innerBorder = 2;
 const CardValues = {
   width: cardWidth,
   height: cardHeight,
-  innerBorder: innerBorder,
-  interiorHeight: cardHeight - 2 * innerBorder
+  innerBorder,
+  interiorHeight: cardHeight - 2 * innerBorder,
 };
 
 const CardButton = styled.div`
-  cursor: ${props => (props.active ? 'pointer' : 'default')};
+  cursor: ${(props) => (props.active ? 'pointer' : 'default')};
   font-weight: bold;
   background-color: #495351;
-  width: ${props => props.cardValues.width}px;
-  height: ${props => props.cardValues.height}px;
+  width: ${(props) => props.cardValues.width}px;
+  height: ${(props) => props.cardValues.height}px;
   padding: 10px;
   border: 2px solid black;
   border-radius: 4px;
@@ -36,9 +36,9 @@ const CardButton = styled.div`
     1px 1px 0 #000;
   .interiorContainer {
     user-select: none;
-    border: ${props => props.cardValues.innerBorder}px solid #2f3534;
+    border: ${(props) => props.cardValues.innerBorder}px solid #2f3534;
     background-color: #9e9f6d;
-    height: ${props => props.cardValues.interiorHeight}px;
+    height: ${(props) => props.cardValues.interiorHeight}px;
     .header {
       display: flex;
       justify-content: space-between;
@@ -87,13 +87,19 @@ const CardButton = styled.div`
   }
 `;
 
-export class Card extends Component {
+class Card extends Component {
   label;
+
   uniqueId;
+
   key;
+
   description;
+
   cost;
+
   value;
+
   constructor(props) {
     super(props);
 
@@ -116,7 +122,7 @@ export class Card extends Component {
       if (this.cost <= this.props.currentAP) {
         this.props.playCard({
           id: this.id,
-          uuid: this.uuid
+          uuid: this.uuid,
         });
       }
     } else if (this.props.isActive) {
@@ -128,25 +134,25 @@ export class Card extends Component {
   render() {
     return (
       <CardButton
-        active={this.props.selecting || this.props.isActive}
-        cardValues={CardValues}
-        key={this.key}
-        onClick={() => this.action()}
+        active={ this.props.selecting || this.props.isActive }
+        cardValues={ CardValues }
+        key={ this.key }
+        onClick={ () => this.action() }
       >
         <div className='interiorContainer'>
           <div className='header'>
-            <div className='title'>{this.label}</div>
-            {this.cost ? <div className='cost'>{this.cost}</div> : ''}
+            <div className='title'>{ this.label }</div>
+            { this.cost ? <div className='cost'>{ this.cost }</div> : '' }
           </div>
           <div className='imageContainer'>
-            <div className='status'>{this.props.isActive ? 'ACTIVE' : ''}</div>
+            <div className='status'>{ this.props.isActive ? 'ACTIVE' : '' }</div>
             <div className='image'>
-              <img src={'images/' + this.props.image} alt=''></img>
+              <img src={ `images/${this.props.image}` } alt=''></img>
             </div>
           </div>
 
           <div className='body'>
-            <div>{this.description}</div>
+            <div>{ this.description }</div>
           </div>
         </div>
       </CardButton>
@@ -154,7 +160,7 @@ export class Card extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const currentAP = selectors.getCurrentAP(state);
   const monsterRefs = selectors.getMonsterRefs(state);
   const activeCard = selectors.getActiveCard(state);
@@ -162,22 +168,20 @@ const mapStateToProps = state => {
   return {
     currentAP,
     monsterRefs,
-    activeCard
+    activeCard,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    ...bindActionCreators(
-      {
-        playCard,
-        deactivateCardFromHand,
-        disableTargetSelection
-      },
-      dispatch
-    ),
-    dispatch
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators(
+    {
+      playCard,
+      deactivateCardFromHand,
+      disableTargetSelection,
+    },
+    dispatch,
+  ),
+  dispatch,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card);

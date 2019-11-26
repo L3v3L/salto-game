@@ -12,9 +12,10 @@ const StartButton = styled.button`
 `;
 
 class StartScreen extends Component {
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
-      <StartButton onClick={() => console.log('start button')}>
+      <StartButton onClick={ () => console.log('start button') }>
         Start
       </StartButton>
     );

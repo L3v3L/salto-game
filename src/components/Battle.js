@@ -19,7 +19,7 @@ import {
   BattleStats,
   EndTurnButton,
   TextStats,
-  SelectTarget
+  SelectTarget,
 } from './styles/BattleStyle';
 
 class Battle extends Component {
@@ -37,33 +37,31 @@ class Battle extends Component {
 
   render() {
     const handlers = {
-      spaceKey: event => {
+      spaceKey: (event) => {
         event.preventDefault();
         this.endTurn();
-      }
+      },
     };
 
     return (
-      <GlobalHotKeys handlers={handlers}>
+      <GlobalHotKeys handlers={ handlers }>
         <BattleScreen>
           <div className='header-waves'>
             <Centered>
-              {this.props.monsters.map(monster => {
-                return (
-                  <Monster
-                    key={monster.uuid}
-                    uuid={monster.uuid}
-                    name={monster.ref.name}
-                    id={monster.id}
-                    hp={monster.hp}
-                    maxHp={monster.ref.hp}
-                    monsterMoves={
-                      this.props.allState.battle.monsterMoves[monster.uuid]
-                    }
-                    selecting={this.props.isSelectingTarget}
-                  />
-                );
-              })}
+              { this.props.monsters.map((monster) => (
+                <Monster
+                  key={ monster.uuid }
+                  uuid={ monster.uuid }
+                  name={ monster.ref.name }
+                  id={ monster.id }
+                  hp={ monster.hp }
+                  maxHp={ monster.ref.hp }
+                  monsterMoves={
+                    this.props.allState.battle.monsterMoves[monster.uuid]
+                  }
+                  selecting={ this.props.isSelectingTarget }
+                />
+              )) }
             </Centered>
             <div>
               <svg
@@ -101,67 +99,63 @@ class Battle extends Component {
           </SelectTarget>
 
           <BattleStats>
-            <DeckPile size={this.props.deckCards.length} />
+            <DeckPile size={ this.props.deckCards.length } />
             <TextStats>
-              Turn: {this.props.allState.battle.turn}
+              Turn: { this.props.allState.battle.turn }
               <br />
-              Actions: {this.props.allState.battle.currentAP}/
-              {this.props.allState.battle.maxAP}
+              Actions: { this.props.allState.battle.currentAP }/
+              { this.props.allState.battle.maxAP }
               <br />
-              Shield: {this.props.shield}
+              Shield: { this.props.shield }
             </TextStats>
-            <DiscardPile size={this.props.discardCards.length} />
+            <DiscardPile size={ this.props.discardCards.length } />
           </BattleStats>
 
           <Centered>
             <PercentileBar
-              max={this.props.allState.battle.maxHp}
-              value={this.props.allState.battle.hp}
+              max={ this.props.allState.battle.maxHp }
+              value={ this.props.allState.battle.hp }
               height='30px'
               flexBasis='900px'
             />
           </Centered>
 
           <Hand>
-            {this.props.handCards
-              .map(handCard => {
-                return {
-                  ref: this.props.cardRefs.find(
-                    card => card.id === handCard.id
-                  ),
-                  card: handCard
-                };
-              })
-              .map(cardInHand => {
-                return (
-                  <Card
-                    key={cardInHand.card.uuid}
-                    uuid={cardInHand.card.uuid}
-                    selecting={this.props.isSelectingCard}
-                    isActive={
-                      this.props.activeCard
-                        ? this.props.activeCard.uuid === cardInHand.card.uuid
-                        : false
-                    }
-                    image={cardInHand.ref.image}
-                    id={cardInHand.card.id}
-                    label={cardInHand.ref.name}
-                    cost={cardInHand.ref.cost}
-                    actions={cardInHand.ref.actions}
-                    description={cardInHand.ref.description}
-                  />
-                );
-              })}
+            { this.props.handCards
+              .map((handCard) => ({
+                ref: this.props.cardRefs.find(
+                  (card) => card.id === handCard.id,
+                ),
+                card: handCard,
+              }))
+              .map((cardInHand) => (
+                <Card
+                  key={ cardInHand.card.uuid }
+                  uuid={ cardInHand.card.uuid }
+                  selecting={ this.props.isSelectingCard }
+                  isActive={
+                    this.props.activeCard
+                      ? this.props.activeCard.uuid === cardInHand.card.uuid
+                      : false
+                  }
+                  image={ cardInHand.ref.image }
+                  id={ cardInHand.card.id }
+                  label={ cardInHand.ref.name }
+                  cost={ cardInHand.ref.cost }
+                  actions={ cardInHand.ref.actions }
+                  description={ cardInHand.ref.description }
+                />
+              )) }
           </Hand>
 
-          <EndTurnButton onClick={() => this.endTurn()}>End Turn</EndTurnButton>
+          <EndTurnButton onClick={ () => this.endTurn() }>End Turn</EndTurnButton>
         </BattleScreen>
       </GlobalHotKeys>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const allState = selectors.getAllState(state);
   const cardRefs = selectors.getCardRefs(state);
   const monsters = selectors.getMonstersAliveWithRefs(state);
@@ -185,15 +179,13 @@ const mapStateToProps = state => {
     handCards,
     discardCards,
     monsters,
-    shield
+    shield,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    ...bindActionCreators({ ...actionCreators }, dispatch),
-    dispatch
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({ ...actionCreators }, dispatch),
+  dispatch,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Battle);
