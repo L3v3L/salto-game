@@ -175,14 +175,18 @@ export default function reducer(state = initialState, action = {}) {
   case types.SET_MONSTER_MOVES: {
     const { uuid, move } = action.payload;
 
+    const monsters = state.battle.monsters.map((monster) => {
+      if (monster.uuid === uuid) {
+        monster.moves = move;
+      }
+      return monster;
+    });
+
     return {
       ...state,
       battle: {
         ...state.battle,
-        monsterMoves: {
-          ...state.battle.monsterMoves,
-          [uuid]: move,
-        },
+        monsters,
       },
     };
   }
