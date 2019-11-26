@@ -36,7 +36,6 @@ export const initialState = {
     currentAP: 1,
     maxAP: 1,
     monsters: [],
-    monsterMoves: {},
     turn: 0,
     effects: [],
   },

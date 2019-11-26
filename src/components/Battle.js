@@ -56,9 +56,7 @@ class Battle extends Component {
                   id={ monster.id }
                   hp={ monster.hp }
                   maxHp={ monster.ref.hp }
-                  monsterMoves={
-                    this.props.allState.battle.monsterMoves[monster.uuid]
-                  }
+                  monsterMoves={ monster.moves }
                   selecting={ this.props.isSelectingTarget }
                 />
               )) }
