@@ -166,7 +166,9 @@ export default function reducer(state = initialState, action = {}) {
         ...state.battle,
         monsters: [
           ...state.battle.monsters,
-          { id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp },
+          {
+            id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp, moves: [],
+          },
         ],
       },
     };

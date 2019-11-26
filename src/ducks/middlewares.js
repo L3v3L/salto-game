@@ -3,6 +3,76 @@ import * as types from './actionTypes';
 import * as actions from './actionCreators';
 import * as selectors from './selectors';
 
+
+const setMonsterMoves = (state, store) => {
+  state.battle.monsters.map((monster) => {
+    const monsterRef = selectors
+      .getMonsterRefs(state)
+      .find((monsterLib) => monsterLib.id === monster.id);
+    store.dispatch(
+      actions.setMonsterMoves(
+        monster.uuid,
+        monsterRef.moves[Math.floor(Math.random() * monsterRef.moves.length)],
+      ),
+    );
+    return null;
+  });
+};
+
+
+const runMonsterMoves = (state, shield, store) => {
+  state.battle.monsters.map((monster) => {
+    monster.moves.map((move) => {
+      switch (move.type) {
+      case 'attack':
+        const effect = selectors.getEffect(state, 'weaken', monster.uuid);
+
+        const baseAttack = Math.min(0 - move.value);
+        let finalAttack = baseAttack;
+
+        if (effect) {
+          finalAttack = effect.percentileValue
+            ? Math.round(baseAttack + (baseAttack * effect.value))
+            : baseAttack + effect.value;
+        }
+
+        if (shield) {
+          if (finalAttack < 0) {
+            const diff = Math.abs(finalAttack) - shield;
+
+            if (diff >= 0) {
+              finalAttack = Math.min(finalAttack + shield, 0);
+              // Shield exhausted
+              shield = 0;
+            } else {
+              finalAttack = 0;
+              // Remaining shield
+              shield = Math.abs(diff);
+            }
+          }
+        } else {
+          finalAttack = Math.min(0, finalAttack);
+        }
+
+        store.dispatch(actions.addToBattleHP(finalAttack));
+
+        break;
+
+      case 'block':
+        console.log(`block ${move.value}`);
+        break;
+
+      default:
+        break;
+      }
+      return null;
+    });
+    return null;
+  });
+
+  return shield;
+};
+
 export const endTurn = (store) => (next) => (action) => {
   if (action.type === types.ADD_BATTLE_TURN) {
     const state = store.getState();
@@ -55,57 +125,7 @@ export const endTurn = (store) => (next) => (action) => {
     // run monster queue attacks
     let shield = selectors.getEffectValue(state, 'shield');
 
-    state.battle.monsters.map((monster) => {
-      monster.moves.map((moves) => {
-        moves.map((move) => {
-          switch (move.type) {
-          case 'attack':
-            const effect = selectors.getEffect(state, 'weaken', monster.uuid);
-
-            const baseAttack = Math.min(0 - move.value);
-            let finalAttack = baseAttack;
-
-            if (effect) {
-              finalAttack = effect.percentileValue
-                ? Math.round(baseAttack + (baseAttack * effect.value))
-                : baseAttack + effect.value;
-            }
-
-            if (shield) {
-              if (finalAttack < 0) {
-                const diff = Math.abs(finalAttack) - shield;
-
-                if (diff >= 0) {
-                  finalAttack = Math.min(finalAttack + shield, 0);
-                  // Shield exhausted
-                  shield = 0;
-                } else {
-                  finalAttack = 0;
-                  // Remaining shield
-                  shield = Math.abs(diff);
-                }
-              }
-            } else {
-              finalAttack = Math.min(0, finalAttack);
-            }
-
-            store.dispatch(actions.addToBattleHP(finalAttack));
-
-            break;
-
-          case 'block':
-            console.log(`block ${move.value}`);
-            break;
-
-          default:
-            break;
-          }
-          return null;
-        });
-        return null;
-      });
-      return null;
-    });
+    shield = runMonsterMoves(state, shield, store);
 
     if (shield !== selectors.getEffectValue(state, 'shield')) {
       store.dispatch(actions.updateEffectValue(state, 'shield', shield));
@@ -113,24 +133,14 @@ export const endTurn = (store) => (next) => (action) => {
 
     store.dispatch(actions.resetMonsterMoves());
 
-    state.battle.monsters.map((monster) => {
-      const monsterRef = selectors
-        .getMonsterRefs(state)
-        .find((monsterLib) => monsterLib.id === monster.id);
-      store.dispatch(
-        actions.setMonsterMoves(
-          monster.uuid,
-          monsterRef.moves[Math.floor(Math.random() * monsterRef.moves.length)],
-        ),
-      );
-      return null;
-    });
+    setMonsterMoves(state, store);
 
     store.dispatch(actions.tickEffects());
   }
 
   next(action);
 };
+
 
 export const targetSelectionDisable = (store) => (next) => (action) => {
   if (action.type === types.SET_SELECTED_TARGET) {
