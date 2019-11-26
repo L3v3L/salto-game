@@ -192,11 +192,16 @@ export default function reducer(state = initialState, action = {}) {
   }
 
   case types.RESET_ALL_MONSTER_MOVES: {
+    const monsters = state.battle.monsters.map((monster) => {
+      monster.moves = [];
+      return monster;
+    });
+
     return {
       ...state,
       battle: {
         ...state.battle,
-        monsterMoves: {},
+        monsters,
       },
     };
   }
