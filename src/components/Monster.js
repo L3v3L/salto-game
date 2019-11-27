@@ -127,8 +127,7 @@ class Monster extends Component {
           <MonsterName>{ this.props.name }</MonsterName>
           <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px"/>
         </MonsterAvatar>
-        { this.props.monsterMoves !== undefined
-        && <QueuedMoves>
+        { this.props.monsterMoves.length ? <QueuedMoves>
           Next moves
           {
             this.props.monsterMoves
@@ -139,7 +138,7 @@ class Monster extends Component {
                 </MoveItem>;
               })
           }
-        </QueuedMoves>
+        </QueuedMoves> : ''
         }
       </BouncyDiv>
     );
