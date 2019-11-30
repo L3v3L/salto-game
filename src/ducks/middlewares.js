@@ -197,7 +197,7 @@ export const playCardExecute = (store) => (next) => (action) => {
       card.actions.map((cardAction) => {
         const cardActionNeedsTarget = cardAction.payload.needsTarget;
         if (
-          (cardAction.type === types.ADD_EFFECT || action.type === types.ATTACK_MONSTER)
+          (cardAction.type === types.ADD_EFFECT || cardAction.type === types.ATTACK_MONSTER)
           && cardNeedsTargetAndHasTarget && cardActionNeedsTarget
         ) {
           cardAction.payload.uuid = target;
