@@ -10,7 +10,7 @@ const Bar = styled.div`
   align-items: center;
   border-radius: 0.2rem;
   border: ${(props) => (props.shield > 0 ? '9px solid #1e6ea7' : '2px solid black')};
-  outline: ${(props) => (props.shield > 0 ? '2px solid black' : 'none')};
+  box-shadow: ${(props) => (props.shield > 0 ? '0 0 0 2px black' : 'none')};
 `;
 
 const ShieldBar = styled.div`
@@ -21,7 +21,6 @@ const ShieldBar = styled.div`
   height: ${(props) => (props.height ? props.height : '1em')};
   text-align: center;
   user-select: none;
-
 `;
 
 const HealthBar = styled.div`
