@@ -106,7 +106,6 @@ class Battle extends Component {
               Actions: { this.props.allState.battle.currentAP }/
               { this.props.allState.battle.maxAP }
               <br />
-              Shield: { this.props.shield }
             </TextStats>
             <DiscardPile size={ this.props.discardCards.length } />
           </BattleStats>
