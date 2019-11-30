@@ -115,6 +115,7 @@ class Battle extends Component {
             <PercentileBar
               max={ this.props.allState.battle.maxHp }
               value={ this.props.allState.battle.hp }
+              shield={ this.props.shield }
               height='30px'
               flexBasis='900px'
             />
