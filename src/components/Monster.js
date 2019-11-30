@@ -125,7 +125,7 @@ class Monster extends Component {
         <MonsterAvatar>
           <img src={ this.state.dataURI } alt='Monster' />
           <MonsterName>{ this.props.name }</MonsterName>
-          <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px"/>
+          <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce(function(total, effect){ return total + effect.value}, 0) : '' }/>
         </MonsterAvatar>
         { this.props.monsterMoves.length ? <QueuedMoves>
           Next moves

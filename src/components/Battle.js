@@ -57,6 +57,7 @@ class Battle extends Component {
                   hp={ monster.hp }
                   maxHp={ monster.ref.hp }
                   monsterMoves={ monster.moves }
+                  effects={ monster.effects }
                   selecting={ this.props.isSelectingTarget }
                 />
               )) }
