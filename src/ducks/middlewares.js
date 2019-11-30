@@ -59,7 +59,14 @@ const runMonsterMoves = (state, shield, store) => {
         break;
 
       case 'block':
-        console.log(`block ${move.value}`);
+        store.dispatch(actions.addEffectToMonster({
+          effect: {
+            type: move.type,
+            value: move.value,
+            duration: 1,
+          },
+          targetMonster: monster,
+        }));
         break;
 
       default:
@@ -124,7 +131,7 @@ export const endTurn = (store) => (next) => (action) => {
 
     // run monster queue attacks
     let shield = selectors.getEffectValue(state, 'shield');
-
+    store.dispatch(actions.resetMonsterEffects());
     shield = runMonsterMoves(state, shield, store);
 
     if (shield !== selectors.getEffectValue(state, 'shield')) {

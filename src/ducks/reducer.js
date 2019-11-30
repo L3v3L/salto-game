@@ -43,6 +43,41 @@ export const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+  case types.ADD_EFFECT_TO_MONSTER: {
+    const { effect, targetMonster } = action.payload;
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: state.battle.monsters.map((monster) => {
+          if (monster.uuid === targetMonster.uuid) {
+            monster.effects.push(effect);
+          }
+          return monster;
+        }),
+      },
+    };
+  }
+
+  case types.RESET_MONSTER_EFFECTS: {
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: state.battle.monsters.map((monster) => {
+          monster.effects = monster.effects.map((effect) => {
+            effect.duration -= 1;
+            return effect;
+          }).filter((effect) => effect.duration > 0);
+
+          return monster;
+        }),
+      },
+    };
+  }
+
+
   case types.RESET_BATTLE: {
     const returnState = {
       ...state,
@@ -166,7 +201,7 @@ export default function reducer(state = initialState, action = {}) {
         monsters: [
           ...state.battle.monsters,
           {
-            id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp, moves: [],
+            id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp, moves: [], effects: [],
           },
         ],
       },
