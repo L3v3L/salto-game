@@ -9,16 +9,19 @@ const Bar = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 0.2rem;
-  border: ${(props) => (props.shield > 0 ? '7px solid #1e6ea7' : '2px solid black')};
+  border: ${(props) => (props.shield > 0 ? '9px solid #1e6ea7' : '2px solid black')};
+  outline: ${(props) => (props.shield > 0 ? '2px solid black' : 'none')};
 `;
 
 const ShieldBar = styled.div`
   position: relative;
-  width: 5%;
+  width: 2rem;
+  padding-left: 0.5rem;
   background-color: ${(props) => (props.color ? props.color : '#1e6ea7')};
   height: ${(props) => (props.height ? props.height : '1em')};
   text-align: center;
   user-select: none;
+
 `;
 
 const HealthBar = styled.div`
