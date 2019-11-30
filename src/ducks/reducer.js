@@ -305,7 +305,17 @@ export default function reducer(state = initialState, action = {}) {
         ...state.battle,
         monsters: state.battle.monsters.map((monster) => {
           if (monster.uuid === uuid) {
-            monster.hp = Math.max(0, monster.hp - dmg);
+            let tempDmg = dmg;
+            monster.effects = monster.effects.map((effect) => {
+              if (effect.type === 'block') {
+                const tempShield = Math.max(0, effect.value - tempDmg);
+                tempDmg = Math.max(0, tempDmg - effect.value);
+                effect.value = tempShield;
+              }
+              return effect;
+            });
+
+            monster.hp = Math.max(0, monster.hp - tempDmg);
           }
           return monster;
         }),
@@ -330,7 +340,16 @@ export default function reducer(state = initialState, action = {}) {
       battle: {
         ...state.battle,
         monsters: state.battle.monsters.map((monster) => {
-          monster.hp = Math.max(0, monster.hp - dmg);
+          let tempDmg = dmg;
+          monster.effects = monster.effects.map((effect) => {
+            if (effect.type === 'block') {
+              const tempShield = Math.max(0, effect.value - tempDmg);
+              tempDmg = Math.max(0, tempDmg - effect.value);
+              effect.value = tempShield;
+            }
+            return effect;
+          });
+          monster.hp = Math.max(0, monster.hp - tempDmg);
           return monster;
         }),
       },
