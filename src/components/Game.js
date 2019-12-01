@@ -43,14 +43,6 @@ class Game extends Component {
     const starterDeck = [
       { id: 2, quantity: 5 },
       { id: 3, quantity: 5 },
-      { id: 8, quantity: 5 },
-      { id: 9, quantity: 5 },
-      { id: 14, quantity: 5 },
-      { id: 21, quantity: 5 },
-      { id: 37, quantity: 5 },
-      { id: 39, quantity: 5 },
-      { id: 52, quantity: 5 },
-      { id: 58, quantity: 5 },
     ];
 
     starterDeck.map((item) => {
