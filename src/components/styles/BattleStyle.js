@@ -21,7 +21,7 @@ export const BattleScreen = styled.div`
   background-color: rgb(0,0,0,0.25);
   border-top: 10px solid #26aeab;
   box-shadow:  100px 100px 200px rgb(0,0,0,0.5) inset;
-  user-drag: none;
+  user-select: none;
   flex: none;
   width: 100%;
   margin-top: 550px;
