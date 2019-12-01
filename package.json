@@ -5,6 +5,7 @@
   "dependencies": {
     "@manaflair/redux-batch": "^1.0.0",
     "@types/redux-logger": "^3.0.7",
+    "glitmage": "0.0.4",
     "lodash": "^4.17.15",
     "mixel": "^1.0.4",
     "polished": "^3.4.2",
