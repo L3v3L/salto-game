@@ -3,7 +3,7 @@ export const MonsterLibrary = [
   {
     id: 1,
     name: 'Blob',
-    hp: 100,
+    hp: 30,
     moves: [
       [
         {
@@ -22,7 +22,7 @@ export const MonsterLibrary = [
   {
     id: 0,
     name: 'Ditto',
-    hp: 100,
+    hp: 30,
     moves: [
       [
         {
