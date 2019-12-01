@@ -10,6 +10,7 @@ import Button from './styles/Button';
 const LoseScreenWrapper = styled.div`
   text-align: center;
   width: 100%;
+  user-select: none;
 `;
 
 class LoseScreen extends Component {

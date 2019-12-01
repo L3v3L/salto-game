@@ -9,6 +9,7 @@ import Button from './styles/Button';
 const MainScreenWrapper = styled.div`
   text-align: center;
   width: 100%;
+  user-select: none;
 `;
 
 class MainScreen extends Component {
