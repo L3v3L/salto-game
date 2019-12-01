@@ -6,12 +6,15 @@ let nextMonsterUUID = 0;
 let nextCardUUID = 0;
 
 const gameStates = {
+  MAIN: 'main',
   BATTLE: 'battle',
   REWARD: 'reward',
+  LOSE: 'lose',
 };
 
 export const initialState = {
-  gameState: gameStates.BATTLE,
+  gamesWon: 0,
+  gameState: gameStates.MAIN,
   player: {
     maxHp: 100,
     deck: [],
@@ -257,7 +260,7 @@ export default function reducer(state = initialState, action = {}) {
       returnState.gameState === gameStates.BATTLE
         && returnState.battle.hp <= 0
     ) {
-      returnState.gameState = gameStates.REWARD;
+      returnState.gameState = gameStates.LOSE;
     }
 
     return returnState;
