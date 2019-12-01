@@ -7,7 +7,7 @@ import Card from './Card';
 import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
-
+import ActionDisplay from './ActionDisplay';
 import PercentileBar from './PercentileBar';
 
 import * as selectors from '../ducks/selectors';
@@ -102,8 +102,7 @@ class Battle extends Component {
             <TextStats>
               Turn: { this.props.allState.battle.turn }
               <br />
-              Actions: { this.props.allState.battle.currentAP }/
-              { this.props.allState.battle.maxAP }
+              <ActionDisplay current={ this.props.allState.battle.currentAP } max={ this.props.allState.battle.maxAP } ></ActionDisplay>
               <br />
             </TextStats>
             <DiscardPile size={ this.props.discardCards.length } />
