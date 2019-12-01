@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
+import Glitmage from 'glitmage';
 import * as actionCreators from '../ducks/actionCreators';
 import * as selectors from '../ducks/selectors';
 
@@ -17,11 +18,20 @@ class LoseScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.headerImageRef = null;
+
+    this.setHeaderImageRef = (element) => {
+      this.headerImageRef = element;
+    };
+  }
+
+  componentDidMount() {
+    Glitmage(this.headerImageRef);
   }
 
   render() {
     return (<LoseScreenWrapper>
-      <h2>Quantum Disconnect</h2>
+      <img width="578px" height="160px" src={ 'images/quantumDisconnect.png' } ref={ this.setHeaderImageRef }/>
       <p>Survived { this.props.gamesWon ? this.props.gamesWon : 0 } { this.props.gamesWon === 1 ? 'Leap' : 'Leaps' }</p>
       <div>
         <Button onClick={ () => this.props.setGameState('reset') }>
