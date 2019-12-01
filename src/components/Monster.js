@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
 import { MonsterSprite } from './Sprites';
-import PercentileBar from './PercentileBar';
+import StatsBar from './StatsBar';
 
 import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
 
@@ -157,7 +157,7 @@ class Monster extends Component {
         <MonsterAvatar>
           <img src={ this.state.dataURI } alt='Monster' />
           <MonsterName>{ this.props.name }</MonsterName>
-          <PercentileBar max={ this.props.maxHp } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
+          <StatsBar max={ this.props.maxHp } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
         </MonsterAvatar>
         { this.props.monsterMoves.length ? <QueuedMoves>
           {

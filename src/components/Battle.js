@@ -8,7 +8,7 @@ import Monster from './Monster';
 import DeckPile from './DeckPile';
 import DiscardPile from './DiscardPile';
 import ActionDisplay from './ActionDisplay';
-import PercentileBar from './PercentileBar';
+import StatsBar from './StatsBar';
 
 import * as selectors from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
@@ -108,12 +108,12 @@ class Battle extends Component {
           </BattleStats>
 
           <Centered>
-            <PercentileBar
+            <StatsBar
               max={ this.props.allState.battle.maxHp }
               value={ this.props.allState.battle.hp }
               shield={ this.props.shield }
               height='30px'
-              flexBasis='900px'
+              flexBasis={ 900 }
             />
           </Centered>
 
