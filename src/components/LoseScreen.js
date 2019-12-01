@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import styled from 'styled-components';
 import * as actionCreators from '../ducks/actionCreators';
 
 import Button from './styles/Button';
+
+const LoseScreenWrapper = styled.div`
+  text-align: center;
+  width: 100%;
+`;
 
 class LoseScreen extends Component {
   constructor(props) {
@@ -12,9 +18,9 @@ class LoseScreen extends Component {
   }
 
   render() {
-    return (<div>
+    return (<LoseScreenWrapper>
       <h1>You Lost</h1>
-      Battles Won: { this.props.gamesWon ? this.props.gamesWon : 0 }
+      <p>Battles Won: { this.props.gamesWon ? this.props.gamesWon : 0 }</p>
       <div>
         <Button onClick={ () => this.props.setGameState('battle') }>
           Restart
@@ -23,7 +29,7 @@ class LoseScreen extends Component {
           Main Screen
         </Button>
       </div>
-    </div>);
+    </LoseScreenWrapper>);
   }
 }
 

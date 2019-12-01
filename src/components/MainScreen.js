@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import styled from 'styled-components';
 import * as actionCreators from '../ducks/actionCreators';
 
 import Button from './styles/Button';
+
+const MainScreenWrapper = styled.div`
+  text-align: center;
+  width: 100%;
+`;
 
 class MainScreen extends Component {
   constructor(props) {
@@ -12,7 +18,7 @@ class MainScreen extends Component {
   }
 
   render() {
-    return (<div>
+    return (<MainScreenWrapper>
       <h1>
         Salto
       </h1>
@@ -20,7 +26,7 @@ class MainScreen extends Component {
         onClick={ () => this.props.setGameState('battle') }>
         Start
       </Button>
-    </div>);
+    </MainScreenWrapper>);
   }
 }
 
