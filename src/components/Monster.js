@@ -157,7 +157,7 @@ class Monster extends Component {
         <MonsterAvatar>
           <img src={ this.state.dataURI } alt='Monster' />
           <MonsterName>{ this.props.name }</MonsterName>
-          <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
+          <PercentileBar max={ this.props.maxHp } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
         </MonsterAvatar>
         { this.props.monsterMoves.length ? <QueuedMoves>
           {

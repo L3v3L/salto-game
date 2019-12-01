@@ -99,6 +99,7 @@ export default function reducer(state = initialState, action = {}) {
         currentAP: state.player.maxAP,
         turn: 1,
         cards: _.cloneDeep(_.shuffle(state.player.deck)),
+        effects: [],
       },
     };
 
@@ -210,7 +211,12 @@ export default function reducer(state = initialState, action = {}) {
         monsters: [
           ...state.battle.monsters,
           {
-            id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp, moves: [], effects: [],
+            id,
+            uuid: nextMonsterUUID,
+            maxHp: state.monsters.byIds[id].hp,
+            hp: state.monsters.byIds[id].hp,
+            moves: [],
+            effects: [],
           },
         ],
       },

@@ -5,7 +5,7 @@ import * as selectors from './selectors';
 
 
 const setMonsterMoves = (state, store) => {
-  state.battle.monsters.map((monster) => {
+  selectors.getMonstersAlive(state).map((monster) => {
     const monsterRef = selectors
       .getMonsterRefs(state)
       .find((monsterLib) => monsterLib.id === monster.id);
@@ -21,7 +21,7 @@ const setMonsterMoves = (state, store) => {
 
 
 const runMonsterMoves = (state, shield, store) => {
-  state.battle.monsters.map((monster) => {
+  selectors.getMonstersAlive(state).map((monster) => {
     monster.moves.map((move) => {
       switch (move.type) {
       case 'attack':
