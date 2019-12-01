@@ -33,28 +33,26 @@ const CurrentValueText = styled.div`
 
 
 class StatsBar extends Component {
+  getBar() {
+    return <PercentileBar
+      max={ this.props.max }
+      value={ this.props.value }
+      fontSize="0.6em"
+      height="100%"
+      flexBasis={ this.props.flexBasis }
+    />;
+  }
+
   render() {
     return this.props.shield > 0
       ? <Shield flexBasis={ this.props.flexBasis }>
-        <PercentileBar
-          max={ this.props.max }
-          value={ this.props.value }
-          fontSize="0.6em"
-          height="100%"
-          flexBasis={ this.props.flexBasis }
-        />
+        { this.getBar() }
         <CurrentValueText fontSize={ this.props.fontSize }>
           { this.props.shield }
         </CurrentValueText>
       </Shield>
       : <Shield disabled flexBasis={ this.props.flexBasis }>
-        <PercentileBar
-          max={ this.props.max }
-          value={ this.props.value }
-          fontSize="0.6em"
-          height="100%"
-          flexBasis={ this.props.flexBasis }
-        />
+        { this.getBar() }
       </Shield>;
   }
 }
