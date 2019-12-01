@@ -74,7 +74,7 @@ export const getEffectValue = (store, type, uuid) => (getEffect(store, type, uui
 
 export const getRandomCard = (store) => {
   const shuffledCardRefs = getCardRefs(store) ? _.shuffle(getCardRefs(store)) : [];
-  const getRandRarity = weightedRand({ 0: 0.7, 1: 0.2, 2: 0.1 });
+  const getRandRarity = weightedRand({ 1: 0.7, 2: 0.2, 3: 0.1 });
   const rarity = getRandRarity();
   return shuffledCardRefs.find((card) => parseInt(card.rarity, 10) === parseInt(rarity, 10));
 };
