@@ -30,16 +30,6 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `;
 
-const GameStateIndicator = styled.span`
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 999;
-  text-transform: uppercase;
-  font-size: 1rem;
-  font-weight: bold;
-`;
-
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -87,7 +77,6 @@ class Game extends Component {
   render() {
     return (
       <MainWrapper>
-        <GameStateIndicator>{ this.props.allState.gameState }</GameStateIndicator>
         { Game.getCurrentScreen(this.props.allState.gameState) }
       </MainWrapper>
     );
