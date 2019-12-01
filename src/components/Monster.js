@@ -159,9 +159,9 @@ class Monster extends Component {
           <MonsterName>{ this.props.name }</MonsterName>
           <StatsBar max={ this.props.maxHp } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
         </MonsterAvatar>
-        { this.props.monsterMoves.length ? <QueuedMoves>
+        { this.props.monsterMoves.filter((move) => move.type !== 'block').length ? <QueuedMoves>
           {
-            this.props.monsterMoves
+            this.props.monsterMoves.filter((move) => move.type !== 'block')
               .map((move) => {
                 nextMoveUUID += 1;
                 return <MoveItem
