@@ -36,7 +36,6 @@ export const initialState = {
     currentAP: 1,
     maxAP: 1,
     monsters: [],
-    monsterMoves: {},
     turn: 0,
     effects: [],
   },
@@ -44,6 +43,41 @@ export const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+  case types.ADD_EFFECT_TO_MONSTER: {
+    const { effect, targetMonster } = action.payload;
+
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: state.battle.monsters.map((monster) => {
+          if (monster.uuid === targetMonster.uuid) {
+            monster.effects.push(effect);
+          }
+          return monster;
+        }),
+      },
+    };
+  }
+
+  case types.RESET_MONSTER_EFFECTS: {
+    return {
+      ...state,
+      battle: {
+        ...state.battle,
+        monsters: state.battle.monsters.map((monster) => {
+          monster.effects = monster.effects.map((effect) => {
+            effect.duration -= 1;
+            return effect;
+          }).filter((effect) => effect.duration > 0);
+
+          return monster;
+        }),
+      },
+    };
+  }
+
+
   case types.RESET_BATTLE: {
     const returnState = {
       ...state,
@@ -166,7 +200,9 @@ export default function reducer(state = initialState, action = {}) {
         ...state.battle,
         monsters: [
           ...state.battle.monsters,
-          { id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp },
+          {
+            id, uuid: nextMonsterUUID, hp: state.monsters.byIds[id].hp, moves: [], effects: [],
+          },
         ],
       },
     };
@@ -175,24 +211,33 @@ export default function reducer(state = initialState, action = {}) {
   case types.SET_MONSTER_MOVES: {
     const { uuid, move } = action.payload;
 
+    const monsters = state.battle.monsters.map((monster) => {
+      if (monster.uuid === uuid) {
+        monster.moves = move;
+      }
+      return monster;
+    });
+
     return {
       ...state,
       battle: {
         ...state.battle,
-        monsterMoves: {
-          ...state.battle.monsterMoves,
-          [uuid]: move,
-        },
+        monsters,
       },
     };
   }
 
   case types.RESET_ALL_MONSTER_MOVES: {
+    const monsters = state.battle.monsters.map((monster) => {
+      monster.moves = [];
+      return monster;
+    });
+
     return {
       ...state,
       battle: {
         ...state.battle,
-        monsterMoves: {},
+        monsters,
       },
     };
   }
@@ -260,7 +305,17 @@ export default function reducer(state = initialState, action = {}) {
         ...state.battle,
         monsters: state.battle.monsters.map((monster) => {
           if (monster.uuid === uuid) {
-            monster.hp = Math.max(0, monster.hp - dmg);
+            let tempDmg = dmg;
+            monster.effects = monster.effects.map((effect) => {
+              if (effect.type === 'block') {
+                const tempShield = Math.max(0, effect.value - tempDmg);
+                tempDmg = Math.max(0, tempDmg - effect.value);
+                effect.value = tempShield;
+              }
+              return effect;
+            });
+
+            monster.hp = Math.max(0, monster.hp - tempDmg);
           }
           return monster;
         }),
@@ -285,7 +340,16 @@ export default function reducer(state = initialState, action = {}) {
       battle: {
         ...state.battle,
         monsters: state.battle.monsters.map((monster) => {
-          monster.hp = Math.max(0, monster.hp - dmg);
+          let tempDmg = dmg;
+          monster.effects = monster.effects.map((effect) => {
+            if (effect.type === 'block') {
+              const tempShield = Math.max(0, effect.value - tempDmg);
+              tempDmg = Math.max(0, tempDmg - effect.value);
+              effect.value = tempShield;
+            }
+            return effect;
+          });
+          monster.hp = Math.max(0, monster.hp - tempDmg);
           return monster;
         }),
       },

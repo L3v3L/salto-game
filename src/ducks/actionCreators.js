@@ -1,5 +1,18 @@
 import * as types from './actionTypes';
 
+export const resetMonsterEffects = () => ({
+  type: types.RESET_MONSTER_EFFECTS,
+});
+
+
+export const addEffectToMonster = ({ effect, targetMonster }) => ({
+  type: types.ADD_EFFECT_TO_MONSTER,
+  payload: {
+    effect,
+    targetMonster,
+  },
+});
+
 export const setBattleCards = ({ cards }) => ({
   type: types.SET_BATTLE_CARDS,
   payload: {
