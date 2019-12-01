@@ -17,6 +17,7 @@ export const MonsterLibrary = [
           value: 10,
         },
       ],
+      [],
     ],
   },
   {
@@ -40,6 +41,7 @@ export const MonsterLibrary = [
           value: 10,
         },
       ],
+      [],
     ],
   },
 ];
