@@ -14,9 +14,12 @@ const MainScreenWrapper = styled.div`
   flex-direction: column;
   justify-items: center;
   align-items: center;
-  & > header {
-    & > h1 {
+  &>header {
+    &>h1 {
       margin-top: 0;
+    }
+    &>img {
+      user-drag: none;
     }
   }
 `;
