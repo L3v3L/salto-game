@@ -84,7 +84,7 @@ export default function reducer(state = initialState, action = {}) {
 
   case types.RESET_BATTLE: {
     const { keepHp } = action.payload;
-    console.log(keepHp);
+
     const returnState = {
       ...state,
       gamesWon: keepHp ? state.gamesWon + 1 : state.gamesWon,
