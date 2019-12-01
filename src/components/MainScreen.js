@@ -10,6 +10,15 @@ const MainScreenWrapper = styled.div`
   text-align: center;
   width: 100%;
   user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  & > header {
+    & > h1 {
+      margin-top: 0;
+    }
+  }
 `;
 
 class MainScreen extends Component {
@@ -20,10 +29,12 @@ class MainScreen extends Component {
 
   render() {
     return (<MainScreenWrapper>
-      <img width="100px" src={ 'images/logo.svg' } alt=''></img>
-      <h1>
-        Salto
-      </h1>
+      <header>
+        <img width="100px" src={ 'images/logo.svg' } alt=''/>
+        <h1>
+          Salto
+        </h1>
+      </header>
       <Button
         onClick={ () => this.props.setGameState('battle') }>
         Start
