@@ -99,6 +99,7 @@ export default function reducer(state = initialState, action = {}) {
         currentAP: state.player.maxAP,
         turn: 1,
         cards: _.cloneDeep(_.shuffle(state.player.deck)),
+        effects: [],
       },
     };
 
