@@ -22,7 +22,7 @@ const MainScreenWrapper = styled.div`
       margin-top: 0;
     }
     &>img {
-      animation: 1s ${animation};
+      animation: ${animation} 2s linear infinite;
       user-drag: none;
     }
   }
