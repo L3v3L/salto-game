@@ -14,6 +14,7 @@ const gameStates = {
 
 export const initialState = {
   gamesWon: 0,
+  isNextBattle: false,
   gameState: gameStates.MAIN,
   player: {
     maxHp: 100,
@@ -82,14 +83,18 @@ export default function reducer(state = initialState, action = {}) {
 
 
   case types.RESET_BATTLE: {
+    const { keepHp } = action.payload;
+    console.log(keepHp);
     const returnState = {
       ...state,
+      gamesWon: keepHp ? state.gamesWon + 1 : state.gamesWon,
+      isNextBattle: false,
       battle: {
         ...state.battle,
         monsters: [],
         amountCardToDraw: state.player.amountCardToDraw,
         maxHp: state.player.maxHp,
-        hp: state.player.maxHp,
+        hp: keepHp ? state.battle.hp : state.player.maxHp,
         maxAP: state.player.maxAP,
         currentAP: state.player.maxAP,
         turn: 1,
@@ -109,9 +114,10 @@ export default function reducer(state = initialState, action = {}) {
   }
 
   case types.SET_GAME_STATE: {
-    const { targetState } = action.payload;
+    const { targetState, nextBattle } = action.payload;
     return {
       ...state,
+      isNextBattle: nextBattle,
       gameState: targetState,
     };
   }
