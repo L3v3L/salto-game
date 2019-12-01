@@ -236,10 +236,17 @@ export default function reducer(state = initialState, action = {}) {
 
   case types.SET_MONSTER_MOVES: {
     const { uuid, move } = action.payload;
-
+    const tempMoves = _.cloneDeep(move);
     const monsters = state.battle.monsters.map((monster) => {
       if (monster.uuid === uuid) {
-        monster.moves = move;
+        monster.moves = tempMoves.map((m) => {
+          if (m.type === 'attack') {
+            const maxAttack = Math.round(m.value + (m.value * (state.gamesWon / 5)));
+            const minAttack = maxAttack * 0.5;
+            m.value = Math.floor(Math.random() * (maxAttack - (minAttack) + 1) + (minAttack));
+          }
+          return m;
+        });
       }
       return monster;
     });
