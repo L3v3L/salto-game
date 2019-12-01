@@ -20,6 +20,7 @@ class MainScreen extends Component {
 
   render() {
     return (<MainScreenWrapper>
+      <img width="100px" src={ 'images/logo.svg' } alt=''></img>
       <h1>
         Salto
       </h1>
