@@ -19,7 +19,7 @@ export const initialState = {
   player: {
     maxHp: 100,
     deck: [],
-    maxAP: 100,
+    maxAP: 3,
     amountCardToDraw: 5,
   },
   cards: {
