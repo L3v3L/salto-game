@@ -21,11 +21,11 @@ class LoseScreen extends Component {
 
   render() {
     return (<LoseScreenWrapper>
-      <h1>You Lost</h1>
-      <p>Battles Won: { this.props.gamesWon ? this.props.gamesWon : 0 }</p>
+      <h2>Quantum Disconnect</h2>
+      <p>Survived { this.props.gamesWon ? this.props.gamesWon : 0 } { this.props.gamesWon === 1 ? 'Leap' : 'Leaps' }</p>
       <div>
         <Button onClick={ () => this.props.setGameState('reset') }>
-          Restart
+          Restart Leap
         </Button>
         <Button onClick={ () => this.props.setGameState('main') } marginLeft>
           Main Screen

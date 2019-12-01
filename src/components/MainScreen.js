@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { rubberBand } from 'react-animations';
 import * as actionCreators from '../ducks/actionCreators';
-
 import Button from './styles/Button';
+
+
+const animation = keyframes`${rubberBand}`;
 
 const MainScreenWrapper = styled.div`
   text-align: center;
@@ -19,6 +22,7 @@ const MainScreenWrapper = styled.div`
       margin-top: 0;
     }
     &>img {
+      animation: 1s ${animation};
       user-drag: none;
     }
   }
@@ -40,7 +44,7 @@ class MainScreen extends Component {
       </header>
       <Button
         onClick={ () => this.props.setGameState('reset') }>
-        Start
+        Start Quantum Leap
       </Button>
     </MainScreenWrapper>);
   }
