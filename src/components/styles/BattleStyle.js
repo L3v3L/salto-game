@@ -100,6 +100,10 @@ export const Hand = styled.div`
   & > div {
     margin: 2px;
   }
+
+  .disabled {
+    -webkit-filter: grayscale(1);
+  }
 `;
 
 export const BattleStats = styled.div`

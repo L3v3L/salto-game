@@ -127,22 +127,26 @@ class Battle extends Component {
                 card: handCard,
               }))
               .map((cardInHand) => (
-                <Card
-                  key={ cardInHand.card.uuid }
-                  uuid={ cardInHand.card.uuid }
-                  selecting={ this.props.isSelectingCard }
-                  isActive={
-                    this.props.activeCard
-                      ? this.props.activeCard.uuid === cardInHand.card.uuid
-                      : false
-                  }
-                  image={ cardInHand.ref.image }
-                  id={ cardInHand.card.id }
-                  label={ cardInHand.ref.name }
-                  cost={ cardInHand.ref.cost }
-                  actions={ cardInHand.ref.actions }
-                  description={ cardInHand.ref.description }
-                />
+                <div className={ cardInHand.ref.cost > this.props.allState.battle.currentAP ? 'disabled' : 'normal' }
+                  key={ cardInHand.card.uuid }>
+                  <Card
+                    key={ cardInHand.card.uuid }
+                    uuid={ cardInHand.card.uuid }
+                    selecting={ this.props.isSelectingCard }
+                    isActive={
+                      this.props.activeCard
+                        ? this.props.activeCard.uuid === cardInHand.card.uuid
+                        : false
+                    }
+                    image={ cardInHand.ref.image }
+                    id={ cardInHand.card.id }
+                    label={ cardInHand.ref.name }
+                    cost={ cardInHand.ref.cost }
+                    actions={ cardInHand.ref.actions }
+                    description={ cardInHand.ref.description }
+                    playable={ false }
+                  />
+                </div>
               )) }
           </Hand>
 
