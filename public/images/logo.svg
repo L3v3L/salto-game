@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="146.04mm" height="146.04mm" version="1.1" viewBox="0 0 146.04 146.04" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <radialGradient id="radialGradient1390" cx="119.62" cy="137.49" r="66.425" gradientTransform="matrix(-.008716 -.64215 .6075 -.0082469 30.444 213.32)" gradientUnits="userSpaceOnUse">
+   <stop offset="0"/>
+   <stop stop-color="#008080" offset="1"/>
+  </radialGradient>
+ </defs>
+ <g transform="translate(-41.037 -64.363)" stroke-linecap="round">
+  <path d="m103.05 74.076a64.256 64.256 0 0 1 74.251 51.964 64.256 64.256 0 0 1-51.565 74.528 64.256 64.256 0 0 1-74.803-51.166 64.256 64.256 0 0 1 50.764-75.076" fill="url(#radialGradient1390)" opacity=".998" stroke="#000" stroke-dashoffset="163.24" stroke-linejoin="round" stroke-width="17.519" style="paint-order:stroke fill markers"/>
+  <path transform="matrix(1.3657 -.26442 .25644 1.3245 -71.19 -12.051)" d="m117.12 139.24c1.0453 5.145-3.8942 9.1948-8.6316 9.4229-7.5192 0.36213-12.996-6.7066-12.844-13.808 0.21106-9.8644 9.5311-16.84 18.984-16.265 12.205 0.74319 20.705 12.36 19.685 24.161-1.256 14.544-15.19 24.579-29.337 23.106-16.884-1.7582-28.461-18.022-26.527-34.513 2.254-19.224 20.854-32.346 39.689-29.948 5.6666 0.72151 11.139 2.7612 15.918 5.8875" fill="none" stroke="#fff" stroke-width="6.978"/>
+ </g>
+</svg>
