@@ -6,6 +6,7 @@ const getCenteredStyle = (top = 0) => (`
   left: 50%;
   margin-left: -4rem;
   font-size: 1rem;
+  width: 8rem;
 `);
 
 const normalStyle = `
@@ -16,7 +17,6 @@ const normalStyle = `
 
 const Button = styled.button`
   margin-left: ${(props) => (props.marginLeft ? 0.4 : 0)}rem;
-  width: 8rem;
   padding: 0.6rem;
   font-weight: 900;
   cursor: pointer;
