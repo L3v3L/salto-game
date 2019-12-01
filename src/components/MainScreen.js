@@ -39,7 +39,7 @@ class MainScreen extends Component {
         </h1>
       </header>
       <Button
-        onClick={ () => this.props.setGameState('battle') }>
+        onClick={ () => this.props.setGameState('reset') }>
         Start
       </Button>
     </MainScreenWrapper>);

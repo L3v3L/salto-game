@@ -39,30 +39,26 @@ class Game extends Component {
 
     // initialize monsters
     MonsterLibrary.map((item) => props.createMonster(item));
-
-    const starterDeck = [
-      { id: 2, quantity: 5 },
-      { id: 3, quantity: 5 },
-      { id: 8, quantity: 5 },
-      { id: 9, quantity: 5 },
-      { id: 14, quantity: 5 },
-      { id: 21, quantity: 5 },
-      { id: 37, quantity: 5 },
-      { id: 39, quantity: 5 },
-      { id: 52, quantity: 5 },
-      { id: 58, quantity: 5 },
-    ];
-
-    starterDeck.map((item) => {
-      for (let i = 0; i < item.quantity; i++) {
-        props.addCardToDeck(item.id);
-      }
-      return null;
-    });
   }
 
-  static getCurrentScreen(gameState) {
+  getCurrentScreen(gameState) {
     switch (gameState) {
+    case 'reset':
+      const starterDeck = [
+        { id: 2, quantity: 5 },
+        { id: 3, quantity: 5 },
+      ];
+
+      this.props.emptyPlayerDeck();
+
+      starterDeck.map((item) => {
+        for (let i = 0; i < item.quantity; i++) {
+          this.props.addCardToDeck(item.id);
+        }
+        return null;
+      });
+      this.props.setGameState('battle');
+      return null;
     case 'battle':
       return <Battle />;
     case 'reward':
@@ -77,7 +73,7 @@ class Game extends Component {
   render() {
     return (
       <MainWrapper>
-        { Game.getCurrentScreen(this.props.allState.gameState) }
+        { this.getCurrentScreen(this.props.allState.gameState) }
       </MainWrapper>
     );
   }

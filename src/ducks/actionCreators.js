@@ -232,3 +232,8 @@ export const resetBattle = ({ keepHp }) => ({
     keepHp,
   },
 });
+
+
+export const emptyPlayerDeck = () => ({
+  type: types.EMPTY_PLAYER_DECK,
+});

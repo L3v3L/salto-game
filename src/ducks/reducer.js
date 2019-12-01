@@ -10,6 +10,7 @@ const gameStates = {
   BATTLE: 'battle',
   REWARD: 'reward',
   LOSE: 'lose',
+  RESET: 'reset',
 };
 
 export const initialState = {
@@ -60,6 +61,16 @@ export default function reducer(state = initialState, action = {}) {
           }
           return monster;
         }),
+      },
+    };
+  }
+
+  case types.EMPTY_PLAYER_DECK: {
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        deck: [],
       },
     };
   }
