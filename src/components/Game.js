@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import CardLibrary from './CardLibrary';
 import { MonsterLibrary } from './MonsterLibrary';
 import Battle from './Battle';
+import MainScreen from './MainScreen';
+import LoseScreen from './LoseScreen';
 
 import { getAllState } from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
@@ -69,12 +71,24 @@ class Game extends Component {
     });
   }
 
+  static getCurrentScreen(gameState) {
+    switch (gameState) {
+    case 'battle':
+      return <Battle />;
+    case 'reward':
+      return <RewardScreen />;
+    case 'lose':
+      return <LoseScreen />;
+    default:
+      return <MainScreen />;
+    }
+  }
+
   render() {
     return (
       <MainWrapper>
         <GameStateIndicator>{ this.props.allState.gameState }</GameStateIndicator>
-        { this.props.allState.gameState === 'battle' ? <Battle /> : '' }
-        { this.props.allState.gameState === 'reward' ? <RewardScreen /> : '' }
+        { Game.getCurrentScreen(this.props.allState.gameState) }
       </MainWrapper>
     );
   }
