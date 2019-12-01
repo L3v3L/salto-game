@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../ducks/actionCreators';
+import * as selectors from '../ducks/selectors';
 
 import Button from './styles/Button';
 
@@ -14,7 +15,7 @@ class LoseScreen extends Component {
   render() {
     return (<div>
       <h1>You Lost</h1>
-      Battles Won: { this.props.gamesWon ? this.props.gamesWon : 0 }
+      Battles Won: { this.props.allState.gamesWon ? this.props.allState.gamesWon : 0 }
       <div>
         <Button onClick={ () => this.props.setGameState('battle') }>
           Restart
@@ -28,9 +29,17 @@ class LoseScreen extends Component {
 }
 
 
+const mapStateToProps = (state) => {
+  const allState = selectors.getAllState(state);
+
+  return {
+    allState,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({ ...actionCreators }, dispatch),
   dispatch,
 });
 
-export default connect(null, mapDispatchToProps)(LoseScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoseScreen);
