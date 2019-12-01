@@ -107,12 +107,15 @@ class Monster extends Component {
     }
   }
 
-  getQueuedMoveText = (type, value) => {
-    let finalAttack = value;
-
+  calculateFinalAttack = (value) => {
     if (this.props.weakness) {
-      finalAttack = Math.round(value + (value * this.props.weakness));
+      return Math.round(value + (value * this.props.weakness));
     }
+    return value;
+  };
+
+  getQueuedMoveText = (type, value) => {
+    let finalAttack = this.calculateFinalAttack(value);
 
     switch (true) {
     case type === 'attack' && this.props.weakness !== 0:
