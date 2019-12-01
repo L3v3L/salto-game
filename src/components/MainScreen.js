@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import styled from 'styled-components';
 import * as actionCreators from '../ducks/actionCreators';
 
 import Button from './styles/Button';
+
+const MainScreenWrapper = styled.div`
+  text-align: center;
+  width: 100%;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  &>header {
+    &>h1 {
+      margin-top: 0;
+    }
+    &>img {
+      user-drag: none;
+    }
+  }
+`;
 
 class MainScreen extends Component {
   constructor(props) {
@@ -12,18 +31,18 @@ class MainScreen extends Component {
   }
 
   render() {
-    return (<div>
-      <div>
-        <img width="100px" src={ 'images/logo.svg' } alt=''></img>
-      </div>
-      <h1>
-        Salto
-      </h1>
+    return (<MainScreenWrapper>
+      <header>
+        <img width="100px" src={ 'images/logo.svg' } alt=''/>
+        <h1>
+          Salto
+        </h1>
+      </header>
       <Button
         onClick={ () => this.props.setGameState('battle') }>
         Start
       </Button>
-    </div>);
+    </MainScreenWrapper>);
   }
 }
 

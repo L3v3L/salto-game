@@ -14,6 +14,7 @@ const ActionsDiv = styled.div`
   text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,1px 1px 0 #fff;
   border-radius: 10px;
   border: 2px solid ${rgba(darken(darkenAmount * 3, color), 1)};
+  user-select: none;
 
   .current{
       color: white;
