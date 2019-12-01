@@ -1,6 +1,4 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import { createLogger } from 'redux-logger';
-
 import reducer from './ducks/reducer';
 import {
   endTurn,
@@ -9,23 +7,33 @@ import {
   targetSelectionDisable,
 } from './ducks/middlewares';
 
-const loggerMiddleware = createLogger({
-  collapsed: (getState, action, logEntry) => !logEntry.error,
-});
-
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const middlewares = [
+  targetSelectionDisable,
+  playCardActivate,
+  playCardExecute,
+  endTurn,
+];
+
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line global-require
+  const { createLogger } = require('redux-logger');
+
+  const logger = createLogger({
+    collapsed: (getState, action, logEntry) => !logEntry.error,
+  });
+
+  middlewares.push(logger);
+}
 
 const configureStore = (initialState) => createStore(
   reducer,
   initialState,
   composeEnhancers(
     applyMiddleware(
-      targetSelectionDisable,
-      playCardActivate,
-      playCardExecute,
-      endTurn,
-      loggerMiddleware,
+      ...middlewares,
     ),
   ),
 );
