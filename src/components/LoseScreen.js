@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import * as actionCreators from '../ducks/actionCreators';
+import * as selectors from '../ducks/selectors';
 
 import Button from './styles/Button';
 
@@ -34,9 +35,17 @@ class LoseScreen extends Component {
 }
 
 
+const mapStateToProps = (state) => {
+  const allState = selectors.getAllState(state);
+
+  return {
+    allState,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({ ...actionCreators }, dispatch),
   dispatch,
 });
 
-export default connect(null, mapDispatchToProps)(LoseScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoseScreen);
