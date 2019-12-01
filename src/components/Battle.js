@@ -17,10 +17,11 @@ import {
   Centered,
   Hand,
   BattleStats,
-  EndTurnButton,
   TextStats,
   SelectTarget,
 } from './styles/BattleStyle';
+
+import EndTurnButton from './styles/Button';
 
 class Battle extends Component {
   constructor(props) {
@@ -147,7 +148,11 @@ class Battle extends Component {
               )) }
           </Hand>
 
-          <EndTurnButton onClick={ () => this.endTurn() }>End Turn</EndTurnButton>
+          <EndTurnButton
+            centered
+            onClick={ () => this.endTurn() }
+            positionTop={ 250 }
+          >End Turn</EndTurnButton>
         </BattleScreen>
       </GlobalHotKeys>
     );

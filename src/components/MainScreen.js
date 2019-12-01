@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../ducks/actionCreators';
 
+import Button from './styles/Button';
+
 class MainScreen extends Component {
   constructor(props) {
     super(props);
@@ -11,11 +13,13 @@ class MainScreen extends Component {
 
   render() {
     return (<div>
-      Salto
-      <br />
-      <button onClick={ () => this.props.setGameState('battle') }>
-          start game
-      </button>
+      <h1>
+        Salto
+      </h1>
+      <Button
+        onClick={ () => this.props.setGameState('battle') }>
+        Start
+      </Button>
     </div>);
   }
 }
