@@ -16,7 +16,7 @@ import {
 } from '../ducks/actionCreators';
 
 let nextMoveUUID = 0;
-let queuedMoveIconSize = 30;
+const queuedMoveIconSize = 30;
 
 const bounceAnimation = keyframes`${bounce}`;
 
@@ -115,7 +115,7 @@ class Monster extends Component {
   };
 
   getQueuedMoveText = (type, value) => {
-    let finalAttack = this.calculateFinalAttack(value);
+    const finalAttack = this.calculateFinalAttack(value);
 
     switch (true) {
     case type === 'attack' && this.props.weakness !== 0:
@@ -131,23 +131,23 @@ class Monster extends Component {
 
   calculateFinalMoveValue = (type, value) => {
     switch (true) {
-      case type === 'attack':
-        return this.calculateFinalAttack(value);
-      case type === 'block':
-        return value;
-      default:
-        return value;
+    case type === 'attack':
+      return this.calculateFinalAttack(value);
+    case type === 'block':
+      return value;
+    default:
+      return value;
     }
   };
 
   getQueuedMoveIcon = (type) => {
     switch (true) {
-      case type === 'attack':
-        return <img src={'images/3.svg'} width={queuedMoveIconSize} height={queuedMoveIconSize} alt={'sword'} />;
-      case type === 'block':
-        return <img src={'images/2.svg'} width={queuedMoveIconSize} height={queuedMoveIconSize} alt={'shield'} />;
-      default:
-        return <img src={'images/3.svg'} width={queuedMoveIconSize} height={queuedMoveIconSize} alt={'sword'} />;
+    case type === 'attack':
+      return <img src={ 'images/3.svg' } width={ queuedMoveIconSize } height={ queuedMoveIconSize } alt={ 'sword' } />;
+    case type === 'block':
+      return <img src={ 'images/2.svg' } width={ queuedMoveIconSize } height={ queuedMoveIconSize } alt={ 'shield' } />;
+    default:
+      return <img src={ 'images/3.svg' } width={ queuedMoveIconSize } height={ queuedMoveIconSize } alt={ 'sword' } />;
     }
   };
 
@@ -157,14 +157,16 @@ class Monster extends Component {
         <MonsterAvatar>
           <img src={ this.state.dataURI } alt='Monster' />
           <MonsterName>{ this.props.name }</MonsterName>
-          <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce(function(total, effect){ return total + effect.value}, 0) : '' }/>
+          <PercentileBar max={ 100 } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
         </MonsterAvatar>
         { this.props.monsterMoves.length ? <QueuedMoves>
           {
             this.props.monsterMoves
               .map((move) => {
                 nextMoveUUID += 1;
-                return <MoveItem key={ nextMoveUUID } title={ this.getQueuedMoveText(move.type, move.value) }>
+                return <MoveItem
+                  key={ nextMoveUUID }
+                  title={ this.getQueuedMoveText(move.type, move.value) }>
                   { this.getQueuedMoveIcon(move.type) }
                   { this.calculateFinalMoveValue(move.type, move.value) }
                 </MoveItem>;
