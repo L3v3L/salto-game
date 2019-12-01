@@ -16,6 +16,7 @@ import {
 } from '../ducks/actionCreators';
 
 let nextMoveUUID = 0;
+let queuedMoveIconSize = 30;
 
 const bounceAnimation = keyframes`${bounce}`;
 
@@ -44,12 +45,18 @@ const QueuedMoves = styled.div`
   border: 2px solid #ffffff;
   color: #ffffff;
   border-radius: 4px;
-  min-width: 110px;
+  min-width: 80px;
 `;
 
 const MoveItem = styled.div`
-  font-size: 12px;
-  padding: 3px 6px;
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  padding: 6px;
+  font-weight: bold;
+  img {
+    margin-right: 5px;
+  }
 `;
 
 const MonsterName = styled.div`
@@ -119,6 +126,17 @@ class Monster extends Component {
     }
   };
 
+  getQueuedMoveIcon = (type) => {
+    switch (true) {
+      case type === 'attack':
+        return <img src={'images/3.svg'} width={queuedMoveIconSize} height={queuedMoveIconSize} alt={'sword'} />;
+      case type === 'block':
+        return <img src={'images/2.svg'} width={queuedMoveIconSize} height={queuedMoveIconSize} alt={'shield'} />;
+      default:
+        return <img src={'images/3.svg'} width={queuedMoveIconSize} height={queuedMoveIconSize} alt={'sword'} />;
+    }
+  };
+
   render() {
     return (
       <BouncyDiv onClick={ () => this.action() } selecting={ this.props.selecting }>
@@ -129,13 +147,13 @@ class Monster extends Component {
         </MonsterAvatar>
         { this.props.monsterMoves !== undefined
         && <QueuedMoves>
-          Next moves
           {
             this.props.monsterMoves
               .map((move) => {
                 nextMoveUUID += 1;
-                return <MoveItem key={ nextMoveUUID }>
-                  { this.getQueuedMoveText(move.type, move.value) }
+                return <MoveItem key={ nextMoveUUID } title={ this.getQueuedMoveText(move.type, move.value) }>
+                  { this.getQueuedMoveIcon(move.type)}
+                  { move.value }
                 </MoveItem>;
               })
           }
