@@ -237,3 +237,7 @@ export const resetBattle = ({ keepHp }) => ({
 export const emptyPlayerDeck = () => ({
   type: types.EMPTY_PLAYER_DECK,
 });
+
+export const startMonsterMoves = () => ({
+  type: types.START_MONSTER_MOVES,
+});
