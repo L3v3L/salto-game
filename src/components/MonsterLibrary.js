@@ -8,7 +8,7 @@ export const MonsterLibrary = [
       [
         {
           type: 'attack',
-          value: 3,
+          value: 5,
         },
       ],
       [
@@ -27,7 +27,7 @@ export const MonsterLibrary = [
       [
         {
           type: 'attack',
-          value: 3,
+          value: 6,
         },
         {
           type: 'block',
@@ -37,7 +37,7 @@ export const MonsterLibrary = [
       [
         {
           type: 'attack',
-          value: 3,
+          value: 10,
         },
       ],
     ],
