@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../ducks/actionCreators';
 
+import Button from './styles/Button';
+
 class LoseScreen extends Component {
   constructor(props) {
     super(props);
@@ -11,14 +13,15 @@ class LoseScreen extends Component {
 
   render() {
     return (<div>
-      You Lost
-      <br />
-      <button onClick={ () => this.props.setGameState('battle') }>
+      <h1>You Lost</h1>
+      <div>
+        <Button onClick={ () => this.props.setGameState('battle') }>
           Restart
-      </button>
-      <button onClick={ () => this.props.setGameState('main') }>
+        </Button>
+        <Button onClick={ () => this.props.setGameState('main') } marginLeft>
           Main Screen
-      </button>
+        </Button>
+      </div>
     </div>);
   }
 }
