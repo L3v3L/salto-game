@@ -14,7 +14,9 @@ const Bar = styled.div`
 `;
 
 const InnerBar = styled.div`
+  position: relative;
   background-color: ${(props) => (props.color ? props.color : '#dc322f')};
+  width: ${(props) => (props.width ? props.width : 100)}%;
   border-radius: 0.2rem;
   height: 100%;
 `;
