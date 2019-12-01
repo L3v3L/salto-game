@@ -24,7 +24,7 @@ class LoseScreen extends Component {
       <h1>You Lost</h1>
       <p>Battles Won: { this.props.gamesWon ? this.props.gamesWon : 0 }</p>
       <div>
-        <Button onClick={ () => this.props.setGameState('battle') }>
+        <Button onClick={ () => this.props.setGameState('reset') }>
           Restart
         </Button>
         <Button onClick={ () => this.props.setGameState('main') } marginLeft>
