@@ -33,7 +33,7 @@ class RewardScreen extends Component {
             key={ `${card.id}-${index}` }
             onClick={ () => {
               this.props.addCardToDeck(card.id);
-              this.props.setGameState('battle');
+              this.props.setGameState('battle', true);
             } }
           >
             <Card
@@ -48,7 +48,7 @@ class RewardScreen extends Component {
 
         <SkipButton
           centered
-          onClick={ () => this.props.setGameState('battle') }
+          onClick={ () => this.props.setGameState('battle', true) }
           positionTop={ 250 }>
           Skip
         </SkipButton>

@@ -27,7 +27,8 @@ class Battle extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    props.resetBattle();
+
+    props.resetBattle({ keepHp: props.allState.isNextBattle });
     props.addMonster(1);
     props.addMonster(0);
   }

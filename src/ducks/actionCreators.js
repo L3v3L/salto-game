@@ -218,13 +218,17 @@ export const moveCardByUUID = ({ uuidArray, targetDeck }) => ({
   payload: { uuidArray, targetDeck },
 });
 
-export const setGameState = (targetState) => ({
+export const setGameState = (targetState, nextBattle) => ({
   type: types.SET_GAME_STATE,
   payload: {
     targetState,
+    nextBattle,
   },
 });
 
-export const resetBattle = () => ({
+export const resetBattle = ({ keepHp }) => ({
   type: types.RESET_BATTLE,
+  payload: {
+    keepHp,
+  },
 });
