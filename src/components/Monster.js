@@ -129,6 +129,17 @@ class Monster extends Component {
     }
   };
 
+  calculateFinalMoveValue = (type, value) => {
+    switch (true) {
+      case type === 'attack':
+        return this.calculateFinalAttack(value);
+      case type === 'block':
+        return value;
+      default:
+        return value;
+    }
+  };
+
   getQueuedMoveIcon = (type) => {
     switch (true) {
       case type === 'attack':
@@ -155,8 +166,8 @@ class Monster extends Component {
               .map((move) => {
                 nextMoveUUID += 1;
                 return <MoveItem key={ nextMoveUUID } title={ this.getQueuedMoveText(move.type, move.value) }>
-                  { this.getQueuedMoveIcon(move.type)}
-                  { move.value }
+                  { this.getQueuedMoveIcon(move.type) }
+                  { this.calculateFinalMoveValue(move.type, move.value) }
                 </MoveItem>;
               })
           }
