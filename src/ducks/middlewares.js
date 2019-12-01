@@ -149,6 +149,17 @@ export const endTurn = (store) => (next) => (action) => {
 };
 
 
+export const startMonsterMoves = (store) => (next) => (action) => {
+  if (action.type === types.START_MONSTER_MOVES) {
+    const state = store.getState();
+    setMonsterMoves(state, store);
+  }
+
+
+  next(action);
+};
+
+
 export const targetSelectionDisable = (store) => (next) => (action) => {
   if (action.type === types.SET_SELECTED_TARGET) {
     store.dispatch(actions.disableTargetSelection());

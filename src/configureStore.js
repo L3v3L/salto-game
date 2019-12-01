@@ -2,6 +2,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import reducer from './ducks/reducer';
 import {
   endTurn,
+  startMonsterMoves,
   playCardActivate,
   playCardExecute,
   targetSelectionDisable,
@@ -14,6 +15,7 @@ const middlewares = [
   targetSelectionDisable,
   playCardActivate,
   playCardExecute,
+  startMonsterMoves,
   endTurn,
 ];
 

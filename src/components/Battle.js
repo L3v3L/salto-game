@@ -31,6 +31,7 @@ class Battle extends Component {
     props.resetBattle({ keepHp: props.allState.isNextBattle });
     props.addMonster(1);
     props.addMonster(0);
+    props.startMonsterMoves();
   }
 
   endTurn() {
