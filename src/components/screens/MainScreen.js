@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled, { keyframes } from 'styled-components';
 import { rubberBand } from 'react-animations';
-import * as actionCreators from '../ducks/actionCreators';
-import Button from './styles/Button';
+import * as actionCreators from '../../ducks/actionCreators';
+import Button from '../styles/Button';
 
 
 const animation = keyframes`${rubberBand}`;

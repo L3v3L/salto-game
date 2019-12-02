@@ -3,15 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { GlobalHotKeys } from 'react-hotkeys';
 
-import Card from './Card';
-import Monster from './Monster';
-import DeckPile from './DeckPile';
-import DiscardPile from './DiscardPile';
-import ActionDisplay from './ActionDisplay';
-import StatsBar from './StatsBar';
+import Card from '../Card';
+import Monster from '../Monster';
+import DeckPile from '../DeckPile';
+import DiscardPile from '../DiscardPile';
+import ActionDisplay from '../ActionDisplay';
+import StatsBar from '../StatsBar';
 
-import * as selectors from '../ducks/selectors';
-import * as actionCreators from '../ducks/actionCreators';
+import * as selectors from '../../ducks/selectors';
+import * as actionCreators from '../../ducks/actionCreators';
 import {
   BattleScreen,
   Centered,
@@ -19,9 +19,9 @@ import {
   BattleStats,
   TextStats,
   SelectTarget,
-} from './styles/BattleStyle';
+} from '../styles/BattleStyle';
 
-import EndTurnButton from './styles/Button';
+import EndTurnButton from '../styles/Button';
 
 class Battle extends Component {
   constructor(props) {
