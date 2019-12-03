@@ -31,7 +31,7 @@ class LoseScreen extends Component {
 
   render() {
     return (<LoseScreenWrapper>
-      <img width="578px" height="160px" src={ 'images/quantumDisconnect.png' } ref={ this.setHeaderImageRef }/>
+      <img width="578px" height="160px" alt="glitchy text saying quantum disconnect" src={ 'images/quantumDisconnect.png' } ref={ this.setHeaderImageRef }/>
       <p>Survived { this.props.allState.gamesWon ? this.props.allState.gamesWon : 0 } { this.props.allState.gamesWon === 1 ? 'Leap' : 'Leaps' }</p>
       <div>
         <Button onClick={ () => this.props.setGameState('reset') }>
