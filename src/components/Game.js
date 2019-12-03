@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import CardLibrary from './CardLibrary';
 import { MonsterLibrary } from './MonsterLibrary';
-import Battle from './Battle';
-import MainScreen from './MainScreen';
-import LoseScreen from './LoseScreen';
+import Battle from './screens/Battle';
+import MainScreen from './screens/MainScreen';
+import LoseScreen from './screens/LoseScreen';
 
 import { getAllState } from '../ducks/selectors';
 import * as actionCreators from '../ducks/actionCreators';
-import RewardScreen from './RewardScreen';
+import RewardScreen from './screens/RewardScreen';
 
 const MainWrapper = styled.div`
   background-color: #27d9d0;

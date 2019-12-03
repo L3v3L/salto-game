@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Card from './Card';
-import * as selectors from '../ducks/selectors';
-import * as actionCreators from '../ducks/actionCreators';
-import SkipButton from './styles/Button';
+import Card from '../Card';
+import * as selectors from '../../ducks/selectors';
+import * as actionCreators from '../../ducks/actionCreators';
+import SkipButton from '../styles/Button';
 
 const RewardWrapper = styled.div`
   display: flex;

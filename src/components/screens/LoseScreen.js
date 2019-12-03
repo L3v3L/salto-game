@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import Glitmage from 'glitmage';
-import * as actionCreators from '../ducks/actionCreators';
-import * as selectors from '../ducks/selectors';
+import * as actionCreators from '../../ducks/actionCreators';
+import * as selectors from '../../ducks/selectors';
 
-import Button from './styles/Button';
+import Button from '../styles/Button';
 
 const LoseScreenWrapper = styled.div`
   text-align: center;
