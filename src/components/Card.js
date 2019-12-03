@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { BoltCircle } from 'styled-icons/boxicons-solid';
 import * as selectors from '../ducks/selectors';
 
 import {
@@ -51,8 +52,11 @@ const CardButton = styled.div`
         padding: 3px 5px;
       }
       .cost {
-        padding: 3px 5px 0 7px;
-        text-align: right;
+        .cost_text{
+          display:inline-block;
+          vertical-align: middle;
+        }
+        padding: 0px 5px 0 7px;
         background-color: #79ac99;
         border-radius: 0 0 0 10px;
         border-left: 2px solid #4b6c60;
@@ -84,6 +88,18 @@ const CardButton = styled.div`
       padding: 10px;
       text-align: center;
     }
+  }
+`;
+
+const CardBolt = styled(BoltCircle)`
+  color: white;
+  height: 16px;
+  vertical-align: middle;
+  margin-right:1px;
+  path{
+    stroke: black;
+    stroke-width: 2px;
+    stroke-linejoin: round;
   }
 `;
 
@@ -142,7 +158,7 @@ class Card extends Component {
         <div className='interiorContainer'>
           <div className='header'>
             <div className='title'>{ this.label }</div>
-            { this.cost ? <div className='cost'>{ this.cost }</div> : '' }
+            { this.cost ? <div className='cost'><CardBolt/><div className="cost_text">{ this.cost }</div></div> : '' }
           </div>
           <div className='imageContainer'>
             <div className='status'>{ this.props.isActive ? 'ACTIVE' : '' }</div>

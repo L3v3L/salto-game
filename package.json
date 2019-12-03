@@ -19,7 +19,8 @@
     "redux-logger": "^3.0.6",
     "redux-starter-kit": "^1.0.1",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "styled-icons": "^9.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
