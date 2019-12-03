@@ -81,7 +81,7 @@ export const getEffectValues = (store, type) => {
         return effect;
       }
       return null;
-    });
+    }).filter((item) => item);
 
     const arrayToObject = (array) => array.reduce((obj, item) => {
       obj[item.uuid] = item;
