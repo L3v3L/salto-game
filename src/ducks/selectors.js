@@ -72,6 +72,27 @@ export const getEffect = (store, type, uuid) => (getEffectState(store) ? getEffe
 
 export const getEffectValue = (store, type, uuid) => (getEffect(store, type, uuid) ? getEffect(store, type, uuid).value : 0);
 
+export const getEffectValues = (store, type) => {
+  const state = getEffectState(store);
+
+  if (state) {
+    const effectByUuids = state.map((effect) => {
+      if (effect.type === type && effect.uuid && effect.value) {
+        return effect;
+      }
+      return null;
+    });
+
+    const arrayToObject = (array) => array.reduce((obj, item) => {
+      obj[item.uuid] = item;
+      return obj;
+    }, {});
+
+    return { byIds: { ...arrayToObject(effectByUuids) } };
+  }
+  return {};
+};
+
 export const getRandomCard = (store) => {
   const shuffledCardRefs = getCardRefs(store) ? _.shuffle(getCardRefs(store)) : [];
   const getRandRarity = weightedRand({ 1: 0.7, 2: 0.2, 3: 0.1 });

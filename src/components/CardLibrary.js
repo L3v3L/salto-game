@@ -62,6 +62,7 @@ const CardLibrary = [
         stackValue: false,
         duration: 2,
         stackDuration: true,
+        needsTarget: true,
       }),
     ],
     image: '9.svg',
