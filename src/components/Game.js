@@ -45,7 +45,7 @@ class Game extends Component {
     switch (gameState) {
     case 'reset':
       const starterDeck = [
-        { id: 2, quantity: 5 },
+        { id: 9, quantity: 5 },
         { id: 3, quantity: 5 },
       ];
 

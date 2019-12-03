@@ -1,19 +1,9 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { bounce } from 'react-animations';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Sprite, SpriteCanvasHelper } from 'mixel';
 import { MonsterSprite } from './Sprites';
 import StatsBar from './StatsBar';
-
-import { getIsSelectingTarget, getEffectValue } from '../ducks/selectors';
-
-import {
-  disableTargetSelection,
-  setSelectedTarget,
-  playCard,
-} from '../ducks/actionCreators';
 
 let nextMoveUUID = 0;
 const queuedMoveIconSize = 30;
@@ -101,12 +91,6 @@ class Monster extends Component {
     this.setState({ dataURI: canvas.toDataURL() });
   }
 
-  action() {
-    if (this.props.isSelectingTarget) {
-      this.props.playCard({ target: this.uuid });
-    }
-  }
-
   calculateFinalAttack = (value) => {
     if (this.props.weakness) {
       return Math.round(value + (value * this.props.weakness));
@@ -143,21 +127,39 @@ class Monster extends Component {
   getQueuedMoveIcon = (type) => {
     switch (true) {
     case type === 'attack':
-      return <img src={ 'images/3.svg' } width={ queuedMoveIconSize } height={ queuedMoveIconSize } alt={ 'sword' } />;
+      return <img src={ 'images/3.svg' }
+        width={ queuedMoveIconSize }
+        height={ queuedMoveIconSize }
+        alt={ 'sword' } />;
     case type === 'block':
-      return <img src={ 'images/2.svg' } width={ queuedMoveIconSize } height={ queuedMoveIconSize } alt={ 'shield' } />;
+      return <img src={ 'images/2.svg' }
+        width={ queuedMoveIconSize }
+        height={ queuedMoveIconSize }
+        alt={ 'shield' } />;
     default:
-      return <img src={ 'images/3.svg' } width={ queuedMoveIconSize } height={ queuedMoveIconSize } alt={ 'sword' } />;
+      return <img src={ 'images/3.svg' }
+        width={ queuedMoveIconSize }
+        height={ queuedMoveIconSize }
+        alt={ 'sword' } />;
     }
   };
 
   render() {
     return (
-      <BouncyDiv onClick={ () => this.action() } selecting={ this.props.selecting }>
+      <BouncyDiv
+        onClick={ () => this.props.handleClick(this.props.uuid) }
+        selecting={ this.props.selecting }>
         <MonsterAvatar>
           <img src={ this.state.dataURI } alt='Monster' />
           <MonsterName>{ this.props.name }</MonsterName>
-          <StatsBar max={ this.props.maxHp } value={ this.props.hp } fontSize="0.6em" height="20px" shield={ this.props.effects.length ? this.props.effects.reduce((total, effect) => total + effect.value, 0) : '' }/>
+          <StatsBar
+            max={ this.props.maxHp }
+            value={ this.props.hp }
+            fontSize="0.6em"
+            height="20px"
+            shield={ this.props.effects.length
+              ? this.props.effects.reduce((total, effect) => total + effect.value, 0)
+              : '' }/>
         </MonsterAvatar>
         { this.props.monsterMoves.filter((move) => move.type !== 'block').length ? <QueuedMoves>
           {
@@ -179,22 +181,4 @@ class Monster extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const isSelectingTarget = getIsSelectingTarget(state);
-  const weakness = getEffectValue(state, 'weaken', ownProps.uuid);
-  return { isSelectingTarget, weakness };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(
-    {
-      setSelectedTarget,
-      disableTargetSelection,
-      playCard,
-    },
-    dispatch,
-  ),
-  dispatch,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Monster);
+export default Monster;

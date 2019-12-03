@@ -38,6 +38,12 @@ class Battle extends Component {
     this.props.addToBattleTurn(1);
   }
 
+  handleMonsterClicked = (uuid) => {
+    if (this.props.isSelectingTarget) {
+      this.props.playCard({ target: uuid });
+    }
+  }
+
   render() {
     const handlers = {
       spaceKey: (event) => {
@@ -62,6 +68,11 @@ class Battle extends Component {
                   monsterMoves={ monster.moves }
                   effects={ monster.effects }
                   selecting={ this.props.isSelectingTarget }
+                  handleClick={ this.handleMonsterClicked }
+                  weakness={ this.props.weakens.byIds[monster.uuid]
+                    ? this.props.weakens.byIds[monster.uuid].value
+                    : 0
+                  }
                 />
               )) }
             </Centered>
@@ -174,6 +185,7 @@ const mapStateToProps = (state) => {
   const discardCards = selectors.getCardsByDeck(state, 'discard');
 
   const shield = selectors.getEffectValue(state, 'shield');
+  const weakens = selectors.getEffectValues(state, 'weaken');
 
   return {
     allState,
@@ -186,6 +198,7 @@ const mapStateToProps = (state) => {
     discardCards,
     monsters,
     shield,
+    weakens,
   };
 };
 
