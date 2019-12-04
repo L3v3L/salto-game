@@ -1,3 +1,3 @@
 # salto-game
 
-[Live Demo](http://salto-game.brunosabenca.com/)
+[Live Demo](https://salto-game.brunosabenca.com/)
