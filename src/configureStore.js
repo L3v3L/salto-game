@@ -1,4 +1,4 @@
-import { createStore, compose, applyMiddleware } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import reducer from './ducks/reducer';
 import {
   endTurn,
@@ -8,36 +8,22 @@ import {
   targetSelectionDisable,
 } from './ducks/middlewares';
 
-// eslint-disable-next-line no-underscore-dangle
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const middlewares = [
-  targetSelectionDisable,
-  playCardActivate,
-  playCardExecute,
-  startMonsterMoves,
-  endTurn,
-];
-
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line global-require
-  const { createLogger } = require('redux-logger');
-
-  const logger = createLogger({
-    collapsed: (getState, action, logEntry) => !logEntry.error,
-  });
-
-  middlewares.push(logger);
-}
-
-const configureStore = (initialState) => createStore(
+// Create a function that returns the store with initial state
+const configureStoreWithInitialState = (initialState) => configureStore({
   reducer,
-  initialState,
-  composeEnhancers(
-    applyMiddleware(
-      ...middlewares,
-    ),
-  ),
-);
+  preloadedState: initialState,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+    },
+  }).concat([
+    targetSelectionDisable,
+    playCardActivate,
+    playCardExecute,
+    startMonsterMoves,
+    endTurn,
+  ]),
+  devTools: process.env.NODE_ENV !== 'production',
+});
 
-export default configureStore;
+export default configureStoreWithInitialState;

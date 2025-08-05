@@ -6,7 +6,6 @@ import { rubberBand } from 'react-animations';
 import * as actionCreators from '../../ducks/actionCreators';
 import Button from '../styles/Button';
 
-
 const animation = keyframes`${rubberBand}`;
 
 const MainScreenWrapper = styled.div`
@@ -49,7 +48,6 @@ class MainScreen extends Component {
     </MainScreenWrapper>);
   }
 }
-
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({ ...actionCreators }, dispatch),

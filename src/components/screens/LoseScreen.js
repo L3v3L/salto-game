@@ -44,8 +44,6 @@ class LoseScreen extends Component {
     </LoseScreenWrapper>);
   }
 }
-
-
 const mapStateToProps = (state) => {
   const allState = selectors.getAllState(state);
 

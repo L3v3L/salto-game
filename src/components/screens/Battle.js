@@ -42,7 +42,7 @@ class Battle extends Component {
     if (this.props.isSelectingTarget) {
       this.props.playCard({ target: uuid });
     }
-  }
+  };
 
   render() {
     const handlers = {
@@ -114,7 +114,10 @@ class Battle extends Component {
           <BattleStats>
             <DeckPile size={ this.props.deckCards.length } />
             <TextStats>
-              <ActionDisplay current={ this.props.allState.battle.currentAP } max={ this.props.allState.battle.maxAP } ></ActionDisplay>
+              <ActionDisplay
+                current={ this.props.allState.battle.currentAP }
+                max={ this.props.allState.battle.maxAP }
+              ></ActionDisplay>
             </TextStats>
             <DiscardPile size={ this.props.discardCards.length } />
           </BattleStats>

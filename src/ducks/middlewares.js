@@ -3,7 +3,6 @@ import * as types from './actionTypes';
 import * as actions from './actionCreators';
 import * as selectors from './selectors';
 
-
 const setMonsterMoves = (state, store) => {
   selectors.getMonstersAlive(state).map((monster) => {
     const monsterRef = selectors
@@ -18,8 +17,6 @@ const setMonsterMoves = (state, store) => {
     return null;
   });
 };
-
-
 const runMonsterMoves = (state, shield, store) => {
   selectors.getMonstersAlive(state).map((monster) => {
     monster.moves.map((move) => {
@@ -147,19 +144,13 @@ export const endTurn = (store) => (next) => (action) => {
 
   next(action);
 };
-
-
 export const startMonsterMoves = (store) => (next) => (action) => {
   if (action.type === types.START_MONSTER_MOVES) {
     const state = store.getState();
     setMonsterMoves(state, store);
   }
-
-
   next(action);
 };
-
-
 export const targetSelectionDisable = (store) => (next) => (action) => {
   if (action.type === types.SET_SELECTED_TARGET) {
     store.dispatch(actions.disableTargetSelection());

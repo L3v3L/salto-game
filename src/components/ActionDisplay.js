@@ -32,7 +32,6 @@ const ActionsDiv = styled.div`
   }
 `;
 
-
 const ActionDisplayBolt = styled(Bolt)`
   color: black;
   height: 24px;
