@@ -32,8 +32,15 @@ const CurrentValueText = styled.div`
 class PercentileBar extends Component {
   render() {
     return (
-      <Bar height={ this.props.height } flexBasis={ this.props.flexBasis } color={ this.props.outerColor }>
-        <InnerBar color={ this.props.innerColor } width={ (this.props.value / this.props.max) * 100 }></InnerBar>
+      <Bar
+        height={ this.props.height }
+        flexBasis={ this.props.flexBasis }
+        color={ this.props.outerColor }
+      >
+        <InnerBar
+          color={ this.props.innerColor }
+          width={ (this.props.value / this.props.max) * 100 }
+        ></InnerBar>
         <CurrentValueText fontSize={ this.props.fontSize }>{ this.props.value }</CurrentValueText>
       </Bar>
     );

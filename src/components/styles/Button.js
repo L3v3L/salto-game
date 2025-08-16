@@ -13,8 +13,6 @@ const normalStyle = `
   position: relative;
   font-size: 0.9rem;
 `;
-
-
 const Button = styled.button`
   margin-left: ${(props) => (props.marginLeft ? 0.4 : 0)}rem;
   padding: 0.6rem;

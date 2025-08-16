@@ -91,8 +91,6 @@ export default function reducer(state = initialState, action = {}) {
       },
     };
   }
-
-
   case types.RESET_BATTLE: {
     const { keepHp } = action.payload;
 

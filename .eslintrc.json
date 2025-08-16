@@ -3,18 +3,29 @@
     "eslint:recommended",
     "airbnb-base",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
-  "plugins": ["react"],
-  "parser": "babel-eslint",
+  "plugins": ["react", "react-hooks"],
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "parser": "babel-eslint",
-    "ecmaVersion": 2018,
-    "sourceType": "module"
+    "requireConfigFile": false,
+    "ecmaVersion": 2023,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "env": {
-    "browser": true
+    "browser": true,
+    "es2023": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   },
   "globals": {},
   "rules": {
@@ -39,14 +50,11 @@
         "allow": ["state", "getters"]
       }
     ],
-    "no-param-reassign": 0,
     "no-case-declarations": 0,
-    "no-console": "off"
-  },
-  "overrides": [
-    {
-      "files": ["*.js"],
-      "rules": {}
-    }
-  ]
+    "no-console": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-param-reassign": "off",
+    "class-methods-use-this": "off",
+    "no-use-before-define": "off"
+  }
 }

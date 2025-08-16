@@ -3,8 +3,6 @@ import * as types from './actionTypes';
 export const resetMonsterEffects = () => ({
   type: types.RESET_MONSTER_EFFECTS,
 });
-
-
 export const addEffectToMonster = ({ effect, targetMonster }) => ({
   type: types.ADD_EFFECT_TO_MONSTER,
   payload: {
@@ -232,8 +230,6 @@ export const resetBattle = ({ keepHp }) => ({
     keepHp,
   },
 });
-
-
 export const emptyPlayerDeck = () => ({
   type: types.EMPTY_PLAYER_DECK,
 });

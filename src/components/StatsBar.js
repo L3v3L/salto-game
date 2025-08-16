@@ -31,7 +31,6 @@ const CurrentValueText = styled.div`
   flex: 0;
 `;
 
-
 class StatsBar extends Component {
   getBar() {
     return <PercentileBar
